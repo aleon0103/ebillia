@@ -4,18 +4,7 @@
 			<pages>
 				<Page id="page" title="{i18n>title}">
 					<content>
-                    
-                    <UploadCollection noDataText="No existen ficheros" noDataDescription="Suelte aquí los ficheros para cargar o utilice el botón &quot;+&quot;." id="collection0">
-                    
-                        <items>
-                    
-                            <UploadCollectionItem contributor="Contributor1" fileName="fileName1" uploadedDate="Fri Oct 16 2020" id="item0"/>
-                    
-                            <UploadCollectionItem contributor="Contributor1" fileName="fileName2" uploadedDate="Fri Oct 16 2020" id="item1"/>
-                    
-                            <UploadCollectionItem contributor="Contributor1" fileName="fileName3" uploadedDate="Fri Oct 16 2020" id="item2"/></items>
-                    
-                    </UploadCollection>
+                
                     
                     </content>
 				</Page>
