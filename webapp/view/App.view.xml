@@ -1,9 +1,23 @@
-<mvc:View controllerName="ns.EBilliaApp.controller.App" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.App" displayBlock="true">
 	<Shell id="shell">
 		<App id="app">
 			<pages>
 				<Page id="page" title="{i18n>title}">
-					<content></content>
+					<content>
+                    
+                    <UploadCollection noDataText="No existen ficheros" noDataDescription="Suelte aquí los ficheros para cargar o utilice el botón &quot;+&quot;." id="collection0">
+                    
+                        <items>
+                    
+                            <UploadCollectionItem contributor="Contributor1" fileName="fileName1" uploadedDate="Fri Oct 16 2020" id="item0"/>
+                    
+                            <UploadCollectionItem contributor="Contributor1" fileName="fileName2" uploadedDate="Fri Oct 16 2020" id="item1"/>
+                    
+                            <UploadCollectionItem contributor="Contributor1" fileName="fileName3" uploadedDate="Fri Oct 16 2020" id="item2"/></items>
+                    
+                    </UploadCollection>
+                    
+                    </content>
 				</Page>
 			</pages>
 		</App>
