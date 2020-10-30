@@ -10,6 +10,14 @@ sap.ui.define([
 		return Controller.extend("ns.EBilliaApp.controller.App", {
 			onInit: function () {
 
-			}
+            },
+               handleListItemPress: function (oEvent) {
+                   console.log('on login navigation')
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            
+                oRouter.navTo("login", {
+                   
+                });
+            }
 		});
 	});

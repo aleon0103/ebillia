@@ -1,0 +1,15 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.Home" displayBlock="true">
+	<Page id="loginPage" title="{i18n>LoginTitle}">
+       
+    <content>
+       
+
+       
+    <Label text="Main View" width="100%" id="label0"/>
+       
+
+       
+    </content>
+       
+    </Page>
+</mvc:View>

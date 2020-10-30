@@ -24,7 +24,18 @@ sap.ui.define([
 			this.getRouter().initialize();
 
 			// set the device model
-			this.setModel(models.createDeviceModel(), "device");
+            this.setModel(models.createDeviceModel(), "device");
+            this.setModel(models.createUserModel(), "user");
+        },
+        getContentDensityClass: function () {
+			if (!this._sContentDensityClass) {
+				if (!sap.ui.Device.support.touch){
+					this._sContentDensityClass = "sapUiSizeCompact";
+				} else {
+					this._sContentDensityClass = "sapUiSizeCozy";
+				}
+			}
+			return this._sContentDensityClass;
 		}
 	});
 });

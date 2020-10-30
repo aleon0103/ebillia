@@ -58,8 +58,16 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "ns.EBilliaApp.i18n.i18n"
+                    "bundleName": "ns.EBilliaApp.i18n.i18n",
+                    "bundleUrl": "i18n/i18n.properties",
+					"async": true,
+					"fallbackLocale": "es",
+					"supportedLocales": ["es", "en"]
 				}
+            },
+            "side": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/sideContent.json"
 			}
 		},
 		"resources": {
@@ -81,7 +89,32 @@
 				"name": "RouteApp",
 				"pattern": "RouteApp",
 				"target": ["TargetApp"]
-			}],
+            },
+        {
+				"name": "login",
+				"pattern": "login",
+				"target": ["TargetLogin"]
+            },
+             {
+				"name": "main",
+				"pattern": "",
+                "target": ["TargetMain"],
+                "controlId":"app"
+            },
+              {
+				"name": "home",
+				"pattern": "home",
+                "target": ["TargetHome"],
+                "controlId":"mainContents"
+            },
+              {
+				"name": "settings",
+				"pattern": "systemSettings",
+                "target": ["settings"],
+                "controlId":"mainContents"
+			}
+        
+        ],
 			"targets": {
 				"TargetApp": {
 					"viewType": "XML",
@@ -89,6 +122,36 @@
 					"clearControlAggregation": false,
 					"viewId": "App",
 					"viewName": "App"
+                },
+                "TargetLogin": {
+					"viewType": "XML",
+					"transition": "slide",
+                    "viewName": "Login",
+                    "viewLevel": 1
+                },
+                 "TargetMain": {
+					"viewType": "XML",
+					"transition": "slide",
+                    "viewName": "Main",
+                    "viewLevel": 2
+                },
+                   "TargetHome": {
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "viewName": "Home",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                   "settings": {
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "viewName": "SystemSettings",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
 				}
 			}
 		}

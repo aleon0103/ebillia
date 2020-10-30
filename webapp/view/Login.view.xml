@@ -1,0 +1,35 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.Login" displayBlock="true">
+	<Page id="loginPage" title="{i18n>LoginTitle}">
+       
+    <content>
+       
+        <VBox width="100%" direction="Column" id="vbox0">
+       
+        <items>
+       
+            <sap.ui.layout.form:SimpleForm editable="true" layout="ResponsiveGridLayout" xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" id="form1">
+       
+                <sap.ui.layout.form:content>
+       
+                    <sap.ui.core:Title text="Title" id="title1"/>
+       
+                    <Label text="Label 1" id="label0"/>
+       
+                    <Input width="100%" id="input1" value="{loginModel>/loginObj/username}"/>
+       
+                    <Label text="Label 2" id="label1" />
+       
+                    <Input width="100%" id="input3" value="{loginModel>/loginObj/password}"/></sap.ui.layout.form:content>
+       
+            </sap.ui.layout.form:SimpleForm>
+       
+            <Button xmlns="sap.m" text="Go To Main" id="button1" press="goToMain"/>
+       
+        </items>
+       
+        </VBox>
+       
+    </content>
+       
+    </Page>
+</mvc:View>
