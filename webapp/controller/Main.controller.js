@@ -58,7 +58,8 @@ sap.ui.define([
 
                        var fnHandleUserLogoutPress = function () {
                 console.log(this)
-                this.getRouter().getTargets().display("TargetLogin");
+                this.getRouter().navTo("login", {
+                        });
             }.bind(this);
 
 

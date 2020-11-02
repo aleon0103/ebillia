@@ -5,7 +5,7 @@ sap.ui.define([
 
     var jwt;
     var user;
-    var URL = 'https://sivapdev.flexi.com.mx:8762';
+    var URL = 'https://arcade.flexi.com.mx:8762';
 
     return {
 
