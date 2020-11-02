@@ -59,7 +59,7 @@ sap.ui.define([
                           console.log(userModel);
                         var oRouter = sap.ui.core.UIComponent.getRouterFor(me);
                       
-                        oRouter.navTo("home", {
+                        oRouter.navTo("main", {
                         });
 
 

@@ -39,7 +39,7 @@
 			<headerContent>
 				<m:MessageStrip
 					text="
-Has iniciado sesión como: Administrador"
+Has iniciado sesión como: Usuario {user>/rol/nombre}"
 					type="Information"
 					showIcon="true">
 				</m:MessageStrip>

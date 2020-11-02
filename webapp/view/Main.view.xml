@@ -38,7 +38,7 @@
 						<BadgeCustomData
 							key="badge"
 							value="1"
-							visible=""/>
+							visible="true"/>
 					</customData>
 					<layoutData>
 						<OverflowToolbarLayoutData closeOverflowOnInteraction="false"/>
@@ -51,6 +51,12 @@
 					type="Transparent"
 					press=".onNotificationPress"
 					tooltip="{i18n>notificationButtonTooltip}">
+                     <customData>
+						<BadgeCustomData
+							key="badge"
+							value="3"
+							visible="true"/>
+					</customData>
 					<layoutData>
 						<OverflowToolbarLayoutData closeOverflowOnInteraction="false"/>
 					</layoutData>

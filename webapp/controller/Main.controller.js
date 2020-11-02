@@ -23,7 +23,37 @@ sap.ui.define([
 
             onInit: function () {
                 console.log('on main component view init');
+
+
+                this._oRouter = this.getRouter();
+                this._oRouter.getRoute("main").attachPatternMatched(this._routePatternMatched, this);
             },
+
+            /**
+     * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
+     * This hook is the same one that SAPUI5 controls get after being rendered.
+     * @memberOf com.vitro.BillerDirect.CrearDisputa.view.NotFound
+     */
+            onAfterRendering: function () {
+                console.log('on Main View After Render');
+            },
+
+
+            _routePatternMatched: function (oEvent) {
+
+                console.log("ROUTE MAIN MATCH")
+
+                // gets called for ...#/
+                // gets called for ...#/products/
+                // gets called for ...#/products/Product/<productId>
+                // for example: ...#/products/Product/1 . 
+                // or #/products/Product/123
+
+                this._initNotifications();
+
+            },
+
+
 
             onSideNavButtonPress: function () {
                 var oToolPage = this.byId("main");
@@ -56,11 +86,11 @@ sap.ui.define([
                         });
                     }.bind(this);
 
-                       var fnHandleUserLogoutPress = function () {
-                console.log(this)
-                this.getRouter().navTo("login", {
+                    var fnHandleUserLogoutPress = function () {
+                        console.log(this)
+                        this.getRouter().navTo("login", {
                         });
-            }.bind(this);
+                    }.bind(this);
 
 
 
@@ -80,7 +110,7 @@ sap.ui.define([
                                 type: ButtonType.Transparent,
                                 press: fnHandleUserMenuItemPress
                             }),
-                
+
                             new Button({
                                 text: '{i18n>userAccountHelp}',
                                 type: ButtonType.Transparent,
@@ -104,7 +134,13 @@ sap.ui.define([
             },
 
 
-        
+            _initNotifications: function(){
+                console.log('loading notifications...');
+
+            },
+
+
+
 
         	/**
 		 * Returns a promises which resolves with the resource bundle value of the given key <code>sI18nKey</code>

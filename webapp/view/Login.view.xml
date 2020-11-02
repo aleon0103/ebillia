@@ -5,8 +5,8 @@
        
     
 
-        <l:VerticalLayout class="sapUiContentPadding equalColumns" width="100%">
-		<FlexBox class="columns">
+        <l:VerticalLayout class="equalColumns" width="100%">
+		<FlexBox class="columns" alignContent="Center" alignItems="Center" fitContainer="true">
 			<Text text="Contenido izquierdo">
 				<layoutData>
 					<FlexItemData growFactor="1" baseSize="0" styleClass="sapUiTinyMargin"/>
@@ -15,9 +15,13 @@
 			<VBox fitContainer="true" justifyContent="Center" alignItems="Center" alignContent="Center">
 
             <items>
+            <Text xmlns="sap.m" class="lead" text="Para acceder al portal ingresa tu usuario y contraseña" id="text3"/>
+     <MessageStrip xmlns="sap.m" text="Parece que olvidaste colocar tu contraseña. Intentalo nuevamente" showIcon="true" showCloseButton="true" id="strip0" type="Warning">
+         </MessageStrip>
      <Input id="uid" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
      <Input id="pasw" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
-     <Button width="12rem" text="Login" type="Emphasized" press="goToMain"/>
+     <Button width="16rem" text="Login" type="Emphasized" press="goToMain"/>
+     
     </items>
 				<layoutData>
 					<FlexItemData growFactor="1" baseSize="0" backgroundDesign="Solid" styleClass="sapUiTinyMargin"/>
