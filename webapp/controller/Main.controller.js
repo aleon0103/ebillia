@@ -4,9 +4,10 @@ sap.ui.define([
     'sap/ui/core/syncStyleClass',
     'sap/m/ActionSheet',
     'sap/m/Button',
-    'sap/m/library'
+    'sap/m/library',
+     './APIController',
 ],
-    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary) {
+    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary,API) {
         "use strict";
 
         // shortcut for sap.m.PlacementType
@@ -23,6 +24,7 @@ sap.ui.define([
 
             onInit: function () {
                 console.log('on main component view init');
+               // this._userModel = this.getModel("user");
 
 
                 this._oRouter = this.getRouter();
@@ -137,6 +139,63 @@ sap.ui.define([
             _initNotifications: function(){
                 console.log('loading notifications...');
 
+                console.log(this.getModel("user"));
+
+                var oModel = this.getModel("user");
+                var rol = oModel.getProperty('/rol/id');
+                var userId=oModel.getProperty('/id');
+
+                console.log(rol,userId);
+                if( rol && rol != 1){
+                     this._getCotizaciones(userId);
+                     this._getPronosticos(userId);
+                }
+
+                
+
+            },
+
+            _getCotizaciones : function(userid){
+
+                var notifictionsModel = this.getModel("notifications");
+                var me = this;
+
+                var path = API.serviceList().GET_BADGE_COTIZACIONES +`${userid}/CREADO`  ;
+                API.Get(path).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+                        if(respJson && respJson.data){
+                            notifictionsModel.setProperty('/Cotizaciones',respJson.data)
+                             notifictionsModel.refresh(true);
+                        }
+                        
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                    });
+
+
+
+            },
+
+            _getPronosticos: function(userid){
+                      var notifictionsModel = this.getModel("notifications");
+                var me = this;
+                var path = API.serviceList().GET_BADGE_PRONOSTICOS +`${userid}/PENDIENTE`  ;
+                API.Get(path).then(
+                    function (respJson, paramw, param3) {
+                         if(respJson && respJson.data){
+                            notifictionsModel.setProperty('/Pronosticos',respJson.data)
+                            notifictionsModel.refresh(true);
+                        }
+
+                        console.log(notifictionsModel);
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                    });
+ 
+
+
             },
 
 
@@ -152,6 +211,14 @@ sap.ui.define([
 		 */
             getBundleText: function (sI18nKey, aPlaceholderValues) {
                 return this.getBundleTextByModel(sI18nKey, this.getModel("i18n"), aPlaceholderValues);
+            },
+
+            mergeNotifications:function (cotizaciones, pronosticos  ){
+                var cCount= cotizaciones ? cotizaciones.length : 0;
+                var pCount= pronosticos ? pronosticos.length : 0;
+                console.log(cCount+pCount);
+
+                return (cCount+pCount).toString();
             }
 
 

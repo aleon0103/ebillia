@@ -27,7 +27,9 @@
 
                     -->
 				<ToolbarSpacer/>
-				<Button
+			
+            <!--
+            	<Button
 					id="errorButton"
 					icon="sap-icon://message-popup"
 					visible="{= ${alerts>/alerts/errors}.length === 0 ? false : true }"
@@ -44,17 +46,24 @@
 						<OverflowToolbarLayoutData closeOverflowOnInteraction="false"/>
 					</layoutData>
 				</Button>
+-->
+
 				<Button
 					id="notificationButton"
 					icon="sap-icon://ui-notifications"
-					visible="{= ${alerts>/alerts/notifications}.length === 0 ? false : true }"
+					visible="{= ${user>/rol/id} !== 1 ? true : false }"
 					type="Transparent"
 					press=".onNotificationPress"
 					tooltip="{i18n>notificationButtonTooltip}">
                      <customData>
 						<BadgeCustomData
 							key="badge"
-							value="3"
+							value="{
+                                parts:[
+                            {path:'notifications>/Cotizaciones'},
+                            {path:'notifications>/Pronosticos'}],
+                            formatter: '.mergeNotifications'
+                            }"
 							visible="true"/>
 					</customData>
 					<layoutData>

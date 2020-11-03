@@ -7,6 +7,11 @@ sap.ui.define([
     var user;
     var URL = 'https://arcade.flexi.com.mx:8762';
 
+    var endpoints = {
+        GET_BADGE_PRONOSTICOS:'/portal_cloud_api/logistic-services/pronostico/getNotifications/',
+        GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/'
+
+    };
     return {
 
 
@@ -30,6 +35,11 @@ sap.ui.define([
             return jwt;
         },
 
+        serviceList: function (){
+            return endpoints;
+
+        },
+
         setJwt: function (token) {
             console.log(token);
             jwt = token
@@ -40,6 +50,7 @@ sap.ui.define([
         },
 
         Get: function (path, callback) {
+            console.log(path);
             return $.ajax({
                 method: "GET",
                 headers: {
