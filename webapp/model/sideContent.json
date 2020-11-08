@@ -108,6 +108,46 @@
     },
 
     "subroles":{
+         "1":{
+			"titleI18nKey": "notificaciones",
+			"icon": "sap-icon://sales-notification",
+			"key": "notificaciones"
+        },
+         "21":{
+			"titleI18nKey": "cancelarASN",
+			"icon": "sap-icon://sales-notification",
+			"key": "cancelarASN"
+        },
+         "7":{
+			"titleI18nKey": "ConfirmarListaDePrecios",
+			"icon": "sap-icon://sales-notification",
+			"key": "ConfirmarListaPrecios" 
+        },
+         "8":{
+			"titleI18nKey": "SolicitudListaPrecios",
+			"icon": "sap-icon://sales-notification",
+			"key": "SolicitudlistaPrecios"
+        },
+        "10":{
+			"titleI18nKey": "RevisionPronosticosDemanda",
+			"icon": "sap-icon://sales-notification",
+			"key": "RevisionPronosticosDemanda"
+        },
+        "9":{
+			"titleI18nKey": "EnvioPronosticos",
+			"icon": "sap-icon://sales-notification",
+			"key": "EnvioPronosticos"
+        },
+         "13":{
+			"titleI18nKey": "ReporteEntregasPendientes",
+			"icon": "sap-icon://sales-notification",
+			"key": "ReporteEntregasPendientes"
+        },
+         "14":{
+			"titleI18nKey": "ReporteComplemnetosPendientesCarga",
+			"icon": "sap-icon://sales-notification",
+			"key": "ReporteComplemnetosPendientesCarga"
+        },
         "15":{
 			"titleI18nKey": "usuarios",
 			"icon": "sap-icon://user-settings",
@@ -122,6 +162,18 @@
 			"titleI18nKey": "configuracion",
 			"icon": "sap-icon://customize",
 			"key": "configConfig"
+        }
+        ,
+         "20":{
+			"titleI18nKey": "VerComplementos",
+			"icon": "sap-icon://customize",
+			"key": "verComplementos"
+        },
+          
+         "22":{
+			"titleI18nKey": "ReporteFacturas",
+			"icon": "sap-icon://customize",
+			"key": "ReporteFacturas"
 		}
 
     }
