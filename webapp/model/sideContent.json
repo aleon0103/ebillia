@@ -56,5 +56,78 @@
 			"key": "shippingSettings",
 			"selected": false
 		}
-	]
+    ],
+
+    "roles":{
+        "1":{
+			"titleI18nKey": "notificaciones",
+			"icon": "sap-icon://sales-notification",
+			"expanded": false	
+        },
+        "2":{
+			"titleI18nKey": "ordenesCompra",
+			"icon": "sap-icon://customer-order-entry",
+			"expanded": false	
+        },
+         "3":{
+			"titleI18nKey": "ASN",
+			"icon": "sap-icon://home",
+			"expanded": false	
+		},
+         "4":{
+			"titleI18nKey": "cotizaciones",
+			"icon": "sap-icon://sales-quote",
+			"expanded": false	
+		},
+         "5":{
+			"titleI18nKey": "pronosticos",
+			"icon": "sap-icon://manager-insight",
+			"expanded": false	
+        },
+        "6":{
+			"titleI18nKey": "estadoDeCuenta",
+			"icon": "sap-icon://accounting-document-verification",
+			"expanded": false	
+        },
+         "8":{
+			"titleI18nKey": "reportes",
+			"icon": "sap-icon://expense-report",
+			"expanded": false	
+        },
+          "9":{
+			"titleI18nKey": "administracion",
+			"icon": "sap-icon://settings",
+			"expanded": false	
+		},
+         "10":{
+			"titleI18nKey": "complementos",
+			"icon": "sap-icon://batch-payments",
+			"expanded": false	
+		}
+
+    },
+
+    "subroles":{
+        "15":{
+			"titleI18nKey": "usuarios",
+			"icon": "sap-icon://user-settings",
+			"key": "configUsuarios"
+        },
+         "16":{
+			"titleI18nKey": "monedas",
+			"icon": "sap-icon://collections-insight",
+			"key": "configMonedas"
+        },
+         "17":{
+			"titleI18nKey": "configuracion",
+			"icon": "sap-icon://customize",
+			"key": "configConfig"
+		}
+
+    }
+    
+
+
+
+
 }

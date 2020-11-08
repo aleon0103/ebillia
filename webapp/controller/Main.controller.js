@@ -5,9 +5,9 @@ sap.ui.define([
     'sap/m/ActionSheet',
     'sap/m/Button',
     'sap/m/library',
-     './APIController',
+    './APIController',
 ],
-    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary,API) {
+    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary, API) {
         "use strict";
 
         // shortcut for sap.m.PlacementType
@@ -24,7 +24,7 @@ sap.ui.define([
 
             onInit: function () {
                 console.log('on main component view init');
-               // this._userModel = this.getModel("user");
+                // this._userModel = this.getModel("user");
 
 
                 this._oRouter = this.getRouter();
@@ -52,6 +52,7 @@ sap.ui.define([
                 // or #/products/Product/123
 
                 this._initNotifications();
+                this._configureMenu();
 
             },
 
@@ -107,17 +108,7 @@ sap.ui.define([
                                 type: ButtonType.Transparent,
                                 press: fnHandleUserMenuItemPress
                             }),
-                            new Button({
-                                text: "{i18n>userAccountOnlineGuide}",
-                                type: ButtonType.Transparent,
-                                press: fnHandleUserMenuItemPress
-                            }),
 
-                            new Button({
-                                text: '{i18n>userAccountHelp}',
-                                type: ButtonType.Transparent,
-                                press: fnHandleUserMenuItemPress
-                            }),
                             new Button({
                                 text: '{i18n>userAccountLogout}',
                                 type: ButtonType.Transparent,
@@ -136,39 +127,39 @@ sap.ui.define([
             },
 
 
-            _initNotifications: function(){
+            _initNotifications: function () {
                 console.log('loading notifications...');
 
                 console.log(this.getModel("user"));
 
                 var oModel = this.getModel("user");
                 var rol = oModel.getProperty('/rol/id');
-                var userId=oModel.getProperty('/id');
+                var userId = oModel.getProperty('/id');
 
-                console.log(rol,userId);
-                if( rol && rol != 1){
-                     this._getCotizaciones(userId);
-                     this._getPronosticos(userId);
+                console.log(rol, userId);
+                if (rol && rol != 1) {
+                    this._getCotizaciones(userId);
+                    this._getPronosticos(userId);
                 }
 
-                
+
 
             },
 
-            _getCotizaciones : function(userid){
+            _getCotizaciones: function (userid) {
 
                 var notifictionsModel = this.getModel("notifications");
                 var me = this;
 
-                var path = API.serviceList().GET_BADGE_COTIZACIONES +`${userid}/CREADO`  ;
+                var path = API.serviceList().GET_BADGE_COTIZACIONES + `${userid}/CREADO`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
-                        if(respJson && respJson.data){
-                            notifictionsModel.setProperty('/Cotizaciones',respJson.data)
-                             notifictionsModel.refresh(true);
+                        if (respJson && respJson.data) {
+                            notifictionsModel.setProperty('/Cotizaciones', respJson.data)
+                            notifictionsModel.refresh(true);
                         }
-                        
+
                     }, function (err) {
                         console.log("error in processing your request", err);
                     });
@@ -177,14 +168,14 @@ sap.ui.define([
 
             },
 
-            _getPronosticos: function(userid){
-                      var notifictionsModel = this.getModel("notifications");
+            _getPronosticos: function (userid) {
+                var notifictionsModel = this.getModel("notifications");
                 var me = this;
-                var path = API.serviceList().GET_BADGE_PRONOSTICOS +`${userid}/PENDIENTE`  ;
+                var path = API.serviceList().GET_BADGE_PRONOSTICOS + `${userid}/PENDIENTE`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
-                         if(respJson && respJson.data){
-                            notifictionsModel.setProperty('/Pronosticos',respJson.data)
+                        if (respJson && respJson.data) {
+                            notifictionsModel.setProperty('/Pronosticos', respJson.data)
                             notifictionsModel.refresh(true);
                         }
 
@@ -193,12 +184,87 @@ sap.ui.define([
                     }, function (err) {
                         console.log("error in processing your request", err);
                     });
- 
+
 
 
             },
 
+            _configureMenu: function () {
+                var oModel = this.getModel("user");
+                var menuModel = this.getModel("side");
+                console.log('MODELO ROLES');
 
+                var modulos = oModel.getProperty('/permisos/modulos');
+                var roles = menuModel.getProperty('/roles');
+
+                console.log(roles);
+
+
+                var navigation = [];
+
+                console.log(modulos);
+
+                for (var x of modulos) {
+                    console.log(x.id);
+                    var temItems = [];
+
+                    var tempNavItem = {};
+                    tempNavItem["titleI18nKey"] = roles[x.id].titleI18nKey;
+                    tempNavItem["icon"] = roles[x.id].icon;
+                    tempNavItem["expanded"] = false;
+                    //  tempNavItem["key"]=  roles[x.id].key;
+                    tempNavItem["items"] = this._getSubModulos(x.submodulos);
+
+
+
+                    navigation.push(tempNavItem)
+                    /***
+                     * 
+                     * {
+			"titleI18nKey": "sideContentHome",
+			"icon": "sap-icon://home",
+			"expanded": true,
+			"key": "home",
+			"items": []
+		},
+                     * 
+                     */
+
+                }
+
+                console.log(navigation);
+                menuModel.setProperty('/navigation', navigation);
+
+            },
+
+            _getSubModulos: function (submodulos) {
+                var menuModel = this.getModel("side");
+                var subroles = menuModel.getProperty('/subroles');
+                var navArray = [];
+
+
+                for (var x of submodulos) {
+                    console.log(x.id);
+                    var tempNavItem = {};
+                    tempNavItem["titleI18nKey"] = subroles[x.id].titleI18nKey;
+                    tempNavItem["icon"] = subroles[x.id].icon;
+                    tempNavItem["expanded"] = false;
+                    tempNavItem["key"]=  subroles[x.id].key;
+                    navArray.push(tempNavItem)
+                }
+
+
+                return  navArray;
+
+
+            },
+
+            camelize: function (str) {
+                return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+                    if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+                    return index === 0 ? match.toLowerCase() : match.toUpperCase();
+                });
+            },
 
 
         	/**
@@ -213,12 +279,12 @@ sap.ui.define([
                 return this.getBundleTextByModel(sI18nKey, this.getModel("i18n"), aPlaceholderValues);
             },
 
-            mergeNotifications:function (cotizaciones, pronosticos  ){
-                var cCount= cotizaciones ? cotizaciones.length : 0;
-                var pCount= pronosticos ? pronosticos.length : 0;
-                console.log(cCount+pCount);
+            mergeNotifications: function (cotizaciones, pronosticos) {
+                var cCount = cotizaciones ? cotizaciones.length : 0;
+                var pCount = pronosticos ? pronosticos.length : 0;
+                console.log(cCount + pCount);
 
-                return (cCount+pCount).toString();
+                return (cCount + pCount).toString();
             }
 
 

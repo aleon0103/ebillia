@@ -99,10 +99,11 @@
 							templateShareable: false
 						}"
 						key="{side>key}"
-						href="#/{side>key}">
+						>
 						<tnt:NavigationListItem
 							text="{path: 'side>titleI18nKey', formatter: '.getBundleText'}"
 							key="{side>key}"
+                            icon="{side>icon}"
 							href="#/{side>key}">
 						</tnt:NavigationListItem>
 					</tnt:NavigationListItem>
