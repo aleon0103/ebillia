@@ -1,0 +1,52 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.Login" displayBlock="true">
+	<Page id="loginPage" title="{i18n>LoginTitle}" backgroundDesign="Solid">
+       
+    <content>
+       
+    
+
+        <l:VerticalLayout class="equalColumns" width="100%">
+		<FlexBox class="columns" alignContent="Center" alignItems="Center" fitContainer="true">
+			<Text text="Contenido izquierdo">
+				<layoutData>
+					<FlexItemData growFactor="1" baseSize="0" styleClass="sapUiTinyMargin"/>
+				</layoutData>
+			</Text>
+			<VBox fitContainer="true" justifyContent="Center" alignItems="Center" alignContent="Center">
+
+            <items>
+            <Text xmlns="sap.m" class="lead" text="Para acceder al portal ingresa tu usuario y contraseña" id="text3"/>
+     <MessageStrip xmlns="sap.m" text="Parece que olvidaste colocar tu contraseña. Intentalo nuevamente" showIcon="true" showCloseButton="true" id="strip0" type="Warning">
+         </MessageStrip>
+     <Input id="uid" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
+     <Input id="pasw" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
+     <Button width="16rem" text="Login" type="Emphasized" press="goToMain"/>
+     
+    </items>
+				<layoutData>
+					<FlexItemData growFactor="1" baseSize="0" backgroundDesign="Solid" styleClass="sapUiTinyMargin"/>
+				</layoutData>
+			</VBox>
+		</FlexBox>
+	</l:VerticalLayout>
+       
+    </content>
+       
+    <footer>
+       
+        <Bar id="bar2">
+       
+            <contentRight>
+       
+                <Text xmlns="sap.m" text="Copyright© 2020. Derechos reservados |" id="text2"/>
+       
+                <Link xmlns="sap.m" href="https://arcade.flexi.com.mx:8443/documentos/aviso-privacidad.pdf" text="Aviso de privacidad" id="link0"/>
+       
+            </contentRight>
+       
+        </Bar>
+       
+    </footer>
+       
+    </Page>
+</mvc:View>

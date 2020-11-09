@@ -1,0 +1,6 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.App" displayBlock="true">
+	
+		<App id="app">
+		</App>
+	
+</mvc:View>
