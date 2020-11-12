@@ -17,8 +17,8 @@
 
 
 
-                        <MessageStrip xmlns="sap.m" text="Parece que olvidaste colocar tu contraseña. Intentalo nuevamente" showIcon="true" showCloseButton="true" id="strip0" type="Warning">
-         </MessageStrip>
+                        <MessageStrip xmlns="sap.m" text="{loginModel>/loginObj/error}" visible="{loginModel>/loginObj/errorVisible}" showIcon="true" showCloseButton="true" id="strip0" type="Warning">
+                         </MessageStrip>
 
 
 
