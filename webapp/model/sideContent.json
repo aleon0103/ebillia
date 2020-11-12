@@ -113,6 +113,31 @@
 			"icon": "sap-icon://sales-notification",
 			"key": "notificaciones"
         },
+          "2":{
+			"titleI18nKey": "ConfirmacionOrdenCompra",
+			"icon": "sap-icon://sales-notification",
+			"key": "ConfirmacionOrdenCompra"
+        },
+          "3":{
+			"titleI18nKey": "cargaFactura",
+			"icon": "sap-icon://sales-notification",
+			"key": "cargaFactura"
+        },
+         "4":{
+			"titleI18nKey": "busquedaASN",
+			"icon": "sap-icon://sales-notification",
+			"key": "busquedaASN"
+        },
+         "5":{
+			"titleI18nKey": "NotificacionEntregaNacional",
+			"icon": "sap-icon://sales-notification",
+			"key": "NotificacionEntregaNacional"
+        },
+         "6":{
+			"titleI18nKey": "NotificacionEntregaInternacional",
+			"icon": "sap-icon://sales-notification",
+			"key": "NotificacionEntregaInternacional"
+        },
          "21":{
 			"titleI18nKey": "cancelarASN",
 			"icon": "sap-icon://sales-notification",
@@ -137,6 +162,11 @@
 			"titleI18nKey": "EnvioPronosticos",
 			"icon": "sap-icon://sales-notification",
 			"key": "EnvioPronosticos"
+        },
+         "11":{
+			"titleI18nKey": "VerEstadoDeCuenta",
+			"icon": "sap-icon://sales-notification",
+			"key": "VerEstadoDeCuenta"
         },
          "13":{
 			"titleI18nKey": "ReporteEntregasPendientes",
@@ -163,7 +193,13 @@
 			"icon": "sap-icon://customize",
 			"key": "configConfig"
         }
-        ,
+         ,
+         "19":{
+			"titleI18nKey": "CargarComplementos",
+			"icon": "sap-icon://customize",
+			"key": "CargarComplementos"
+        },
+        
          "20":{
 			"titleI18nKey": "VerComplementos",
 			"icon": "sap-icon://customize",
