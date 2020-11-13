@@ -193,6 +193,7 @@ sap.ui.define([
                 var oModel = this.getModel("user");
                 var menuModel = this.getModel("side");
                 console.log('MODELO ROLES');
+                 menuModel.setProperty('/navigation', []);
 
                 var modulos = oModel.getProperty('/permisos/modulos');
                 var roles = menuModel.getProperty('/roles');
@@ -246,11 +247,13 @@ sap.ui.define([
                 for (var x of submodulos) {
                     console.log(x.id);
                     var tempNavItem = {};
-                    tempNavItem["titleI18nKey"] = subroles[x.id].titleI18nKey;
-                    tempNavItem["icon"] = subroles[x.id].icon;
+                    if(subroles[x.id]){
+                    tempNavItem["titleI18nKey"] = subroles[x.id].titleI18nKey ? subroles[x.id].titleI18nKey : '' ;
+                    tempNavItem["icon"] = subroles[x.id].icon ?  subroles[x.id].icon : '';
                     tempNavItem["expanded"] = false;
-                    tempNavItem["key"]=  subroles[x.id].key;
+                    tempNavItem["key"]=  subroles[x.id].key ? subroles[x.id].key : '';
                     navArray.push(tempNavItem)
+                    }
                 }
 
 
