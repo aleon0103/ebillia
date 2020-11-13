@@ -197,7 +197,7 @@ sap.ui.define([
                 var modulos = oModel.getProperty('/permisos/modulos');
                 var roles = menuModel.getProperty('/roles');
 
-                console.log(roles);
+                console.log(oModel);
 
 
                 var navigation = [];
@@ -218,20 +218,9 @@ sap.ui.define([
 
 
                     navigation.push(tempNavItem)
-                    /***
-                     * 
-                     * {
-			"titleI18nKey": "sideContentHome",
-			"icon": "sap-icon://home",
-			"expanded": true,
-			"key": "home",
-			"items": []
-		},
-                     * 
-                     */
-
+                 
                 }
-
+                console.log(modulos);
                 console.log(navigation);
                 menuModel.setProperty('/navigation', navigation);
 
