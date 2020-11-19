@@ -25,6 +25,7 @@ sap.ui.define([
             onInit: function () {
                 console.log('on main component view init');
                 // this._userModel = this.getModel("user");
+                this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 
 
                 this._oRouter = this.getRouter();

@@ -101,12 +101,28 @@
                 "target": ["TargetMain"],
                 "controlId":"app"
             },
+             {
+				"name": "ConfirmacionOrdenCompra",
+				"pattern": "ConfirmacionOrdenCompra",
+                "target": ["masterPurchaseOrders","detailPurchaseOrders"]
+                
+            },
+            {
+					"pattern": "ConfirmacionOrdenCompra/{objectId}",
+					"name": "ConfirmacionOrdenCompraDetail",
+					"target": [
+						"masterPurchaseOrders",
+						"detailPurchaseOrders"
+					]
+				},
+            
               {
-				"name": "home",
-				"pattern": "home",
+				"name": "cargaFactura",
+				"pattern": "cargaFactura",
                 "target": ["TargetHome"],
                 "controlId":"mainContents"
             },
+            
               {
 				"name": "settings",
 				"pattern": "systemSettings",
@@ -144,6 +160,25 @@
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
                 },
+                "appPurchaseOrders": {
+                     "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layout",
+                     "controlId": "pageContainer",
+					"viewName": "po.AppPurchaseOrders"
+                },
+                "masterPurchaseOrders": {
+					"viewName": "po.MasterPurchaseOrders",
+					"controlId": "layout",
+                    "parent": "appPurchaseOrders",
+                    "controlAggregation": "beginColumnPages"
+				},
+				"detailPurchaseOrders": {
+					"viewName": "po.DetailPurchaseOrders",
+					"controlId": "layout",
+					"controlAggregation": "midColumnPages",
+					"parent": "appPurchaseOrders"
+				},
                    "settings": {
                     "parent": "TargetMain",
 					"viewType": "XML",
