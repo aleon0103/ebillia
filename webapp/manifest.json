@@ -1,194 +1,235 @@
 {
-	"_version": "1.12.0",
-	"sap.app": {
-		"id": "ns.EBilliaApp",
-		"type": "application",
-		"i18n": "i18n/i18n.properties",
-		"applicationVersion": {
-			"version": "1.0.0"
-		},
-		"title": "{{appTitle}}",
-		"description": "{{appDescription}}",
-		"resources": "resources.json",
-		"ach": "ach",
-		"sourceTemplate": {
-			"id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
-			"version": "1.40.12"
-		}
-	},
-	
-	"sap.ui": {
-		"technology": "UI5",
-		"icons": {
-			"icon": "",
-			"favIcon": "",
-			"phone": "",
-			"phone@2": "",
-			"tablet": "",
-			"tablet@2": ""
-		},
-		"deviceTypes": {
-			"desktop": true,
-			"tablet": true,
-			"phone": true
-		}
-	},
-
-	"sap.ui5": {
-		"flexEnabled": false,
-		"rootView": {
-			"viewName": "ns.EBilliaApp.view.App",
-			"type": "XML",
-			"async": true,
-			"id": "App"
-		},
-		"dependencies": {
-			"minUI5Version": "1.60.1",
-			"libs": {
-				"sap.ui.core": {},
-				"sap.m": {},
-				"sap.ui.layout": {}
-			}
-		},
-		"contentDensities": {
-			"compact": true,
-			"cozy": true
-		},
-		"models": {
-			"i18n": {
-				"type": "sap.ui.model.resource.ResourceModel",
-				"settings": {
+    "_version": "1.12.0",
+    "sap.app": {
+        "id": "ns.EBilliaApp",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "ach": "ach",
+        "sourceTemplate": {
+            "id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
+            "version": "1.40.12"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "rootView": {
+            "viewName": "ns.EBilliaApp.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "App"
+        },
+        "dependencies": {
+            "minUI5Version": "1.60.1",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.m": {},
+                "sap.ui.layout": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
                     "bundleName": "ns.EBilliaApp.i18n.i18n",
                     "bundleUrl": "i18n/i18n.properties",
-					"async": true,
-					"fallbackLocale": "es",
-					"supportedLocales": ["es", "en"]
-				}
+                    "async": true,
+                    "fallbackLocale": "es",
+                    "supportedLocales": [
+                        "es",
+                        "en"
+                    ]
+                }
             },
             "side": {
-				"type": "sap.ui.model.json.JSONModel",
-				"uri": "model/sideContent.json"
-			}
-		},
-		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
-		},
-		"routing": {
-			"config": {
-				"routerClass": "sap.m.routing.Router",
-				"viewType": "XML",
-				"async": true,
-				"viewPath": "ns.EBilliaApp.view",
-				"controlAggregation": "pages",
-				"controlId": "app",
-				"clearControlAggregation": false
-			},
-			"routes": [{
-				"name": "RouteApp",
-				"pattern": "RouteApp",
-				"target": ["TargetApp"]
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/sideContent.json"
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "ns.EBilliaApp.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
             },
-        {
-				"name": "login",
-				"pattern": "login",
-				"target": ["TargetLogin"]
-            },
-             {
-				"name": "main",
-				"pattern": "",
-                "target": ["TargetMain"],
-                "controlId":"app"
-            },
-             {
-				"name": "ConfirmacionOrdenCompra",
-				"pattern": "ConfirmacionOrdenCompra",
-                "target": ["masterPurchaseOrders","detailPurchaseOrders"]
-                
-            },
-            {
-					"pattern": "ConfirmacionOrdenCompra/{objectId}",
-					"name": "ConfirmacionOrdenCompraDetail",
-					"target": [
-						"masterPurchaseOrders",
-						"detailPurchaseOrders"
-					]
-				},
-            
-              {
-				"name": "cargaFactura",
-				"pattern": "cargaFactura",
-                "target": ["TargetHome"],
-                "controlId":"mainContents"
-            },
-            
-              {
-				"name": "settings",
-				"pattern": "systemSettings",
-                "target": ["settings"],
-                "controlId":"mainContents"
-			}
-        
-        ],
-			"targets": {
-				"TargetApp": {
-					"viewType": "XML",
-					"transition": "slide",
-					"clearControlAggregation": false,
-					"viewId": "App",
-					"viewName": "App"
+            "routes": [
+                {
+                    "name": "RouteApp",
+                    "pattern": "RouteApp",
+                    "target": [
+                        "TargetApp"
+                    ]
+                },
+                {
+                    "name": "login",
+                    "pattern": "login",
+                    "target": [
+                        "TargetLogin"
+                    ]
+                },
+                {
+                    "name": "main",
+                    "pattern": "",
+                    "target": [
+                        "TargetMain"
+                    ],
+                    "controlId": "app"
+                },
+                {
+                    "name": "ConfirmacionOrdenCompra",
+                    "pattern": "ConfirmacionOrdenCompra",
+                    "target": [
+                        "masterPurchaseOrders",
+                        "detailPurchaseOrders"
+                    ]
+                },
+                {
+                    "pattern": "ConfirmacionOrdenCompra/{objectId}",
+                    "name": "ConfirmacionOrdenCompraDetail",
+                    "target": [
+                        "masterPurchaseOrders",
+                        "detailPurchaseOrders"
+                    ]
+                },
+                {
+                    "name": "cargaFactura",
+                    "pattern": "cargaFactura",
+                    "target": [
+                         "masterInvoiceUpload",
+                        "detailInvoiceUpload"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "cargaFacturaDetail/{OrderId}",
+                    "name": "cargaFacturaDetail",
+                    "target": [
+                        "masterInvoiceUpload",
+                        "detailInvoiceUpload"
+                    ]
+                },
+                {
+                    "name": "settings",
+                    "pattern": "systemSettings",
+                    "target": [
+                        "settings"
+                    ],
+                    "controlId": "mainContents"
+                }
+            ],
+            "targets": {
+                "TargetApp": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "App",
+                    "viewName": "App"
                 },
                 "TargetLogin": {
-					"viewType": "XML",
-					"transition": "slide",
+                    "viewType": "XML",
+                    "transition": "slide",
                     "viewName": "Login",
                     "viewLevel": 1
                 },
-                 "TargetMain": {
-					"viewType": "XML",
-					"transition": "slide",
+                "TargetMain": {
+                    "viewType": "XML",
+                    "transition": "slide",
                     "viewName": "Main",
                     "viewLevel": 2
                 },
-                   "TargetHome": {
+                "TargetHome": {
                     "parent": "TargetMain",
-					"viewType": "XML",
-					"transition": "slide",
-					"clearControlAggregation": false,
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
                     "viewName": "Home",
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
                 },
                 "appPurchaseOrders": {
-                     "parent": "TargetMain",
+                    "parent": "TargetMain",
                     "viewType": "XML",
                     "viewId": "layout",
-                     "controlId": "pageContainer",
-					"viewName": "po.AppPurchaseOrders"
+                    "controlId": "pageContainer",
+                    "viewName": "po.AppPurchaseOrders"
                 },
                 "masterPurchaseOrders": {
-					"viewName": "po.MasterPurchaseOrders",
-					"controlId": "layout",
+                    "viewName": "po.MasterPurchaseOrders",
+                    "controlId": "layout",
                     "parent": "appPurchaseOrders",
                     "controlAggregation": "beginColumnPages"
-				},
-				"detailPurchaseOrders": {
-					"viewName": "po.DetailPurchaseOrders",
-					"controlId": "layout",
-					"controlAggregation": "midColumnPages",
-					"parent": "appPurchaseOrders"
-				},
-                   "settings": {
+                },
+                "detailPurchaseOrders": {
+                    "viewName": "po.DetailPurchaseOrders",
+                    "controlId": "layout",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appPurchaseOrders"
+                },
+                "appInvoiceUpload": {
                     "parent": "TargetMain",
-					"viewType": "XML",
-					"transition": "slide",
-					"clearControlAggregation": false,
+                    "viewType": "XML",
+                    "viewId": "layout",
+                    "controlId": "pageContainer",
+                    "viewName": "invoice.AppPurchaseOrders"
+                },
+                "masterInvoiceUpload": {
+                    "viewName": "invoice.MasterInvoiceUpload",
+                    "controlId": "layout",
+                    "parent": "appInvoiceUpload",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailInvoiceUpload": {
+                    "viewName": "invoice.DetailInvoiceUpload",
+                    "controlId": "layout",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appInvoiceUpload"
+                },
+                "settings": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
                     "viewName": "SystemSettings",
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 }
