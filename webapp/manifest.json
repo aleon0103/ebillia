@@ -15,7 +15,7 @@
             "id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
             "version": "1.40.12"
         }
-    },
+    }, 
     "sap.ui": {
         "technology": "UI5",
         "icons": {
@@ -204,19 +204,19 @@
                 "appInvoiceUpload": {
                     "parent": "TargetMain",
                     "viewType": "XML",
-                    "viewId": "layout",
+                    "viewId": "layoutInvoice",
                     "controlId": "pageContainer",
-                    "viewName": "invoice.AppPurchaseOrders"
+                    "viewName": "invoice.AppInvoiceUpload"
                 },
                 "masterInvoiceUpload": {
                     "viewName": "invoice.MasterInvoiceUpload",
-                    "controlId": "layout",
+                    "controlId": "layoutInvoice",
                     "parent": "appInvoiceUpload",
                     "controlAggregation": "beginColumnPages"
                 },
                 "detailInvoiceUpload": {
                     "viewName": "invoice.DetailInvoiceUpload",
-                    "controlId": "layout",
+                    "controlId": "layoutInvoice",
                     "controlAggregation": "midColumnPages",
                     "parent": "appInvoiceUpload"
                 },

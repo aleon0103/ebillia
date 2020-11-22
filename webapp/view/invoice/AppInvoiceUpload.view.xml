@@ -5,7 +5,7 @@
 	xmlns:f="sap.f"
 	xmlns:mvc="sap.ui.core.mvc">
 		<f:FlexibleColumnLayout
-			id="layout"
+			id="layoutInvoice"
             layout="TwoColumnsMidExpanded"
             backgroundDesign="Translucent"
 			>

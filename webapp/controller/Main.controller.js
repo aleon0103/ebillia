@@ -131,7 +131,6 @@ sap.ui.define([
             _initNotifications: function () {
                 console.log('loading notifications...');
 
-                console.log(this.getModel("user"));
 
                 var oModel = this.getModel("user");
                 var rol = oModel.getProperty('/rol/id');
