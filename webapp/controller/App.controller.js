@@ -9,6 +9,7 @@ sap.ui.define([
 
 		return Controller.extend("ns.EBilliaApp.controller.App", {
 			onInit: function () {
+               // this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 
             },
                handleListItemPress: function (oEvent) {
