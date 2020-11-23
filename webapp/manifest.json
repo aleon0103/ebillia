@@ -137,7 +137,7 @@
                     "controlId": "mainContents"
                 },
                 {
-                    "pattern": "cargaFacturaDetail/{OrderId}",
+                    "pattern": "cargaFacturaDetail/{orderId}",
                     "name": "cargaFacturaDetail",
                     "target": [
                         "masterInvoiceUpload",

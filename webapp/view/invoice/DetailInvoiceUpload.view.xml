@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="ns.EBilliaApp.controller.po.DetailPO"
+	controllerName="ns.EBilliaApp.controller.invoiceUpload.DetailInvoiceUpload"
 	xmlns="sap.m"
 	xmlns:semantic="sap.f.semantic"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -13,7 +13,7 @@
 				text="{
 					parts: [
 						'i18n>commonItemTitle',
-						'OrderID'
+						'POdetailView>/orderId'
 					],
 					formatter: 'jQuery.sap.formatMessage'
 				}"/>
@@ -60,7 +60,8 @@
 		</semantic:headerContent>
 		<semantic:content>
 			<l:VerticalLayout>
-				<IconTabBar
+				<!--
+                <IconTabBar
 					id="iconTabBar"
 					headerBackgroundDesign="Transparent"
 					select=".onTabSelect"
@@ -80,11 +81,12 @@
 						</IconTabFilter>
 					</items>
 				</IconTabBar>
+-->
 				<Table
 					id="lineItemsList"
 					class="sapUiSmallMarginTop"
 					width="auto"
-					items="{Order_Details}"
+					items="{POdetailView>/GoodReceipts}"
 					updateFinished=".onListUpdateFinished"
 					noDataText="{i18n>detailLineItemTableNoDataText}"
 					busyIndicatorDelay="{detailView>/lineItemTableDelay}">
@@ -97,13 +99,13 @@
 					</headerToolbar>
 					<columns>
 						<Column>
-							<Text text="{i18n>detailLineItemTableIDColumn}"/>
+							<Text text="{i18n>detailLineItemTablePOColumn}"/>
 						</Column>
-						<Column
-							minScreenWidth="Tablet"
-							demandPopin="true"
-							hAlign="End">
-							<Text text="{i18n>detailLineItemTableUnitPriceColumn}"/>
+						<Column>
+							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>detailLineItemTableEMColumn}"/>
 						</Column>
 						<Column
 							minScreenWidth="Tablet"
@@ -122,26 +124,31 @@
 						<ColumnListItem>
 							<cells>
 								<ObjectIdentifier
-									title="{Product/ProductName}"
-									text="{ProductID}"/>
+			
+									text="{POdetailView>num_doc_comp}"/>
+
+                                    <ObjectIdentifier
+			
+									text="{POdetailView>fecha_cont}"/>
+
+                                           <ObjectIdentifier
+			
+									text="{POdetailView>num_doc_material}"/>
+								
+								
+                                    	<ObjectNumber
+									number="{
+										path: 'POdetailView>cantidad'
+										
+									}"
+									unit="{POdetailView>unidad}"/>
 								<ObjectNumber
 									number="{
-										path: 'UnitPrice',
-										formatter: '.formatter.currencyValue'
+                                        path:'POdetailView>importe'
+						
+										
 									}"
-									unit="{detailView>/currency}"/>
-								<ObjectAttribute
-									text="{Quantity}"/>
-								<ObjectNumber
-									number="{
-										parts:[
-											{path:'Quantity'},
-											{path:'UnitPrice'},
-											{path:'detailView>/currency'}
-										],
-										formatter: '.formatter.calculateItemTotal'
-									}"
-									unit="{detailView>/currency}"/>
+									unit="{POdetailView>clave_moneda}"/>
 							</cells>
 						</ColumnListItem>
 					</items>

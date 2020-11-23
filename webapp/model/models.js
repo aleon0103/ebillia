@@ -22,6 +22,12 @@ sap.ui.define([
 		//	oModel.setDefaultBindingMode("OneWay");
 			return oModel;
         },
+
+        createEMModel: function () {
+			var oModel = new JSONModel({});
+		//	oModel.setDefaultBindingMode("OneWay");
+			return oModel;
+        },
         
         
 
