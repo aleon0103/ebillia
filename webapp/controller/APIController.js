@@ -9,8 +9,8 @@ sap.ui.define([
 
     var endpoints = {
         GET_BADGE_PRONOSTICOS:'/portal_cloud_api/logistic-services/pronostico/getNotifications/',
-        GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/'
-
+        GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/',
+        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/'
     };
     return {
 
@@ -63,14 +63,12 @@ sap.ui.define([
         },
 
         Post: function (url, data, callback) {
-
             console.log(data)
             return $.ajax({
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 method: "POST",
                 url: url,
-
             })
 
 

@@ -25,6 +25,7 @@ sap.ui.define([
             onInit: function () {
                 console.log('on main component view init');
                 // this._userModel = this.getModel("user");
+                this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 
 
                 this._oRouter = this.getRouter();
@@ -130,7 +131,6 @@ sap.ui.define([
             _initNotifications: function () {
                 console.log('loading notifications...');
 
-                console.log(this.getModel("user"));
 
                 var oModel = this.getModel("user");
                 var rol = oModel.getProperty('/rol/id');

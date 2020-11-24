@@ -1,0 +1,13 @@
+<mvc:View
+	displayBlock="true"
+	height="100%"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:mvc="sap.ui.core.mvc">
+		<f:FlexibleColumnLayout
+			id="layout"
+            layout="TwoColumnsMidExpanded"
+            backgroundDesign="Translucent"
+			>
+		</f:FlexibleColumnLayout>
+</mvc:View>
