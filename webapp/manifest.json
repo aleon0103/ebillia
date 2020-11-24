@@ -145,6 +145,23 @@
                     ]
                 },
                 {
+                    "name": "CargarComplementos",
+                    "pattern": "CargarComplementos",
+                    "target": [
+                         "masterComplementUpload",
+                        "detailComplementUpload"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "CargarComplementosDetail",
+                    "name": "CargarComplementosDetail",
+                    "target": [
+                        "masterComplementUpload",
+                        "detailComplementUpload"
+                    ]
+                },
+                {
                     "name": "settings",
                     "pattern": "systemSettings",
                     "target": [
@@ -219,6 +236,25 @@
                     "controlId": "layoutInvoice",
                     "controlAggregation": "midColumnPages",
                     "parent": "appInvoiceUpload"
+                },
+                "complementUpload": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "complements.ComplementUpload"
+                },
+                "masterComplementUpload": {
+                    "viewName": "complements.MasterUpload",
+                    "controlId": "layoutComplement",
+                    "parent": "complementUpload",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementUpload": {
+                    "viewName": "complements.DetailUpload",
+                    "controlId": "layoutComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementUpload"
                 },
                 "settings": {
                     "parent": "TargetMain",
