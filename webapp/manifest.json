@@ -151,6 +151,13 @@
                         "settings"
                     ],
                     "controlId": "mainContents"
+                },
+                 {
+                    "name": "ReporteComplemnetosPendientesCarga",
+                    "pattern": "ReporteComplemnetosPendientesCarga",
+                    "target": [
+                        "reporteComplementos"
+                    ]
                 }
             ],
             "targets": {
@@ -228,7 +235,17 @@
                     "viewName": "SystemSettings",
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
+                },
+                "reporteComplementos": {
+                    "viewName": "reports.PendingComplement",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
                 }
+               
             }
         }
     }
