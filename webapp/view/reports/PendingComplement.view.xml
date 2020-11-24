@@ -14,7 +14,7 @@
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
-					<Title text="Products" level="H2"/>
+					<Title text="{i18n>titleReporteComplementos}" level="H2"/>
 					<ToolbarSpacer />
 					<ComboBox id="idPopinLayout"
 						placeholder="Popin layout options"
@@ -43,34 +43,46 @@
 		</headerToolbar>
 		<infoToolbar>
 			<OverflowToolbar>
-				<Label text="Wide range of available products"/>
+				<Label text="{i18n>noComplementos}"/>
 			</OverflowToolbar>
 		</infoToolbar>
 		<columns>
 			<Column
 				width="12em">
-				<Text text="Product" />
+				<Text text="{i18n>column1}" />
 			</Column>
 			<Column
 				minScreenWidth="Tablet"
 				demandPopin="true">
-				<Text text="Supplier" />
+				<Text text="{i18n>column2}" />
 			</Column>
 			<Column
 				minScreenWidth="Desktop"
 				demandPopin="true"
 				hAlign="End">
-				<Text text="Dimensions" />
+				<Text text="{i18n>column3}" />
 			</Column>
 			<Column
 				minScreenWidth="Desktop"
 				demandPopin="true"
 				hAlign="Center">
-				<Text text="Weight" />
+				<Text text="{i18n>column4}" />
+			</Column>
+            <Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center">
+				<Text text="{i18n>column5}" />
+			</Column>
+            <Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center">
+				<Text text="{i18n>column6}" />
 			</Column>
 			<Column
 				hAlign="End">
-				<Text text="Price" />
+				<Text text="{i18n>column7}" />
 			</Column>
 		</columns>
 		<items>
