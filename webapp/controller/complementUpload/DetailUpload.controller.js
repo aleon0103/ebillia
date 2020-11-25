@@ -13,26 +13,39 @@ sap.ui.define([
         return BaseController.extend("ns.EBilliaApp.controller.DetailUpload", {
 
             onInit: function () {
-                console.log('on init DetailUpload')
+                console.log('on init DetailUpload');
 
                 var oModel = new JSONModel({
                     busy: false,
-                    delay: 0,
-                    orderId: ''
+                    delay: 0
                 });
-                this.getView().setModel(oModel, "POdetailView");
+                var oModelTable = new JSONModel({
+                    data: []
+                });
+
+                this.getView().setModel(oModel, "detailView");
+                this.getView().setModel(oModelTable, "tableModel");
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("cargarComplementosDetail").attachPatternMatched(this._routePatternMatched, this);
 
             },
 
+            onAfterRendering: function () {
+                var oModelUser = this.getModel("user").getData();
+                var modelDetail = this.getModel("detailView");
+                modelDetail.setProperty("/nombreProveedor", oModelUser.nombre);
+                modelDetail.setProperty("/rfcProveedor", oModelUser.rfc);
+                modelDetail.refresh(true);
+                console.log(oModelUser);
+            },
+
+
             _routePatternMatched: function (oEvent) {
 
-                
                 var oArguments = oEvent.getParameter("arguments");
                 this.objectItem = JSON.parse(oArguments.item);
-
+                
                 console.log(this.objectItem);
 
 
@@ -52,11 +65,16 @@ sap.ui.define([
                 //     this._onSumTotalesPreAutorizados(objectSolicitud);
                 // }
 
-                // var tablaModel = this.getModel("tablaModel");
-                // tablaModel.setProperty("/data", this.arrSol);
+                this.arrSol.push(this.objectItem);
+
+                var tablaModel = this.getModel("tablaModel");
+                tablaModel.setProperty("/data", this.arrSol);
 
             },
 
+            _deleteRowTable: function () {
+
+            }
 
 
 

@@ -5,154 +5,85 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout">
 	<semantic:SemanticPage
-		id="page"
-		busy="{detailView>/busy}"
-		busyIndicatorDelay="{detailView>/delay}">
+		id="page">
 		<semantic:titleHeading>
-			<Title
-				text="{
-					parts: [
-						'i18n>commonItemTitle',
-						'POdetailView>/orderId'
-					],
-					formatter: 'jQuery.sap.formatMessage'
-				}"/>
+			<Title text="{detailView>/nombreProveedor}"/>
 		</semantic:titleHeading>
 		<semantic:headerContent>
 			<l:HorizontalLayout>
 				<l:VerticalLayout class="sapUiMediumMarginEnd">
-					<ObjectAttribute
-						title="{i18n>commonCustomerName}"
-						text="{Customer/CompanyName}"/>
-					<ObjectAttribute
-						title="{i18n>detailOrderDate}"
-						text="{
-							path: 'OrderDate',
-							type: 'sap.ui.model.type.Date',
-							formatOptions: { style: 'medium' }
-						}"/>
-					<ObjectAttribute
-						title="{i18n>commonItemShipped}"
-						text="{= ${ShippedDate} ?
-								${
-									path: 'ShippedDate',
-									type: 'sap.ui.model.type.Date',
-									formatOptions: { style: 'medium' }
-								}
-							:${i18n>commonItemNotYetShipped} }"/>
-				</l:VerticalLayout>
-				<l:VerticalLayout>
-					<Label text="{i18n>priceText}"/>
-					<ObjectNumber
-						number="{
-							parts: [
-								{path:'detailView>/totalOrderAmount'},
-								{path:'detailView>/currency'}
-							],
-							type: 'sap.ui.model.type.Currency',
-							formatOptions: {
-								showMeasure: false
-							}
-						}"
-						/>
+					<ObjectAttribute text="RFC: {detailView>/rfcProveedor}"/>
+                    <ObjectAttribute text="{detailView>/total}"/>
+                    <ObjectStatus
+                    class="sapUiSmallMarginTop"
+                    text="{i18n>alertTextDetalle}"
+                    icon="sap-icon://status-negative"
+                    state="Error" />
 				</l:VerticalLayout>
 			</l:HorizontalLayout>
 		</semantic:headerContent>
 		<semantic:content>
 			<l:VerticalLayout>
-				<!--
-                <IconTabBar
-					id="iconTabBar"
-					headerBackgroundDesign="Transparent"
-					select=".onTabSelect"
-					selectedKey="{detailView>/selectedTab}">
-					<items>
-						<IconTabFilter
-							id="iconTabFilterShipping"
-							icon="sap-icon://shipping-status"
-							tooltip="{i18n>detailIconTabBarShipping}"
-							key="shipping">
-						</IconTabFilter>
-						<IconTabFilter
-							id="iconTabFilterProcessor"
-							icon="sap-icon://employee"
-							tooltip="{i18n>detailIconTabBarProcessor}"
-							key="processor">
-						</IconTabFilter>
-					</items>
-				</IconTabBar>
--->
+            <ScrollContainer width="100%" horizontal="true" vertical="true" focusable="true">
 				<Table
 					id="lineItemsList"
 					class="sapUiSmallMarginTop"
 					width="auto"
-					items="{POdetailView>/GoodReceipts}"
-					updateFinished=".onListUpdateFinished"
-					noDataText="{i18n>detailLineItemTableNoDataText}"
-					busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+					items="{tablaModel>/data}"
+                    mode="Delete" 
+                    delete="_deleteRowTable"
+					alternateRowColors="true" 
+                    growingThreshold="10" 
+                    growing="true"
+					noDataText="{i18n>detailLineItemTableNoDataText}">
 					<headerToolbar>
 						<Toolbar id="lineItemsToolbar">
 							<Title
-								id="lineItemsHeader"
-								text="{detailView>/lineItemListTitle}"/>
+								text="{
+                                    parts: [
+                                        'i18n>totalItems',
+                                        'tablaModel>/Count'
+                                    ],
+                                    formatter: 'jQuery.sap.formatMessage'
+                            }"/>
 						</Toolbar>
 					</headerToolbar>
 					<columns>
 						<Column>
-							<Text text="{i18n>detailLineItemTablePOColumn}"/>
+							<Text text="{i18n>docPago}"/>
 						</Column>
 						<Column>
-							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+							<Text text="{i18n>iva}"/>
 						</Column>
 						<Column>
-							<Text text="{i18n>detailLineItemTableEMColumn}"/>
+							<Text text="{i18n>importe}"/>
 						</Column>
-						<Column
-							minScreenWidth="Tablet"
-							demandPopin="true"
-							hAlign="End">
-							<Text text="{i18n>detailLineItemTableUnitQuantityColumn}"/>
+						<Column>
+							<Text text="{i18n>moneda}"/>
 						</Column>
-						<Column
-							minScreenWidth="Tablet"
-							demandPopin="true"
-							hAlign="End">
-							<Text text="{i18n>detailLineItemTableTotalColumn}"/>
+						<Column>
+							<Text text="{i18n>uuid}"/>
 						</Column>
 					</columns>
 					<items>
 						<ColumnListItem>
 							<cells>
-								<ObjectIdentifier
-			
-									text="{POdetailView>num_doc_comp}"/>
-
-                                    <ObjectIdentifier
-			
-									text="{POdetailView>fecha_cont}"/>
-
-                                           <ObjectIdentifier
-			
-									text="{POdetailView>num_doc_material}"/>
-								
-								
-                                    	<ObjectNumber
+								<Text text="{tablaModel>noDocumento}"/>
+                                <ObjectNumber
 									number="{
-										path: 'POdetailView>cantidad'
-										
-									}"
-									unit="{POdetailView>unidad}"/>
+										path: 'tablaModel>iva'
+									}"/>
 								<ObjectNumber
 									number="{
-                                        path:'POdetailView>importe'
-						
-										
-									}"
-									unit="{POdetailView>clave_moneda}"/>
+                                        path:'tablaModel>importe'
+									}"/>
+                                <Text text="{tablaModel>moneda}"/>
+                                <Text text="{tablaModel>uuid}"/>
 							</cells>
 						</ColumnListItem>
 					</items>
 				</Table>
+                </ScrollContainer>
 			</l:VerticalLayout>
 		</semantic:content>
 		<semantic:sendEmailAction>

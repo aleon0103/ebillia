@@ -10,10 +10,11 @@ sap.ui.define([
     "sap/m/Button",
     "sap/m/ButtonType",
     "sap/ui/core/Core",
-    "sap/ui/core/format/NumberFormat"
+    "sap/ui/core/format/NumberFormat",
+    "sap/ui/core/format/DateFormat"
 ],
     function (BaseController, API, JSONModel, MessageToast, Device, Dialog, DialogType, Button, ButtonType, Core,
-            NumberFormat) {
+            NumberFormat, DateFormat) {
         "use strict";
         return BaseController.extend("ns.EBilliaApp.controller.MasterUpload", {
             dateFormattedFinish: null,
@@ -43,7 +44,7 @@ sap.ui.define([
                 var fechaAtras = new Date(resta);
 
                 // @ts-ignore
-                var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+                var dateFormat = DateFormat.getDateInstance({
                     pattern: "yyyy-MM-dd"
                 });
 
@@ -225,7 +226,6 @@ sap.ui.define([
                                 poModel.setProperty('/PurchaseOrders', [])
                             }
 
-                            console.log(poModel)
                             poModel.refresh();
                         } else {
                             MessageToast.show(respJson.message);
