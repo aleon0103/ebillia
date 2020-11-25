@@ -4,24 +4,33 @@ sap.ui.define([
     "./../APIController",
     "sap/ui/model/json/JSONModel",
     'sap/m/MessageToast',
-    "sap/ui/Device"
+    "sap/ui/Device",
+    "sap/m/Dialog",
+    "sap/m/DialogType",
+    "sap/m/Button",
+    "sap/m/ButtonType",
+    "sap/ui/core/Core",
+    "sap/ui/core/format/NumberFormat"
 ],
-    function (BaseController, API, JSONModel, MessageToast, Device) {
+    function (BaseController, API, JSONModel, MessageToast, Device, Dialog, DialogType, Button, ButtonType, Core,
+            NumberFormat) {
         "use strict";
         return BaseController.extend("ns.EBilliaApp.controller.MasterUpload", {
+            dateFormattedFinish: null,
+            dateFormattedToday: null,
 
             onInit: function () {
-                console.log('on init MasterUpload');
+                this.dateFormattedFinish = "";
+                this.dateFormattedToday = "";
 
-                var emModel = new JSONModel({ busy: true });
-                this.getOwnerComponent().setModel(emModel, "invoiceUpload");
-
-                var oModel = new JSONModel({ busy: true });
-                this.getView().setModel(oModel, "purchaseOrderModel");
+                var oModelFacturas = new JSONModel({
+                    results: null,
+                    busy: true
+                });
+                this.getView().setModel(oModelFacturas, "facturas");
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("CargarComplementos").attachPatternMatched(this._routePatternMatched, this);
-
 
             },
 
@@ -38,20 +47,17 @@ sap.ui.define([
                     pattern: "yyyy-MM-dd"
                 });
 
-                var dateFormattedToday = dateFormat.format(dateObjToday, false);
-                var dateFormattedFinish = dateFormat.format(fechaAtras, false);
+                this.dateFormattedToday = dateFormat.format(dateObjToday, false);
+                this.dateFormattedFinish = dateFormat.format(fechaAtras, false);
 
-                console.log(dateFormattedToday);
-                console.log(dateFormattedFinish);
-                // dateFormattedFinish = "2020-01-01";
-                this._getFacturasPendientes(dateFormattedFinish, dateFormattedToday);
+                this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
             },
 
             _getFacturasPendientes: function (fechaAtras, fechaHoy) {
                 var oModelUser = this.getModel("user").getData();
                 var userId = oModelUser.id;
-                
-                var poModel = this.getModel("purchaseOrderModel");
+
+                var poModel = this.getModel("facturas");
                 poModel.setProperty('/busy', true);
 
                 var path = API.serviceList().FACTURAS_PENDIENTES + `facturas-pendientes?proveedor=${userId}&fechai=${fechaAtras}&fechaf=${fechaHoy}`;
@@ -61,17 +67,16 @@ sap.ui.define([
 
                         console.log(respJson);
 
-                        if (respJson && respJson.data) {
+                        if (respJson) {
 
-                            poModel.setProperty('/PurchaseOrders', respJson.data)
-                            if (respJson.data) {
-                                poModel.setProperty('/Count', respJson.data.length)
+                            poModel.setProperty('/results', respJson)
+                            if (respJson) {
+                                poModel.setProperty('/Count', respJson.length)
 
                             } else {
                                 poModel.setProperty('/Count', 0)
                             }
 
-                            console.log(poModel)
                             poModel.refresh();
                         }
                     }, function (err) {
@@ -80,41 +85,116 @@ sap.ui.define([
                     });
             },
 
-            onSearch: function (oEvent) {
+            _onOpenViewFilters: function () {
+                var that = this;
 
-                if (oEvent.getParameters().refreshButtonPressed) {
-                    this.onRefresh();
-                    return;
+                if (!this.oSubmitDialog) {
+                    this.oSubmitDialog = new Dialog({
+                        type: DialogType.Message,
+                        title: "Buscar Complemento",
+                        content: [
+                            new sap.m.Label("label1", {
+                                text: "Fecha inicio"
+                            }),
+                            new sap.m.DatePicker("dpValue1", {
+                                displayFormat: "yyyy-MM-dd",
+                                valueFormat: "yyyy-MM-dd",
+                                change: function (oEvent) {
+                                    var finicio = oEvent.getParameters("value");
+                                    var valueSplit = finicio.value.split("-");
+                                    var value = new Date(+valueSplit[0], valueSplit[1] - 1, +valueSplit[2]);
+                                    Core.byId("dpValue2").setValue(null);
+                                    Core.byId("dpValue2").setMinDate(value);
+                                }.bind(this)
+                            }),
+                            new sap.m.Label("label2", {
+                                text: "Fecha fin"
+                            }),
+                            new sap.m.DatePicker("dpValue2", {
+                                displayFormat: "yyyy-MM-dd",
+                                valueFormat: "yyyy-MM-dd",
+                                change: function (oEvent) {
+                                    var ffin = oEvent.getParameters("value");
+                                    var finicio = Core.byId("dpValue1").getValue();
+                                    this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
+                                }.bind(this)
+                            })
+                        ],
+                        beginButton: new Button({
+                            type: ButtonType.Emphasized,
+                            text: "Buscar",
+                            enabled: false,
+                            press: function () {
+                                var fechaInicio = Core.byId("dpValue1").getValue();
+                                var fechaFin = Core.byId("dpValue2").getValue();
+                                this._getFacturasPendientes(fechaInicio, fechaFin);
+                                this.oSubmitDialog.close();
+                            }.bind(this)
+                        }),
+                        endButton: new Button({
+                            text: "Cancelar",
+                            press: function () {
+                                this.oSubmitDialog.close();
+                            }.bind(this)
+                        }),
+                        afterClose: function () {
+                            that.oSubmitDialog.destroyContent();
+                            that.oSubmitDialog = null;
+                        }
+                    });
+                    this.getView().addDependent(this.oSubmitDialog);
                 }
+                this.oSubmitDialog.open();
 
-                var sQuery = oEvent.getParameter("query");
-
-                if (sQuery) {
-                    this._searchOrderById(sQuery);
-                } else {
-                    this._getPurchaseOrders();
-                }
             },
 
             onRefresh: function () {
-                this._getPurchaseOrders();
+                this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
             },
 
             onSelectionChange: function (oEvent) {
-                var oList = oEvent.getSource(),
-                    bSelected = oEvent.getParameter("selected");
 
-                // skip navigation when deselecting an item in multi selection mode
-                if (!(oList.getMode() === "MultiSelect" && !bSelected)) {
-                    // get the list item, either from the listItem parameter or from the event's source itself (will depend on the device-dependent mode).
-                    this._showDetail(oEvent.getParameter("listItem") || oEvent.getSource());
-                }
+
+                var oSelectedItem = oEvent.getParameter("listItem");
+                var oContext = oSelectedItem.getBindingContext("facturas");
+                var objectSolicitud = oContext.oModel.getProperty(oContext.sPath);
+                // var montoSol = parseFloat(objectSolicitud.Monto);
+                // objectSolicitud.MontoTabla = this._formatCurrency().format(montoSol, "MyCurr")
+                objectSolicitud = JSON.stringify(objectSolicitud);
+
+
+                this.getRouter().navTo("cargarComplementosDetail", { item: objectSolicitud }, true);
+
             },
 
-            _showDetail: function (oItem) {
-                var bReplace = !Device.system.phone;
-                this.getRouter().navTo("CargarComplementos", {}, bReplace);
+            
+
+
+            _formatCurrency: function () {
+                var oLocale = new sap.ui.core.Locale("en-US");
+                var oFormat = NumberFormat.getCurrencyInstance({
+                    "currencyCode": false,
+                    "customCurrencies": {
+                        "MyCurr": {
+                            "isoCode": "USD",
+                            "decimals": 3,
+                            "symbol": "$"
+                        }
+
+                    }
+                }, oLocale);
+
+                return oFormat;
             },
+
+
+
+
+
+
+
+
+
 
 
             _searchOrderById: function (orderId) {

@@ -154,8 +154,8 @@
                     "controlId": "mainContents"
                 },
                 {
-                    "pattern": "CargarComplementosDetail",
-                    "name": "CargarComplementosDetail",
+                    "pattern": "cargarComplementosDetail/{item}",
+                    "name": "cargarComplementosDetail",
                     "target": [
                         "masterComplementUpload",
                         "detailComplementUpload"
