@@ -60,6 +60,7 @@ sap.ui.define([
 
                 var poModel = this.getModel("facturas");
                 poModel.setProperty('/busy', true);
+                var that = this;
 
                 var path = API.serviceList().FACTURAS_PENDIENTES + `facturas-pendientes?proveedor=${userId}&fechai=${fechaAtras}&fechaf=${fechaHoy}`;
                 API.Get(path).then(
@@ -68,9 +69,15 @@ sap.ui.define([
 
                         console.log(respJson);
 
+                        // limpiar seleccion de lista
+                        var oList = that.byId("list");
+                        oList.removeSelections(true);
+                        var oBinding = oList.getBinding("items");
+                        
                         if (respJson) {
 
                             poModel.setProperty('/results', respJson)
+                            oBinding.refresh(true);
                             if (respJson) {
                                 poModel.setProperty('/Count', respJson.length)
 
@@ -151,21 +158,25 @@ sap.ui.define([
 
             onRefresh: function () {
                 this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
+                
+                // limpiar tabla
+                var tablaModel = this.getModel("tablaModel");
+                tablaModel.setProperty("/data", []);
+                tablaModel.setProperty("/Count", 0);
+                tablaModel.refresh(true);
             },
 
             onSelectionChange: function (oEvent) {
-
-
                 var oSelectedItem = oEvent.getParameter("listItem");
+                var oSelected = oEvent.getParameter("selected");
                 var oContext = oSelectedItem.getBindingContext("facturas");
                 var objectSolicitud = oContext.oModel.getProperty(oContext.sPath);
                 // var montoSol = parseFloat(objectSolicitud.Monto);
                 // objectSolicitud.MontoTabla = this._formatCurrency().format(montoSol, "MyCurr")
+
+                
                 objectSolicitud = JSON.stringify(objectSolicitud);
-
-
-                this.getRouter().navTo("cargarComplementosDetail", { item: objectSolicitud }, true);
-
+                this.getRouter().navTo("cargarComplementosDetail", { item: objectSolicitud, isSelected: oSelected }, true);
             },
 
             
