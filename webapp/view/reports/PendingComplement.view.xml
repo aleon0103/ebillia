@@ -5,45 +5,24 @@
 	xmlns="sap.m">
 	<Table id="idProductsTable"
 		inset="false"
-		items="{
-			path: '/ProductCollection',
-			sorter: {
-				path: 'Name'
-			}
-		}">
+		items="{complementos>/data/listado}">
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
 					<Title text="{i18n>titleReporteComplementos}" level="H2"/>
-					<ToolbarSpacer />
-					<ComboBox id="idPopinLayout"
-						placeholder="Popin layout options"
-						change="onPopinLayoutChanged">
-						<items>
-							<core:Item  text="Block"
-								key="Block"/>
-							<core:Item  text="Grid Large"
-								key="GridLarge"/>
-							<core:Item  text="Grid Small"
-								key="GridSmall"/>
-						</items>
-					</ComboBox>
-					<Label text="Sticky options:" />
-					<CheckBox text="ColumnHeaders"
-						select="onSelect"/>
-					<CheckBox text="HeaderToolbar"
-						select="onSelect"/>
-					<CheckBox text="InfoToolbar"
-						select="onSelect"/>
-					<ToggleButton id="toggleInfoToolbar"
-						text="Hide/Show InfoToolbar"
-						press="onToggleInfoToolbar" />
+					<ToolbarSpacer></ToolbarSpacer>
+                    		<Button
+			text="Show Select Dialog"
+			press=".onSelectDialogPress"
+			class="sapUiSmallMarginBottom" />
+				    <Button	icon="sap-icon://download" visible="{complementos>/data/cantidad>0}" press="onDataExport" />
+					
 				</content>
 			</OverflowToolbar>
 		</headerToolbar>
 		<infoToolbar>
 			<OverflowToolbar>
-				<Label text="{i18n>noComplementos}"/>
+				<Label text="{i18n>noComplementos}: {complementos>/data/cantidad}"/>
 			</OverflowToolbar>
 		</infoToolbar>
 		<columns>
@@ -88,30 +67,33 @@
 		<items>
 			<ColumnListItem>
 				<cells>
-					<ObjectIdentifier
-						title="{Name}"
-						text="{ProductId}"/>
+					
+                    <Text
+						text="{complementos>proveedor}" />
 					<Text
-						text="{SupplierName}" />
+						text="{complementos>numDocPago}" />
 					<Text
-						text="{Width} x {Depth} x {Height} {DimUnit}" />
-					<ObjectNumber
-						number="{WeightMeasure}"
-						unit="{WeightUnit}"
-						state="{
-							parts: [
-								{path: 'WeightMeasure'},
-								{path: 'WeightUnit'}
-							],
-							formatter: 'sap.m.sample.Table.Formatter.weightState'
-						}" />
-					<ObjectNumber
-							number="{
-								parts:[{path:'Price'},{path:'CurrencyCode'}],
-								type: 'sap.ui.model.type.Currency',
-								formatOptions: {showMeasure: false}
-							}"
-							unit="{CurrencyCode}" />
+						text="{complementos>sociedad}" />
+                 
+                    <ObjectNumber
+                        number="{
+                            parts:[{path:'complementos>iva'},{path:'complementos>moneda'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        unit="{complementos>moneda}" />
+                   
+                    <ObjectNumber
+                        number="{
+                            parts:[{path:'complementos>importe'},{path:'complementos>moneda'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        unit="{complementos>moneda}" />
+                    <Text
+						text="{complementos>referencia}" />
+                    <Text
+						text="{complementos>fechaPago}" />
 				</cells>
 			</ColumnListItem>
 		</items>

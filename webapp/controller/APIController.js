@@ -10,7 +10,8 @@ sap.ui.define([
     var endpoints = {
         GET_BADGE_PRONOSTICOS:'/portal_cloud_api/logistic-services/pronostico/getNotifications/',
         GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/',
-        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/'
+        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
+        GET_COMPLEMENTOS_PENDIENTES: '/portal_cloud_api/payment-services/master-factura/facturas-pendientes-complemento?provedor=&fechai=2020-07-01&fechaf=2020-11-25&noDocPago=&estatus=Pagada',
     };
     return {
 
@@ -50,7 +51,7 @@ sap.ui.define([
         },
 
         Get: function (path, callback) {
-            console.log(path);
+            console.log(path, jwt);
             return $.ajax({
                 method: "GET",
                 headers: {
