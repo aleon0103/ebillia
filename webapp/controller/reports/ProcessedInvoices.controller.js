@@ -16,7 +16,7 @@ sap.ui.define([
 
 	var PopinLayout = mobileLibrary.PopinLayout;
 
-	var TableController = BaseController.extend("ns.EBilliaApp.controller.PendingComplement", {
+	var TableController = BaseController.extend("ns.EBilliaApp.controller.ProcessedInvoices", {
 
 		onInit: function () {
             // set explored app's demo model on this sample
@@ -35,12 +35,15 @@ sap.ui.define([
                        listado: null,
                        download: false,
                        proveedores:[],
+                       sociedades:[],
                        rol:3,
                        showProveedores:false,
                        filtros:{
                            fechaI: this._fechaFormato(previusDate),
                            fechaF: this._fechaFormato(currentDate),
                            proveedor:'',
+                           usuario:'',
+                           sociedad:'',
                            
                        }
                    }
@@ -93,20 +96,25 @@ sap.ui.define([
                 var complemetosModel = this.getView().getModel("complementos");               
                 var me = this;
                 
+                complemetosModel.setProperty("/data/filtros/usuario", userId)
+                
+                var path = API.serviceList().GET_SOCIEDADES;
+                API.Get(path).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+                        if (respJson.sapSociedad) {
+                            
+                             complemetosModel.setProperty("/data/sociedades", respJson.sapSociedad)
+                              
+                        }
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                    });
 
 
 
-                if (rol == 2) {
-                    complemetosModel.setProperty("/data/showProveedores", true)
-                }
-                if (rol == 3) {
-                    complemetosModel.setProperty("/data/filtros/proveedor", userId)
-                }
-
-
-               setTimeout(() => {
-                   this.searchComplementos()
-               }, 500);
+              
 
 
 
@@ -118,16 +126,17 @@ sap.ui.define([
             complemetosModel.setProperty("/data/filtros/fechaI", this._fechaFormato(previusDate));
             complemetosModel.setProperty("/data/filtros/fechaF", this._fechaFormato(currentDate));
             complemetosModel.setProperty("/data/filtros/proveedor", '');
+            complemetosModel.setProperty("/data/filtros/sociedad", '');
             var oDRS2 = this.byId("DRS2");
             oDRS2.setDateValue(previusDate);
             oDRS2.setSecondDateValue(currentDate);
 
         },
-        searchComplementos: function(){
+        searchData: function(){
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
 
-            var path = API.serviceList().GET_COMPLEMENTOS_PENDIENTES + `?provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
+            var path = API.serviceList().GET_FACTURAS_PROCESADAS + `?sociedad=${data.filtros.sociedad}&provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
@@ -162,7 +171,7 @@ sap.ui.define([
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
 
-            var path = API.serviceList().GET_EXCEL_COMPLEMENTOS + `?provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
+            var path = API.serviceList().GET_EXCEL_FACTURAS + `?sociedad=${data.filtros.sociedad}&provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);

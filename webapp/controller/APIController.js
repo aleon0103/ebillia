@@ -13,7 +13,10 @@ sap.ui.define([
         PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
         GET_COMPLEMENTOS_PENDIENTES: '/portal_cloud_api/payment-services/master-factura/facturas-pendientes-complemento',
         GET_PROVEEDORES:'/portal_cloud_api/masterdata-services/catalog/obtener-proveedores',
-        GET_EXCEL_COMPLEMENTOS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento'
+        GET_EXCEL_COMPLEMENTOS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
+        GET_FACTURAS_PROCESADAS: '/portal_cloud_api/payment-services/facturas/obtener-facturas',
+        GET_SOCIEDADES: '/portal_cloud_api/masterdata-services/catalog/obtener-sociedades',
+        GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento'
     };
     return {
 
@@ -53,7 +56,7 @@ sap.ui.define([
         },
 
         Get: function (path, callback) {
-            console.log(path, jwt);
+            console.log(path);
             return $.ajax({
                 method: "GET",
                 headers: {

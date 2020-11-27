@@ -1,0 +1,116 @@
+<mvc:View
+	controllerName="ns.EBilliaApp.controller.reports.ProcessedInvoices" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<Table id="idProductsTable"
+		inset="false"
+		items="{complementos>/data/listado}">
+		<headerToolbar>
+			<OverflowToolbar>
+				<content>
+					<Title text="{i18n>titleReporteComplementos}" level="H2"/>
+					<ToolbarSpacer></ToolbarSpacer>
+                    <Button
+                        text="{i18n>column1}"
+                        press=".onSelectDialogPress"
+                         />
+                    
+                    <DateRangeSelection
+                        id="DRS2"
+                        width="40%"
+                        change="handleChange"/>
+                    <Button
+							icon="sap-icon://decline"
+							tooltip="{i18n>clearFilters}"
+							press="clearAllFilters"/>
+                    <Button
+							icon="sap-icon://search"
+							tooltip="{i18n>search}"
+							press="searchData"/>
+				    
+					
+				</content>
+			</OverflowToolbar>
+		</headerToolbar>
+		<infoToolbar>
+			<OverflowToolbar>
+				<Label text="{i18n>noContabilizadas}: {complementos>/data/cantidad}"/>
+                <ToolbarSpacer></ToolbarSpacer>
+                <Button	icon="sap-icon://download" visible="{complementos>/data/download}" press="onDataExport" />
+			</OverflowToolbar>
+		</infoToolbar>
+		<columns>
+			<Column
+				width="12em">
+				<Text text="{i18n>column1}" />
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true">
+				<Text text="{i18n>column2}" />
+			</Column>
+			<Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="End">
+				<Text text="{i18n>column3}" />
+			</Column>
+			<Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center">
+				<Text text="{i18n>column4}" />
+			</Column>
+            <Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center">
+				<Text text="{i18n>column5}" />
+			</Column>
+            <Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center">
+				<Text text="{i18n>column6}" />
+			</Column>
+			<Column
+				hAlign="End">
+				<Text text="{i18n>column7}" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					
+                    <Text
+						text="{complementos>proveedor}" />
+					<Text
+						text="{complementos>numDocPago}" />
+					<Text
+						text="{complementos>sociedad}" />
+                 
+                    <ObjectNumber
+                        number="{
+                            parts:[{path:'complementos>iva'},{path:'complementos>moneda'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        unit="{complementos>moneda}" />
+                   
+                    <ObjectNumber
+                        number="{
+                            parts:[{path:'complementos>importe'},{path:'complementos>moneda'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        unit="{complementos>moneda}" />
+                    <Text
+						text="{complementos>referencia}" />
+                    <Text
+						text="{complementos>fechaPago}" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>
