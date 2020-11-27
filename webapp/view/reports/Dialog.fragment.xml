@@ -8,11 +8,11 @@
 		confirm=".onDialogClose"
 		cancel=".onDialogClose"
 		items="{
-			path: '/data/listado'
+			path: '/data/proveedores'
 		}">
 		<StandardListItem
-			title="{proveedor}"
-			description="{proveedor}"
+			title="{lifnr}"
+			description="{name1}"
 			icon="{ProductPicUrl}"
 			iconDensityAware="false"
 			iconInset="false"

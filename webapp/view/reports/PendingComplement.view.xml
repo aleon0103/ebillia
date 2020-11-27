@@ -11,11 +11,25 @@
 				<content>
 					<Title text="{i18n>titleReporteComplementos}" level="H2"/>
 					<ToolbarSpacer></ToolbarSpacer>
-                    		<Button
-			text="Show Select Dialog"
-			press=".onSelectDialogPress"
-			class="sapUiSmallMarginBottom" />
-				    <Button	icon="sap-icon://download" visible="{complementos>/data/cantidad>0}" press="onDataExport" />
+                    <Button
+                        text="{i18n>column1}"
+                        press=".onSelectDialogPress"
+                        visible="{complementos>/data/showProveedores}"
+                         />
+                    
+                    <DateRangeSelection
+                        id="DRS2"
+                        width="40%"
+                        change="handleChange"/>
+                    <Button
+							icon="sap-icon://decline"
+							tooltip="{i18n>clearFilters}"
+							press="clearAllFilters"/>
+                    <Button
+							icon="sap-icon://search"
+							tooltip="{i18n>search}"
+							press="searchComplementos"/>
+				    
 					
 				</content>
 			</OverflowToolbar>
@@ -23,6 +37,8 @@
 		<infoToolbar>
 			<OverflowToolbar>
 				<Label text="{i18n>noComplementos}: {complementos>/data/cantidad}"/>
+                <ToolbarSpacer></ToolbarSpacer>
+                <Button	icon="sap-icon://download" visible="{complementos>/data/download}" press="onDataExport" />
 			</OverflowToolbar>
 		</infoToolbar>
 		<columns>

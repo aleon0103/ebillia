@@ -19,53 +19,186 @@ sap.ui.define([
 	var TableController = BaseController.extend("ns.EBilliaApp.controller.PendingComplement", {
 
 		onInit: function () {
-			// set explored app's demo model on this sample
-			
+            // set explored app's demo model on this sample
+            
+            
+
+            var currentDate = new Date();
+            var previusDate = new Date(currentDate.getFullYear()+'-' +(currentDate.getMonth()+1)+'-' +(currentDate.getDate() - 14))
+            var oDRS2 = this.byId("DRS2");
+            oDRS2.setDateValue(previusDate);
+            oDRS2.setSecondDateValue(currentDate);
+            oDRS2.setMaxDate(currentDate);
             var oData = {
                    data:{
                        cantidad: 0,
-                       listado: null
+                       listado: null,
+                       download: false,
+                       proveedores:[],
+                       rol:3,
+                       showProveedores:false,
+                       filtros:{
+                           fechaI: this._fechaFormato(previusDate),
+                           fechaF: this._fechaFormato(currentDate),
+                           proveedor:'',
+                           
+                       }
                    }
             };
                 var oModel = new JSONModel(oData);
                 this.getView().setModel(oModel, "complementos");
             
 
-            this._initData()
+          
+            
+            setTimeout(() => {
+                this._initData()
+            }, 500);
+            
 
             
             
 
         },
+        _fechaFormato: function(date){
+            var today = new Date(date)
+            var year = today.getFullYear()
+            var month = today.getMonth();
+            var day = today.getDate();
+            var monthF;
+            var dayF;
+            if (String(month+1).length == 1) {
+            monthF = '0'+ (month+=1)
+            }else{
+            monthF = month+=1
+            }
+            if (String(day).length == 1) {
+            dayF = '0'+day
+            }else{
+            dayF = day
+            }
+            
+            return year+'-'+monthF+'-'+dayF
+        },
         
         _initData: function () {
+
+                var oModel = this.getModel("user");
+                var rol = oModel.getProperty('/rol/id');
+                var userId =  oModel.getProperty('/id');
+                console.log(rol);
+
+
                 console.log('loading complementos...');
                 var complemetosModel = this.getView().getModel("complementos");               
                 var me = this;
-                var loginData = complemetosModel.getProperty("/data");
-                var path = API.serviceList().GET_COMPLEMENTOS_PENDIENTES;
+                
+
+
+
+                if (rol == 2) {
+                    complemetosModel.setProperty("/data/showProveedores", true)
+                }
+                if (rol == 3) {
+                    complemetosModel.setProperty("/data/filtros/proveedor", userId)
+                }
+
+
+               setTimeout(() => {
+                   this.searchComplementos()
+               }, 500);
+
+
+
+        },
+        clearAllFilters: function (){
+            var currentDate = new Date();
+            var previusDate = new Date(currentDate.getFullYear()+'-' +(currentDate.getMonth()+1)+'-' +(currentDate.getDate() - 14))
+            var complemetosModel = this.getView().getModel("complementos"); 
+            complemetosModel.setProperty("/data/filtros/fechaI", this._fechaFormato(previusDate));
+            complemetosModel.setProperty("/data/filtros/fechaF", this._fechaFormato(currentDate));
+            complemetosModel.setProperty("/data/filtros/proveedor", '');
+            var oDRS2 = this.byId("DRS2");
+            oDRS2.setDateValue(previusDate);
+            oDRS2.setSecondDateValue(currentDate);
+
+        },
+        searchComplementos: function(){
+            var complemetosModel = this.getView().getModel("complementos"); 
+            var data = complemetosModel.getProperty("/data");
+
+            var path = API.serviceList().GET_COMPLEMENTOS_PENDIENTES + `?provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
-                        if (respJson) {
+                        if (respJson && respJson.length>0) {
                              complemetosModel.setProperty("/data/listado", respJson)
                               complemetosModel.setProperty("/data/cantidad", respJson.length)
-                              console.log(loginData);
+                              complemetosModel.setProperty("/data/download", true)
+                              console.log(data);
                               
+                        }else{
+                             complemetosModel.setProperty("/data/listado", [])
+                              complemetosModel.setProperty("/data/cantidad", 0)
+                              complemetosModel.setProperty("/data/download", false)
                         }
 
                     }, function (err) {
                         console.log("error in processing your request", err);
                     });
-
-
-
         },
+		handleChange: function (oEvent) {
+            var complemetosModel = this.getView().getModel("complementos");
+			var sFrom = oEvent.getParameter("from"),
+				sTo = oEvent.getParameter("to");
+
+			this._iEvent++;
+            console.log(sFrom, sTo);
+           complemetosModel.setProperty("/data/filtros/fechaI", this._fechaFormato(sFrom));
+           complemetosModel.setProperty("/data/filtros/fechaF", this._fechaFormato(sTo));
+		},
         onDataExport : function(oEvent) {
             console.log("downloading");
+            var complemetosModel = this.getView().getModel("complementos"); 
+            var data = complemetosModel.getProperty("/data");
+
+            var path = API.serviceList().GET_EXCEL_COMPLEMENTOS + `?provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
+                API.Get(path).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+                            if (respJson && respJson.statusType == 'OK') {
+                                const linkSource = `data:application/xlsx;base64,${respJson.entity}`;
+                                const downloadLink = document.createElement("a");
+                                var titulo = respJson.metadata['Content-Disposition'][0]; 
+                                titulo = titulo.split(';'); 
+                                titulo = titulo[1];
+                                titulo = titulo.split("=");
+                                titulo = titulo[1];
+                                titulo = titulo.split(".");
+                                titulo = titulo[0]; 
+                                const fileName = titulo+".xlsx";
+                        
+                                downloadLink.href = linkSource;
+                                downloadLink.download = fileName;
+                                downloadLink.click();
+                                } else {
+                                // this.toasterService.pop('error', "", this.sinDatos);
+                                }
+                        
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                    });
+
+  
+
             
         },
         onSelectDialogPress: function (oEvent) {
+
+            
+                
+
 			var oButton = oEvent.getSource();
 
 			if (!this._oDialog) {
@@ -75,7 +208,6 @@ sap.ui.define([
 				}).then(function (oDialog){
                     this._oDialog = oDialog;
                     var complemetosModel = this.getView().getModel("complementos");               
-                    var loginData = complemetosModel.getProperty("/data");
 					this._oDialog.setModel(complemetosModel);
 					// this.getView().addDependent(this._oDialog);
 					this._configDialog(oButton);
@@ -135,19 +267,49 @@ sap.ui.define([
 
 		onSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("proveedor", FilterOperator.Contains, sValue);
-			var oBinding = oEvent.getParameter("itemsBinding");
-			oBinding.filter([oFilter]);
+            var oFilter = new Filter("proveedor", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+
+
+            var complemetosModel = this.getView().getModel("complementos");
+
+            var path = API.serviceList().GET_PROVEEDORES + `?${sValue}`;
+                API.Get(path).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+                        if (respJson.sapProveedor) {
+                            
+                            oBinding.filter(respJson.sapProveedor);
+                             complemetosModel.setProperty("/data/proveedores", respJson.sapProveedor)
+                              
+                        }
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                    });
+
+
+
+
+			
 		},
 
 		onDialogClose: function (oEvent) {
-			var aContexts = oEvent.getParameter("selectedContexts");
+            var aContexts = oEvent.getParameter("selectedContexts");
+            var complemetosModel = this.getView().getModel("complementos");
 			if (aContexts && aContexts.length) {
-				MessageToast.show("You have chosen " + aContexts.map(function (oContext) { return oContext.getObject().proveedor; }).join(", "));
+				MessageToast.show("You have chosen " + aContexts.map(function (oContext) { 
+                     complemetosModel.setProperty("/data/filtros/proveedor", oContext.getObject().lifnr);
+                    return oContext.getObject().lifnr; 
+                }).join(", "));
 			} else {
 				MessageToast.show("No new item was selected.");
-			}
-			oEvent.getSource().getBinding("items").filter([]);
+            }
+            
+            
+           
+            complemetosModel.setProperty("/data/proveedores", [])
+			// oEvent.getSource().getBinding("items").filter([]);
 		},
 	});
 
