@@ -1,4 +1,5 @@
 <mvc:View
+    id="master"
 	controllerName="ns.EBilliaApp.controller.complementUpload.MasterUpload"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -33,13 +34,13 @@
 				noDataText="{masterView>/noDataText}"
 				growing="true"
 				growingScrollToLoad="true"
-				updateFinished=".onUpdateFinished"
-				selectionChange=".onSelectionChange"
+				selectionChange="onSelectionChange"
                 busy="{facturas>/busy}"
                 >
 				<headerToolbar>
 
 					<OverflowToolbar>
+                        <CheckBox text="{i18n>checkText}" select="_checkAll"/>
 						<ToolbarSpacer/>
 						<Button
 							id="filterButton"

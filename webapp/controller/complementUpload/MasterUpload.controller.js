@@ -153,7 +153,6 @@ sap.ui.define([
                     this.getView().addDependent(this.oSubmitDialog);
                 }
                 this.oSubmitDialog.open();
-
             },
 
             onRefresh: function () {
@@ -171,16 +170,29 @@ sap.ui.define([
                 var oSelected = oEvent.getParameter("selected");
                 var oContext = oSelectedItem.getBindingContext("facturas");
                 var objectSolicitud = oContext.oModel.getProperty(oContext.sPath);
-                // var montoSol = parseFloat(objectSolicitud.Monto);
-                // objectSolicitud.MontoTabla = this._formatCurrency().format(montoSol, "MyCurr")
-
                 
                 objectSolicitud = JSON.stringify(objectSolicitud);
                 this.getRouter().navTo("cargarComplementosDetail", { item: objectSolicitud, isSelected: oSelected }, true);
             },
 
-            
+            _checkAll: function (oEvent) {
+                var oList = this.byId("list");
+                var tablaModel = this.getModel("tablaModel");
+                var selected = oEvent.getParameter("selected");
+                var fModel = this.getModel("facturas");
 
+                if (selected) {
+                    oList.removeSelections(true);
+                    oList.selectAll();    
+                    tablaModel.setProperty("/data", fModel.getProperty("/results"));
+                    tablaModel.setProperty("/Count", fModel.getProperty("/results").length);
+                } else {
+                    oList.removeSelections(true);
+                    tablaModel.setProperty("/data", []);
+                    tablaModel.setProperty("/Count", 0);
+                }   
+                tablaModel.refresh(true);
+            },
 
             _formatCurrency: function () {
                 var oLocale = new sap.ui.core.Locale("en-US");
