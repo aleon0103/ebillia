@@ -13,7 +13,7 @@
 						'purchaseOrderModel>/Count'
 					],
 					formatter: 'jQuery.sap.formatMessage'
-			}"/>
+			}"/> 
 		</semantic:titleHeading>
 		<semantic:content>
 			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->

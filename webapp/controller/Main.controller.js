@@ -252,7 +252,17 @@ sap.ui.define([
                     tempNavItem["icon"] = subroles[x.id].icon ?  subroles[x.id].icon : '';
                     tempNavItem["expanded"] = false;
                     tempNavItem["key"]=  subroles[x.id].key ? subroles[x.id].key : '';
-                    navArray.push(tempNavItem)
+                    // 
+                  /*  console.log(tempNavItem)
+                   if(navArray.indexOf(tempNavItem) !== -1 ) {
+                        navArray.push(tempNavItem)
+                   }
+                   */
+                  if (navArray.filter(item=> item.key == tempNavItem.key).length == 0){
+                     navArray.push(tempNavItem);
+        }
+                   
+
                     }
                 }
 

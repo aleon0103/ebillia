@@ -11,7 +11,7 @@ sap.ui.define([
         "use strict";
 
         return BaseController.extend("ns.EBilliaApp.controller.DetailInvoiceUpload", {
-
+            formatter: formatter,
             onInit: function () {
                 console.log('on Detail InvoiceUpload component view')
 
@@ -24,6 +24,7 @@ sap.ui.define([
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("cargaFacturaDetail").attachPatternMatched(this._routePatternMatched, this);
+                this.getRouter().getTargets().display("detailObjectNotFound");
 
             },
 
@@ -34,6 +35,15 @@ sap.ui.define([
                 this._sObjectId = oArguments.orderId;
                 console.log(this._sObjectId);
                 var oViewModel = this.getModel("POdetailView")
+                var oInvoiceModel = this.getModel("invoiceUpload");
+
+                if (oInvoiceModel && oInvoiceModel.getProperty("/orderSelected")) {
+                    console.log("ORDER SELECTED");
+                } else {
+                    console.log("ORDER NO SELECTED ");
+
+                    this.getRouter().getTargets().display("detailObjectNotFound");
+                }
 
                 console.log(this.getModel("invoiceUpload"));
 
@@ -53,17 +63,73 @@ sap.ui.define([
                 }
 
             },
+            onSelectionChange: function (oEvent) {
+
+                var oList = oEvent.getSource();
+                console.log('All items');
+                var itemArray = oList.getItems();
+
+                for (var item of itemArray) {
+
+
+
+                    if (item.getSelected() == true) {
+                        console.log("item selected");
+                       // console.log(item.getBindingContext("POdetailView").getObject())
+                        var item = item.getBindingContext("POdetailView").getObject();
+                        this._updateTempModel(item, 'push');
+                    } else {
+                        console.log("item deselected");
+                        var item = item.getBindingContext("POdetailView").getObject();
+                        this._updateTempModel(item, 'delete');
+                    }
+
+                }
+
+
+
+
+
+            },
+
+            _updateTempModel: function (item, method) {
+               // console.log(item);
+                var oInvoiceModel = this.getModel("invoiceUpload");
+                var originalItems = oInvoiceModel.getProperty('/tempItems');
+
+                if (method == 'push') {
+                       if (originalItems.filter(itemb=> itemb == item).length == 0){
+                   originalItems.push(item);
+        }
+                    
+                }else if(method == 'delete'){
+                originalItems = originalItems.filter(x => x  !== item)
+
+                }
+
+                oInvoiceModel.setProperty('/tempItems', originalItems);
+                 oInvoiceModel.setProperty('/selectedCount', originalItems.length);
+
+                
+                //console.log(oInvoiceModel);
+
+            },
+
+            _configureTable: function () {
+                this.byId("lineItemsList").removeSelections(true);
+
+            },
 
 
             _getGoodsReceipts: function () {
 
                 console.log('on get Goods Receips')
 
-                
+
 
                 var oModel = this.getModel("user");
                 var rol = oModel.getProperty('/rol/id');
-                var userId =  oModel.getProperty('/id');
+                var userId = oModel.getProperty('/id');
                 var selProveedor = userId; // modificar para tomar el id del proveedor seleccioando 
 
                 var proveedorId = rol === 3 ? userId : selProveedor;
@@ -90,12 +156,15 @@ sap.ui.define([
                             }
 
                             console.log(poModel)
-                            poModel.refresh();
-                        }else{
+
+                        } else {
 
                             poModel.setProperty('/GoodReceipts', [])
-                             poModel.setProperty('/Count', 0)
+                            poModel.setProperty('/Count', 0)
                         }
+                        poModel.refresh();
+                        me._configureTable();
+                        // me.byId("lineItemsList").removeSelections(true); 
                     }, function (err) {
                         poModel.setProperty('/busy', false);
 
