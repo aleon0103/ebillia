@@ -21,6 +21,8 @@ sap.ui.define([
             arrComplementos: [],
             arrImports: [],
             objectTable: null,
+            filePDF: null,
+            fileXML: null,
             onInit: function () {
 
                 var oModel = new JSONModel({
@@ -71,12 +73,19 @@ sap.ui.define([
                 console.log(this.objectItem);
 
                 if (isSelected) {
-                    this.arrComplementos.push(this.objectItem);
+                    if (Array.isArray(this.objectItem)) {
+                        this.arrComplementos = this.objectItem;
+                    } else {
+                        this.arrComplementos.push(this.objectItem);
+                    }
+                    
                     this._suma(this.objectItem);
                 } else {
                     const filter = this.arrComplementos.filter(c => c.noDocumento != this.objectItem.noDocumento);
                     this.arrComplementos = filter;
                     this._resta(this.objectItem);
+                    // @ts-ignore
+                    sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
                 }
 
                 tablaModel.setProperty("/data", this.arrComplementos);
@@ -88,12 +97,15 @@ sap.ui.define([
                 var oContext = oSelectedItem.getBindingContext("tablaModel");
                 this.objectTable = oContext.oModel.getProperty(oContext.sPath);
                 this._routePatternMatched();
+                // @ts-ignore
+                sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
             },
 
             _updateListCheck: function (bSelect) {
                 var oList = sap.ui.getCore().byId("__xmlview2--list");
                 // @ts-ignore
                 var itemsList = oList.getItems();
+                
                 var dataList = oList.getModel("facturas").getProperty("/results");
                 // @ts-ignore
                 for (let i = 0; i < dataList.length; i++) {
@@ -101,8 +113,15 @@ sap.ui.define([
                     if (element.noDocumento === this.objectTable.noDocumento) {
                         // @ts-ignore
                         oList.setSelectedItemById(itemsList[i].sId, bSelect);
+                        // @ts-ignore
+                        var itemSelected = oList.getSelectedItem();
+                        
+                        if (!itemSelected) {
+                            this.getRouter().navTo("CargarComplementos", { param: false }, true);
+                        }
                     }
                 }
+                
             },
 
             onCargarArchivos: function () {
@@ -118,7 +137,7 @@ sap.ui.define([
                                 justifyContent: FlexJustifyContent.SpaceBetween,
                                 items: [
                                     new sap.m.UploadCollection("UploadCollection", {
-                                        maximumFilenameLength: 55,
+                                        maximumFilenameLength: 65,
                                         maximumFileSize: 10,
                                         multiple: false,
                                         sameFilenameAllowed: false,
@@ -126,43 +145,25 @@ sap.ui.define([
                                         fileType: ["pdf"],
                                         noDataDescription: "Selecciona un PDF o arrástralo aquí",
                                         change: function (oEvent) {
-                                            var oUploadCollection = oEvent.getSource();
-			                                // Header Token
-                                            // @ts-ignore
-                                            var oCustomerHeaderToken = new sap.m.UploadCollectionParameter({
-                                                name: "x-csrf-token",
-                                                value: "securityTokenFromModel"
-                                            });
-                                            oUploadCollection.addHeaderParameter(oCustomerHeaderToken);
-                                            MessageToast.show("Event change triggered");
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
+                                            var file = oEvent.getParameter("files")[0];
+                                            this.filePDF = file;
+                                            console.log(oEvent)
+
+                                            var xmlfile = Core.byId("UploadCollection2").getItems();
+                                            var pdffile = oEvent.getParameter("files");
+
+                                            this.oSubmitDialog.getBeginButton().setEnabled(pdffile.length > 0 && xmlfile.length > 0);
                                         }.bind(this),
                                         fileDeleted: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        filenameLengthExceed: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        fileSizeExceed: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        typeMissmatch: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        uploadComplete: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        beforeUploadStarts: function (oEvent) {
-
+                                            
+                                            var xmlfile = Core.byId("UploadCollection2").getItems();
+                                            var pdffile = Core.byId("UploadCollection").getItems();
+                                           
+                                            this.oSubmitDialog.getBeginButton().setEnabled(pdffile.length > 0 && xmlfile.length > 0);
                                         }.bind(this)
                                     }),
                                     new sap.m.UploadCollection("UploadCollection2", {
-                                        maximumFilenameLength: 55,
+                                        maximumFilenameLength: 65,
                                         maximumFileSize: 10,
                                         multiple: false,
                                         sameFilenameAllowed: false,
@@ -170,31 +171,20 @@ sap.ui.define([
                                         fileType: ["xml"],
                                         noDataDescription: "Selecciona un XML o arrástralo aquí",
                                         change: function (oEvent) {
+                                            var file = oEvent.getParameter("files")[0];
+                                            this.fileXML = file;
 
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
+                                            var xmlfile = oEvent.getParameter("files");
+                                            var pdffile = Core.byId("UploadCollection").getItems();
+                                           
+                                            this.oSubmitDialog.getBeginButton().setEnabled(pdffile.length > 0 && xmlfile.length > 0);
                                         }.bind(this),
                                         fileDeleted: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        filenameLengthExceed: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        fileSizeExceed: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        typeMissmatch: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        uploadComplete: function (oEvent) {
-
-                                            // this.oSubmitDialog.getBeginButton().setEnabled(ffin.value.length > 0 && finicio.length > 0);
-                                        }.bind(this),
-                                        beforeUploadStarts: function (oEvent) {
-
+                                            console.log("delete")
+                                            var xmlfile = Core.byId("UploadCollection2").getItems();
+                                            var pdffile = Core.byId("UploadCollection").getItems();
+                                           
+                                            this.oSubmitDialog.getBeginButton().setEnabled(pdffile.length > 0 && xmlfile.length > 0);
                                         }.bind(this)
                                     })
                                 ]
@@ -205,10 +195,9 @@ sap.ui.define([
                             text: "Cargar",
                             enabled: false,
                             press: function () {
-                                // var fechaInicio = Core.byId("dpValue1").getValue();
 
-
-                                this.oSubmitDialog.close();
+                                this._sendFilesService(this.filePDF, this.fileXML);
+                                // this.oSubmitDialog.close();
                             }.bind(this)
                         }),
                         endButton: new Button({
@@ -225,36 +214,36 @@ sap.ui.define([
                     this.getView().addDependent(this.oSubmitDialog);
                 }
                 this.oSubmitDialog.open();
-                this._sendFilesService();
             },
 
-            _sendFilesService: function () {
+            _sendFilesService: function (filepdf, filexml) {
                 var oModelUser = this.getModel("user").getData();
                 var tablaModel = this.getModel("tablaModel");
                 var userId = oModelUser.id;
                 var tablaData = tablaModel.getProperty("/data");
                 tablaData = JSON.stringify(tablaData);
-                console.log(tablaData)
 
                 var that = this;
 
                 const formData = new FormData();
-                formData.append("archivopdf", "ejemplo1");
-                formData.append("archivoxml", "ejemplo2");
+                formData.append("archivopdf", filepdf);
+                formData.append("archivoxml", filexml);
                 formData.append("proveedor", userId);
                 formData.append("usuario", userId);
                 formData.append("facturas", tablaData);
 
-                
-                
-
                 var path = API.serviceList().ENVIO_ARCHIVOS_COMPLEMENTOS;
                 API.PostFiles(path, formData).then(
                     function (respJson, paramw, param3) {
-                        
-
                         console.log(respJson);
+                        var response = respJson;
 
+                        if (response.status === "E") {
+                            MessageToast.show(response.message);
+                        } else {
+                            MessageToast.show(response.message);
+                            that.oSubmitDialog.close();
+                        }
                         
                     }, function (err) {
 
@@ -264,10 +253,21 @@ sap.ui.define([
             },
 
             _suma: function (item) {
-                var amount = parseFloat(item.importe);
                 var modelDetail = this.getModel("detailView");
-                this.arrImports.push(amount);
 
+                if (Array.isArray(item)) {
+                    this.arrImports = [];
+                    for (let i = 0; i < item.length; i++) {
+                        const element = item[i];
+                        this.arrImports.push(parseFloat(element.importe));
+                    }
+                    
+                } else {
+                    // @ts-ignore
+                    var amount = parseFloat(item.importe);
+                    this.arrImports.push(amount);
+                }
+                
                 const sumaImports = this.arrImports.reduce((a, b) => a + b, 0);
 
                 modelDetail.setProperty("/total", JSON.stringify(sumaImports));
@@ -276,14 +276,24 @@ sap.ui.define([
             },
 
             _resta: function (item) {
-                var amount = parseFloat(item.importe);
                 var modelDetail = this.getModel("detailView");
-                var total = parseFloat(modelDetail.getProperty("/total"));
-                var resta = total - amount;
 
-                modelDetail.setProperty("/total", JSON.stringify(resta));
-                modelDetail.setProperty("/moneda", item.moneda)
+                if (Array.isArray(item)) {
+                    modelDetail.setProperty("/total", 0);
+                    modelDetail.setProperty("/moneda", "");
+                } else {
+                    // @ts-ignore
+                    var amount = parseFloat(item.importe);
+                    var total = parseFloat(modelDetail.getProperty("/total"));
+                    var resta = total - amount;
+
+                    modelDetail.setProperty("/total", JSON.stringify(resta));
+                    // @ts-ignore
+                    modelDetail.setProperty("/moneda", item.moneda)
+                }
+
                 modelDetail.refresh(true);
+                
             }
 
 

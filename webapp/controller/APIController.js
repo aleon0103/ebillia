@@ -76,16 +76,18 @@ sap.ui.define([
 
         },
 
-        PostFiles: function (url, formData, callback) {
-            console.log(formData)
+        PostFiles: function (path, formData, callback) {
             return $.ajax({
                 data: formData,
-                contentType: "application/json",
-                method: "POST",
-                url: url,
+                processData: false,
+                contentType: false,
+                headers: { 
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                    'Authorization': jwt
+                 },
+                type: "POST",
+                url: URL+path,
             })
-
-
         },
 
         Update: function () {

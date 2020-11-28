@@ -4,7 +4,8 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.f.semantic">
-	<semantic:SemanticPage id="page">
+	<semantic:SemanticPage id="page"
+        showFooter="true">
 		<semantic:titleHeading>
 			<Title
 				id="masterHeaderTitle"
@@ -40,7 +41,7 @@
 				<headerToolbar>
 
 					<OverflowToolbar>
-                        <CheckBox text="{i18n>checkText}" select="_checkAll"/>
+                        <CheckBox id="check" text="{i18n>checkText}" select="_checkAll"/>
 						<ToolbarSpacer/>
 						<Button
 							id="filterButton"

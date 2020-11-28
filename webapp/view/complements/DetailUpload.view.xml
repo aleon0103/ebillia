@@ -5,7 +5,8 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout">
 	<semantic:SemanticPage
-		id="page">
+		id="page"
+        showFooter="true">
 		<semantic:titleHeading>
 			<Title text="{detailView>/nombreProveedor}"/>
 		</semantic:titleHeading>
@@ -54,8 +55,7 @@
                                     ],
                                     formatter: 'jQuery.sap.formatMessage'
                             }"/>
-                            <ToolbarSpacer/>
-                            <Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" visible="{= ${tablaModel>/Count} !== 0 ? true : false}"/>
+                            
 						</Toolbar>
 					</headerToolbar>
 					<columns>
@@ -122,5 +122,8 @@
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
 				press="toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
+        <semantic:footerCustomActions>
+			<Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>
+		</semantic:footerCustomActions>
 	</semantic:SemanticPage>
 </mvc:View>

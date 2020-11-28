@@ -36,6 +36,9 @@ sap.ui.define([
             },
 
             _routePatternMatched: function (oEvent) {
+                var oArguments = oEvent.getParameter("arguments");
+                var updateList = JSON.parse(oArguments.param);
+
                 var dateObjToday = new Date();
 
                 /* Fecha 15 dias antes */
@@ -51,7 +54,11 @@ sap.ui.define([
                 this.dateFormattedToday = dateFormat.format(dateObjToday, false);
                 this.dateFormattedFinish = dateFormat.format(fechaAtras, false);
 
-                this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
+                
+                if (updateList) {
+                    this.onRefresh();
+                }
+                
             },
 
             _getFacturasPendientes: function (fechaAtras, fechaHoy) {
@@ -135,6 +142,8 @@ sap.ui.define([
                             press: function () {
                                 var fechaInicio = Core.byId("dpValue1").getValue();
                                 var fechaFin = Core.byId("dpValue2").getValue();
+                                this.getRouter().navTo("CargarComplementos", { param: false}, true);
+                                this._clearTable();
                                 this._getFacturasPendientes(fechaInicio, fechaFin);
                                 this.oSubmitDialog.close();
                             }.bind(this)
@@ -159,10 +168,8 @@ sap.ui.define([
                 this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
                 
                 // limpiar tabla
-                var tablaModel = this.getModel("tablaModel");
-                tablaModel.setProperty("/data", []);
-                tablaModel.setProperty("/Count", 0);
-                tablaModel.refresh(true);
+                this._clearTable()
+                this.byId("check").setSelected(false);
             },
 
             onSelectionChange: function (oEvent) {
@@ -186,10 +193,13 @@ sap.ui.define([
                     oList.selectAll();    
                     tablaModel.setProperty("/data", fModel.getProperty("/results"));
                     tablaModel.setProperty("/Count", fModel.getProperty("/results").length);
+
+                    var arraySolicitud = JSON.stringify(fModel.getProperty("/results"));
+                    this.getRouter().navTo("cargarComplementosDetail", { item: arraySolicitud, isSelected: true }, true);
                 } else {
                     oList.removeSelections(true);
-                    tablaModel.setProperty("/data", []);
-                    tablaModel.setProperty("/Count", 0);
+                    this._clearTable();
+                    this.getRouter().navTo("CargarComplementos", { param: false}, true);
                 }   
                 tablaModel.refresh(true);
             },
@@ -211,6 +221,12 @@ sap.ui.define([
                 return oFormat;
             },
 
+            _clearTable: function () {
+                var tablaModel = this.getModel("tablaModel");
+                tablaModel.setProperty("/data", []);
+                tablaModel.setProperty("/Count", 0);
+                tablaModel.refresh(true);
+            },
 
 
 
