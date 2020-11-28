@@ -151,6 +151,11 @@
                         "settings"
                     ],
                     "controlId": "mainContents"
+                },
+                {
+                    "name": "ReporteEntregasPendientes",
+                    "pattern": "ReporteEntregasPendientes",
+                    "target": ["reporteEntregasPendientes"]
                 }
             ],
             "targets": {
@@ -226,6 +231,15 @@
                     "transition": "slide",
                     "clearControlAggregation": false,
                     "viewName": "SystemSettings",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "reporteEntregasPendientes": {
+                    "viewName": "reports_.ReporteEntregasPendientes",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
                 }

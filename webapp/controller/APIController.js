@@ -10,7 +10,9 @@ sap.ui.define([
     var endpoints = {
         GET_BADGE_PRONOSTICOS:'/portal_cloud_api/logistic-services/pronostico/getNotifications/',
         GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/',
-        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/'
+        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
+        GET_PROVEEDORES_CATALOG: '/portal_cloud_api/masterdata-services/catalog/obtener-proveedores',
+        GET_REPORTE_ENTREGAS_PENDIENTES: '/portal_cloud_api/logistic-services/Proveedores-facturas/ReporteSaldos/'
     };
     return {
 
