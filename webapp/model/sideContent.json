@@ -116,7 +116,7 @@
           "2":{
 			"titleI18nKey": "ConfirmacionOrdenCompra",
 			"icon": "sap-icon://sales-notification",
-			"key": "ConfirmacionOrdenCompra"
+			"key": "POConfirm"
         },
           "3":{
 			"titleI18nKey": "cargaFactura",

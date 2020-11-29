@@ -24,7 +24,7 @@ sap.ui.define([
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("cargaFacturaDetail").attachPatternMatched(this._routePatternMatched, this);
-                this.getRouter().getTargets().display("detailObjectNotFound");
+               
 
             },
 
@@ -42,7 +42,7 @@ sap.ui.define([
                 } else {
                     console.log("ORDER NO SELECTED ");
 
-                    this.getRouter().getTargets().display("detailObjectNotFound");
+                   // this.getRouter().getTargets().display("detailObjectNotFound");
                 }
 
                 console.log(this.getModel("invoiceUpload"));
@@ -171,6 +171,13 @@ sap.ui.define([
                         console.log("error in processing your request", err);
                     });
             },
+            onCountPress: function(){
+ this.getRouter().getTargets().display("detailObjectNotFound");
+console.log(this.getRouter());
+                console.log('on count press');
+        
+
+            }
 
 
         });

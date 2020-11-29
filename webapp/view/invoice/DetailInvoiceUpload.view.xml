@@ -157,7 +157,7 @@
 			</l:VerticalLayout>
 		</semantic:content>
        	<semantic:titleCustomIconActions>
-			<Button icon="sap-icon://customer-order-entry" text="{invoiceUpload>/selectedCount}" >
+			<Button icon="sap-icon://customer-order-entry" text="{invoiceUpload>/selectedCount}" press=".onCountPress" >
              <customData>
 						<!--
                         <BadgeCustomData

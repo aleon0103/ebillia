@@ -16,7 +16,7 @@ sap.ui.define([
             onInit: function () {
                 console.log('on init  Invoice Upload component view');
 
-                var emModel = new JSONModel({ busy: true,tempItems:[] ,selectedCount:'0' });
+                var emModel = new JSONModel({ busy: true,tempItems:[] ,selectedCount:'0', layout:'OneColumn' });
                 this.getOwnerComponent().setModel(emModel, "invoiceUpload");
 
                 var oModel = new JSONModel({ busy: true});
@@ -102,8 +102,9 @@ sap.ui.define([
 
 			var bReplace = !Device.system.phone;
 			// set the layout property of FCL control to show two columns
-		//	this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
+			invoiceModel.setProperty("/layout", "TwoColumnsMidExpanded");
 			this.getRouter().navTo("cargaFacturaDetail", {
+                layout:"TwoColumnsMidExpanded",
 				orderId : oItem.getBindingContext("purchaseOrderModel").getProperty("idOrdenCompra")
 			}, bReplace);
 		},

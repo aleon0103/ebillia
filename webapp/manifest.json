@@ -112,16 +112,16 @@
                     "controlId": "app"
                 },
                 {
-                    "name": "ConfirmacionOrdenCompra",
-                    "pattern": "ConfirmacionOrdenCompra",
+                    "name": "POConfirm",
+                    "pattern": "POConfirm",
                     "target": [
                         "masterPurchaseOrders",
                         "detailPurchaseOrders"
                     ]
                 },
                 {
-                    "pattern": "ConfirmacionOrdenCompra/{objectId}",
-                    "name": "ConfirmacionOrdenCompraDetail",
+                    "pattern": "POConfirm/{orderId}",
+                    "name": "POConfirmDetail",
                     "target": [
                         "masterPurchaseOrders",
                         "detailPurchaseOrders"
@@ -131,8 +131,8 @@
                     "name": "cargaFactura",
                     "pattern": "cargaFactura",
                     "target": [
-                         "masterInvoiceUpload",
-                        "detailInvoiceUpload"
+                         "masterInvoiceUpload"
+                       
                     ],
                     "controlId": "mainContents"
                 },
@@ -142,7 +142,8 @@
                     "target": [
                         "masterInvoiceUpload",
                         "detailInvoiceUpload"
-                    ]
+                    ],
+                    "controlId": "mainContents"
                 },
                 
                 {
@@ -213,19 +214,23 @@
                     "viewName": "invoice.MasterInvoiceUpload",
                     "controlId": "layoutInvoice",
                     "parent": "appInvoiceUpload",
-                    "controlAggregation": "beginColumnPages"
+                    "controlAggregation": "beginColumnPages",
+                    "clearControlAggregation": false
                 },
                 "detailInvoiceUpload": {
                     "viewName": "invoice.DetailInvoiceUpload",
                     "controlId": "layoutInvoice",
                     "controlAggregation": "midColumnPages",
-                    "parent": "appInvoiceUpload"
+                    "parent": "appInvoiceUpload",
+                    "clearControlAggregation": false
                 },
                  "detailObjectNotFound": {
                     "viewName": "invoice.detailObjectNotFound",
                      "controlId": "layoutInvoice",
-                    "controlAggregation": "midColumnPages",
-                    "parent": "appInvoiceUpload"
+                  "controlAggregation": "midColumnPages",
+                    "parent": "appInvoiceUpload",
+                    "clearControlAggregation": false,
+                    "viewLevel" : 4
                 },
                 "settings": {
                     "parent": "TargetMain",

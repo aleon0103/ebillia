@@ -7,13 +7,13 @@
 		<semantic:titleHeading>
 			<Title
 				id="masterHeaderTitle"
-				text="{
+			 	text="{
 					parts: [
 						'i18n>masterTitleCount',
-						'masterView>/titleCount'
+						'purchaseOrderModel>/Count'
 					],
 					formatter: 'jQuery.sap.formatMessage'
-			}"/>
+			}"/> 
 		</semantic:titleHeading>
 		<semantic:content>
 			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
@@ -22,22 +22,24 @@
 				width="auto"
 				class="sapFDynamicPageAlignContent"
 				items="{
-					path: '/Orders',
+					path: 'purchaseOrderModel>/PurchaseOrders',
 					parameters: {expand: 'Customer'},
 					sorter: {
-						path: 'OrderID',
+						path: 'idOrdenCompra',
 						descending: true
 					},
 					groupHeaderFactory: '.createGroupHeader'
 				}"
-				busyIndicatorDelay="{masterView>/delay}"
 				noDataText="{masterView>/noDataText}"
 				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
 				growing="true"
 				growingScrollToLoad="true"
 				updateFinished=".onUpdateFinished"
-				selectionChange=".onSelectionChange">
-				<infoToolbar>
+				selectionChange=".onSelectionChange"
+                busy="{purchaseOrderModel>/busy}"
+                >
+				<!--
+                <infoToolbar>
 					<Toolbar
 						active="true"
 						id="filterBar"
@@ -48,7 +50,9 @@
 							text="{masterView>/filterBarLabel}" />
 					</Toolbar>
 				</infoToolbar>
+                -->
 				<headerToolbar>
+
 					<OverflowToolbar>
 						<SearchField
 							id="searchField"
@@ -64,7 +68,8 @@
 									priority="NeverOverflow"/>
 							</layoutData>
 						</SearchField>
-						<ToolbarSpacer/>
+						<!--
+                        <ToolbarSpacer/>
 						<Button
 							id="filterButton"
 							press=".onOpenViewSettings"
@@ -75,6 +80,7 @@
 							press=".onOpenViewSettings"
 							icon="sap-icon://group-2"
 							type="Transparent"/>
+-->
 					</OverflowToolbar>
 				</headerToolbar>
 				<items>
@@ -84,43 +90,37 @@
 						title="{
 							parts: [
 								'i18n>commonItemTitle',
-								'OrderID'
+								'purchaseOrderModel>idOrdenCompra'
 							],
 							formatter: 'jQuery.sap.formatMessage'
 						}"
-						number="{
-							path: 'OrderDate',
-							type: 'sap.ui.model.type.Date',
-							formatOptions: { style: 'short' }
-						}">
-						<firstStatus>
-							<ObjectStatus
-								state="{
-									parts: [
-										{path: 'RequiredDate'},
-										{path: 'ShippedDate'},
-										{path: 'OrderID'}
-									],
-									formatter:'.formatter.deliveryState'
-								}"
-								text="{
-									parts: [
-										{path: 'RequiredDate'},
-										{path: 'ShippedDate'},
-										{path: 'OrderID'}
-									],
-									formatter:'.formatter.deliveryText'
-								}"/>
-
-						</firstStatus>
+							number="{
+				parts:[{path:'purchaseOrderModel>totalOc'},{path:'purchaseOrderModel>moneda'}],
+				type: 'sap.ui.model.type.Currency',
+				formatOptions: {showMeasure: false}
+			}"
+            	numberUnit="{purchaseOrderModel>moneda}"
+            >
+							<firstStatus>
+                            
+				<ObjectStatus
+					text="{purchaseOrderModel>estatus}"
+					state="{
+						path: 'purchaseOrderModel>estatus',
+						formatter: '.formatter.POEMState'
+					}" />
+			</firstStatus>
 						<attributes>
-							<ObjectAttribute id="companyName" text="{Customer/CompanyName}" />
-							<ObjectAttribute title="{i18n>commonItemShipped}"
+							<ObjectAttribute id="companyName" text="{purchaseOrderModel>fechaCreacion}" />
+							<!--
+                            <ObjectAttribute title="{i18n>commonItemShipped}"
 								text="{= ${ShippedDate}
 									? ${ path: 'ShippedDate',
 										 type: 'sap.ui.model.type.Date',
 										 formatOptions: { style: 'medium' } }
 									: ${i18n>commonItemNotYetShipped} }" />
+-->
+
 						</attributes>
 					</ObjectListItem>
 				</items>

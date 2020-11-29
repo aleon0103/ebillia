@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/core/UIComponent"
-], function(Controller, UIComponent) {
+    "sap/ui/core/UIComponent",
+    "sap/ui/core/routing/History"
+], function(Controller, UIComponent,History) {
 	"use strict";
 
 	return Controller.extend("ns.EBilliaApp.controller.BaseController", {
@@ -23,7 +24,7 @@ sap.ui.define([
 		 */
 		getModel : function (sName) {
 			return this.getView().getModel(sName);
-		},
+		}, 
 
 		/**
 		 * Convenience method for setting the view model.
@@ -34,7 +35,36 @@ sap.ui.define([
 		 */
 		setModel : function (oModel, sName) {
 			return this.getView().setModel(oModel, sName);
+        },
+        
+        	onNavBack : function() {
+			var sPreviousHash = History.getInstance().getPreviousHash();
+
+			if (sPreviousHash !== undefined) {
+				history.go(-1);
+			} else {
+				this.getRouter().navTo("master", {}, true);
+			}
+        },
+        	onLogOut : function() {
+			var sPreviousHash = History.getInstance().getPreviousHash();
+
+			if (sPreviousHash !== undefined) {
+				history.go(-1);
+			} else {
+				this.getRouter().navTo("master", {}, true);
+			}
+        },
+        	checkSession : function() {
+			var sPreviousHash = History.getInstance().getPreviousHash();
+
+			if (sPreviousHash !== undefined) {
+				history.go(-1);
+			} else {
+				this.getRouter().navTo("master", {}, true);
+			}
 		},
+
 
 		/**
 		 * Returns a promises which resolves with the resource bundle value of the given key <code>sI18nKey</code>

@@ -7,6 +7,12 @@ sap.ui.define([
         "use strict";
         return BaseController.extend("ns.EBilliaApp.controller.MasterInvoiceUpload", {
 
+            onInit: function () {
+                console.log('*********on init Not found view');
+
+               
+   
+            }
            
 
         });
