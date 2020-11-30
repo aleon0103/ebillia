@@ -10,7 +10,9 @@ sap.ui.define([
     var endpoints = {
         GET_BADGE_PRONOSTICOS:'/portal_cloud_api/logistic-services/pronostico/getNotifications/',
         GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/',
-        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/'
+        PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
+        FACTURAS_PENDIENTES:'/portal_cloud_api/payment-services/master-factura/',
+        ENVIO_ARCHIVOS_COMPLEMENTOS: '/portal_cloud_api/payment-services/complementos/'
     };
     return {
 
@@ -72,6 +74,20 @@ sap.ui.define([
             })
 
 
+        },
+
+        PostFiles: function (path, formData, callback) {
+            return $.ajax({
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: { 
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                    'Authorization': jwt
+                 },
+                type: "POST",
+                url: URL+path,
+            })
         },
 
         Update: function () {
