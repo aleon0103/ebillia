@@ -17,11 +17,16 @@ sap.ui.define([
                     loginObj: {
                         busy: false,
                         username: "",
-                        password: ""
+                        password: "",
+                        error:"",
+                        errorVisible: false
                     }
                 };
                 var oModel = new JSONModel(oData);
                 this.getView().setModel(oModel, "loginModel");
+                
+               
+               
 
             },
             goToMain: function () {
@@ -29,7 +34,7 @@ sap.ui.define([
                 var URL = '/auth/login';
                 	var loginModel = this.getView().getModel("loginModel");
                     var loginData = loginModel.getProperty("/loginObj");
-                    
+                  loginModel.setProperty("/loginObj/errorVisible", false)
                 Api.Login(URL, {
                     "user": loginData.username,
                     "pass": loginData.password,
@@ -45,6 +50,12 @@ sap.ui.define([
 
                     }, function (err) {
                         console.log("error in processing your request", err);
+                       
+                        
+                        loginModel.setProperty("/loginObj/errorVisible", true)
+                        if(err.status === 401){
+                            loginModel.setProperty("/loginObj/error", "El usuario y/o password son incorrectos")
+                        }                        
                     });
             },
 
