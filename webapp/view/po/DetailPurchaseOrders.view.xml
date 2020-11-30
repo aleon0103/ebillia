@@ -67,11 +67,12 @@
 		</semantic:headerContent>
 		<semantic:content>
 				<!--Tabla de materiales-->
-
+<!--
                 	<t:Table
+                    id="PODetailTable"
                     rows="{POdetailView>/POPositions}"
 				selectionMode="MultiToggle"
-				
+				rowSelectionChange="onRowSelectionChange"
 				paste="onPaste"
 				ariaLabelledBy="title">
 
@@ -146,7 +147,7 @@
                     	<t:Column width="9rem">
 						<Label text="Cantidad propuesta" />
 						<t:template>
-							<Input value="{ProductId}"/>
+							<Input value="{POdetailView>cantidadPropuesta}" type="Number" editable= "{edit}"/>
 						</t:template>
 					</t:Column>
 
@@ -155,10 +156,13 @@
 						<Label text="Delivery Date" />
 						<t:template>
 							<DatePicker value="{
-								path: 'DeliveryDate',
+								path: 'POdetailView>fecharPropuesta',
 								type: 'sap.ui.model.type.Date',
 								formatOptions: {source: {pattern: 'timestamp'}}
-							}"/>
+							}
+                            "
+                            editable= "false"
+                            />
 						</t:template>
 					</t:Column>
 
@@ -166,9 +170,142 @@
                 </t:columns>
 			
 			</t:Table>
-
+-->
 
                 <!-- Table de materiales FIn -->
+
+                <!-- table responsive --> 
+
+
+
+                <!-- end table responsive .-->
+
+
+
+<Table id="idProductsTable"
+		inset="false"
+		items="{POdetailView>/POPositions}"
+         mode="MultiSelect"
+                    selectionChange=".onSelectionChange"
+        >
+        <headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title
+								id="lineItemsHeader"
+								text="{detailView>/MatListTitle}"/>
+						</Toolbar>
+					</headerToolbar>
+<columns>
+                    		<Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTablePositionColumn}"/>
+						</Column >
+						<Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+						</Column>
+						<Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableMaterialColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableDescriptionColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableVANColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableQuantityColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableAmountColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableTextColumn}"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="{i18n>detailLineItemTableUnitQuantitySugestedColumn}"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="{i18n>detailLineItemTableDateSugestedColumn}"/>
+						</Column>
+					</columns>
+                    <items>
+
+                    	<ColumnListItem>
+							<cells>
+								<ObjectIdentifier
+			
+									text="{POdetailView>num_pos_doc_comp}"/>
+
+                                    <ObjectIdentifier
+			
+									text="{POdetailView>fechaEntregaPosicion}"/>
+
+                                           <ObjectIdentifier
+			
+									text="{POdetailView>idMaterial}"/>
+								
+
+                                           <ObjectIdentifier
+			
+									text="{POdetailView>descripcionMaterial}"/>
+
+                                      <ObjectIdentifier
+			
+									text="{POdetailView>valorMatriz}"/>
+								
+                                    	<ObjectNumber
+									number="{
+										path: 'POdetailView>cantidad'
+										
+									}"
+									unit="{POdetailView>unidad}"/>
+								<ObjectNumber
+									number="{
+                                        path:'POdetailView>precio_neto'
+						
+										
+									}"
+									unit="{POdetailView>clave_moneda}"/>
+                                    <Select  selectedKey="{POdetailView>nombreMotivo}" items="{POdetailView>/motivosRechazo}">
+								<c:Item text="{POdetailView>nombreMotivo}" key="{POdetailView>nombreMotivo}"/>
+							</Select>
+
+
+                                    							<Input value="{POdetailView>cantidadPropuesta}" type="Number" editable= "{edit}"/>
+
+
+                                    <DatePicker value="{
+								path: 'POdetailView>fecharPropuesta'}"
+                           
+                            />
+
+
+
+							</cells>
+						</ColumnListItem>
+                    </items>
+        </Table>
+
+
+
+
+                <!-- End table responsive -->
+
+
+
 				
 		</semantic:content>
 		

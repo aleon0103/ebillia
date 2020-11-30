@@ -36,11 +36,11 @@ sap.ui.define([
                     busy: false,
                     delay: 0,
                     orderId: '',
-                    motivosRechazo:motivosRechazo
+                    motivosRechazo: motivosRechazo
                 });
                 this.getView().setModel(oModel, "POdetailView");
 
-                
+
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("POConfirmDetail").attachPatternMatched(this._routePatternMatched, this);
@@ -143,7 +143,72 @@ sap.ui.define([
                 oViewModel.setProperty('/layout', 'TwoColumnsMidExpanded')
 
 
+            },
+
+            onRowSelectionChange: function (oEvent) {
+                console.log('on selection change');
+                var selectedindex = oEvent.getParameter("rowIndex"); // selected Row Index
+                // Set Selected Row Editable
+
+                var oTable = this.byId("PODetailTable");
+
+                var aItems = oTable.getRows();
+                var aIndices = oTable.getSelectedIndices();
+              
+                for (var item of aIndices) {
+
+                        console.log('set editable item', item)
+                          aItems[item].getCells()[7].setEditable(false);
+                            aItems[item].getCells()[8].setEditable(false);
+                              aItems[item].getCells()[9].setEditable(false);
+
+
+                    }
+             
+            },
+
+
+            onSelectionChange:function (oEvent) {
+
+                console.log('On table selection change');
+
+                var oList = oEvent.getSource();
+                console.log('All items');
+                var itemArray = oList.getItems();
+
+                for (var item of itemArray) {
+                    item.getCells()[7].setEditable(!item.getSelected());
+
+                     if (item.getSelected() == true) {
+                         console.log(item);
+                         console.log(item.getBindingContext("POdetailView").getObject())
+                         item.getCells()[7].setSelectedKey('');
+                     item.getCells()[8].setEditable(!item.getSelected());
+                     item.getCells()[8].resetProperty("value");
+                      item.getCells()[9].setEditable(!item.getSelected());
+                      item.getCells()[9].resetProperty("value");
+
+                      console.log(item.getBindingContext("POdetailView").getObject())
+                      
+                    } else {
+                       
+                    }
+
+                 
+
+                  
+                }
+
+
+
+
+
+            },
+
+            configureTable: function(){
+                
             }
+
 
 
 
