@@ -1,0 +1,82 @@
+<mvc:View
+    id="master"
+	controllerName="ns.EBilliaApp.controller.complementUpload.MasterUpload"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic">
+	<semantic:SemanticPage id="page"
+        showFooter="true">
+		<semantic:titleHeading>
+			<Title
+				id="masterHeaderTitle"
+			 	text="{
+					parts: [
+						'i18n>masterTitleComplementos',
+						'facturas>/Count'
+					],
+					formatter: 'jQuery.sap.formatMessage'
+			}"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<List
+				id="list"
+				width="auto"
+				class="sapFDynamicPageAlignContent"
+                mode="MultiSelect"
+		        includeItemInSelection="true"
+				items="{
+					path: 'facturas>/results',
+					sorter: {
+						path: 'fechaPago',
+						descending: true
+					},
+					groupHeaderFactory: '.createGroupHeader'
+				}"
+				noDataText="{masterView>/noDataText}"
+				growing="true"
+				growingScrollToLoad="true"
+				selectionChange="onSelectionChange"
+                busy="{facturas>/busy}"
+                >
+				<headerToolbar>
+
+					<OverflowToolbar>
+                        <CheckBox id="check" text="{i18n>checkText}" select="_checkAll"/>
+						<ToolbarSpacer/>
+						<Button
+							id="filterButton"
+							press="_onOpenViewFilters"
+							icon="sap-icon://filter"
+							type="Transparent"/>
+                            <Button
+							id="refreshButton"
+							press="onRefresh"
+							icon="sap-icon://refresh"
+							type="Transparent"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<items>
+					<ObjectListItem
+						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
+						title="{i18n>noDocPago}: {facturas>noDocumento}"
+						number="{
+                            parts:[{path:'facturas>importe'},{path:'facturas>moneda'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        numberUnit="{facturas>moneda}"
+                    >
+							<firstStatus>
+				<ObjectStatus
+					text="{facturas>fechaPago}"/>
+			</firstStatus>
+						<attributes>
+							<ObjectAttribute id="companyName" text="Factura: {facturas>noFactura}" />
+                            <ObjectAttribute id="ref" text="Referencia: {facturas>referenciaFact}" />
+						</attributes>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>

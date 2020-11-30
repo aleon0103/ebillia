@@ -111,7 +111,8 @@
                     ],
                     "controlId": "app"
                 },
-                {
+                
+               {
                     "name": "POConfirm",
                     "pattern": "POConfirm",
                     "target": [
@@ -127,12 +128,13 @@
                         "detailPurchaseOrders"
                     ]
                 },
+                
                 {
                     "name": "cargaFactura",
                     "pattern": "cargaFactura",
                     "target": [
-                         "masterInvoiceUpload"
-                       
+                         "masterInvoiceUpload",
+                        "detailInvoiceUpload"
                     ],
                     "controlId": "mainContents"
                 },
@@ -142,10 +144,25 @@
                     "target": [
                         "masterInvoiceUpload",
                         "detailInvoiceUpload"
+                    ]
+                },
+                {
+                    "name": "CargarComplementos",
+                    "pattern": "CargarComplementos/{param}",
+                    "target": [
+                         "masterComplementUpload",
+                        "detailComplementUpload"
                     ],
                     "controlId": "mainContents"
                 },
-                
+                {
+                    "pattern": "cargarComplementosDetail/{item}/{isSelected}",
+                    "name": "cargarComplementosDetail",
+                    "target": [
+                        "masterComplementUpload",
+                        "detailComplementUpload"
+                    ]
+                },
                 {
                     "name": "settings",
                     "pattern": "systemSettings",
@@ -214,23 +231,32 @@
                     "viewName": "invoice.MasterInvoiceUpload",
                     "controlId": "layoutInvoice",
                     "parent": "appInvoiceUpload",
-                    "controlAggregation": "beginColumnPages",
-                    "clearControlAggregation": false
+                    "controlAggregation": "beginColumnPages"
                 },
                 "detailInvoiceUpload": {
                     "viewName": "invoice.DetailInvoiceUpload",
                     "controlId": "layoutInvoice",
                     "controlAggregation": "midColumnPages",
-                    "parent": "appInvoiceUpload",
-                    "clearControlAggregation": false
+                    "parent": "appInvoiceUpload"
                 },
-                 "detailObjectNotFound": {
-                    "viewName": "invoice.detailObjectNotFound",
-                     "controlId": "layoutInvoice",
-                  "controlAggregation": "midColumnPages",
-                    "parent": "appInvoiceUpload",
-                    "clearControlAggregation": false,
-                    "viewLevel" : 4
+                "complementUpload": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "complements.ComplementUpload"
+                },
+                "masterComplementUpload": {
+                    "viewName": "complements.MasterUpload",
+                    "controlId": "layoutComplement",
+                    "parent": "complementUpload",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementUpload": {
+                    "viewName": "complements.DetailUpload",
+                    "controlId": "layoutComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementUpload"
                 },
                 "settings": {
                     "parent": "TargetMain",

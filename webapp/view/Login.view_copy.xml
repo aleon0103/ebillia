@@ -1,0 +1,142 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.Login" displayBlock="true">
+	<Page id="loginPage" title="{i18n>LoginTitle}" backgroundDesign="Solid">
+       
+    <content>
+       
+    
+
+        <FlexBox class="columns" alignContent="Center" alignItems="Center" fitContainer="true">
+		<items>
+		<VBox width="50%" direction="Column" id="vbox1" height="100%" backgroundDesign="Solid" alignContent="Center" alignItems="Center" fitContainer="true" justifyContent="SpaceAround">
+		    <items><Label text="Left" width="100%" id="label1"/>
+		    </items>
+		</VBox>
+		<VBox xmlns="sap.m" fitContainer="true" justifyContent="Center" alignContent="Center" height="100%" alignItems="Center" id="VBox">
+
+            <items>
+
+
+
+                        <MessageStrip xmlns="sap.m" text="{loginModel>/loginObj/error}" visible="{loginModel>/loginObj/errorVisible}" showIcon="true" showCloseButton="true" id="strip0" type="Warning">
+                         </MessageStrip>
+
+
+
+                        <sap.ui.layout.form:Form xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" id="form0">
+
+
+
+                            <sap.ui.layout.form:formContainers>
+
+
+
+                                <sap.ui.layout.form:FormContainer title="Para acceder al portal ingresa tu usuario y contraseña" id="container0">
+
+
+
+                                    <sap.ui.layout.form:formElements>
+
+
+
+                                        <sap.ui.layout.form:FormElement label="Usuario" id="element0">
+
+
+
+                                        <sap.ui.layout.form:fields>
+
+
+
+                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
+
+
+
+                                        </sap.ui.layout.form:fields>
+
+
+
+                                        </sap.ui.layout.form:FormElement>
+
+
+
+                                        <sap.ui.layout.form:FormElement xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:sap.ui.layout.form="sap.ui.layout.form" label="Password" id="element0_copy">
+
+
+
+                                            
+
+
+
+                                            <sap.ui.layout.form:fields>
+
+
+
+                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
+
+
+
+                                            </sap.ui.layout.form:fields>
+
+                                         
+
+                                        </sap.ui.layout.form:FormElement>
+
+
+
+                                    </sap.ui.layout.form:formElements>
+
+
+                                </sap.ui.layout.form:FormContainer>
+
+
+
+                            </sap.ui.layout.form:formContainers>
+
+
+
+                            <sap.ui.layout.form:layout>
+
+
+
+                                <sap.ui.layout.form:ResponsiveGridLayout id="layout0"/>
+
+
+
+                            </sap.ui.layout.form:layout></sap.ui.layout.form:Form>
+
+
+
+                        <Button width="16rem" text="Login" type="Emphasized" press="goToMain"/>
+
+                    </items>
+     
+				<layoutData>
+					<FlexItemData growFactor="1" baseSize="0" backgroundDesign="Solid" styleClass="sapUiTinyMargin"/>
+				</layoutData>
+			</VBox>
+		</items>
+		</FlexBox>
+       
+    </content>
+       
+    <footer>
+       
+        <Bar id="bar2">
+       
+            <contentRight>
+       
+            </contentRight>
+       
+        <contentMiddle>
+       
+            <Text xmlns="sap.m" text="Copyright© 2020. Derechos reservados |" id="text2"/>
+       
+            <Link xmlns="sap.m" href="https://arcade.flexi.com.mx:8443/documentos/aviso-privacidad.pdf" text="Aviso de privacidad" id="link0"/>
+       
+        </contentMiddle>
+       
+        </Bar>
+       
+    </footer>
+       
+    </Page>
+</mvc:View>
