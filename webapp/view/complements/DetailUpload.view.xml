@@ -60,7 +60,7 @@
 					</headerToolbar>
 					<columns>
 						<Column>
-							<Text text="{i18n>docPago}"/>
+							<Text text="{i18n>noDocPago}"/>
 						</Column>
 						<Column>
 							<Text text="{i18n>iva}"/>

@@ -106,10 +106,10 @@ sap.ui.define([
                 if (!this.oSubmitDialog) {
                     this.oSubmitDialog = new Dialog({
                         type: DialogType.Message,
-                        title: "Buscar Complemento",
+                        title: "{i18n>bucarComplemento}",
                         content: [
                             new sap.m.Label("label1", {
-                                text: "Fecha inicio"
+                                text: "{i18n>fechaIni}"
                             }),
                             new sap.m.DatePicker("dpValue1", {
                                 displayFormat: "yyyy-MM-dd",
@@ -123,7 +123,7 @@ sap.ui.define([
                                 }.bind(this)
                             }),
                             new sap.m.Label("label2", {
-                                text: "Fecha fin"
+                                text: "{i18n>fechaFin}"
                             }),
                             new sap.m.DatePicker("dpValue2", {
                                 displayFormat: "yyyy-MM-dd",
@@ -137,7 +137,7 @@ sap.ui.define([
                         ],
                         beginButton: new Button({
                             type: ButtonType.Emphasized,
-                            text: "Buscar",
+                            text: "{i18n>buscar}",
                             enabled: false,
                             press: function () {
                                 var fechaInicio = Core.byId("dpValue1").getValue();
@@ -149,7 +149,7 @@ sap.ui.define([
                             }.bind(this)
                         }),
                         endButton: new Button({
-                            text: "Cancelar",
+                            text: "{i18n>cancelar}",
                             press: function () {
                                 this.oSubmitDialog.close();
                             }.bind(this)
@@ -226,60 +226,6 @@ sap.ui.define([
                 tablaModel.setProperty("/data", []);
                 tablaModel.setProperty("/Count", 0);
                 tablaModel.refresh(true);
-            },
-
-
-
-
-
-
-
-
-
-
-            _searchOrderById: function (orderId) {
-                console.log('searchOrder.. ', orderId);
-
-                var oModel = this.getModel("user");
-                var rol = oModel.getProperty('/rol/id');
-                var userId = oModel.getProperty('/id');
-                console.log('Get purchase order by id');
-                var poModel = this.getModel("purchaseOrderModel");
-                poModel.setProperty('/busy', true);
-                var me = this;
-                //https://arcade.flexi.com.mx:8762/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenDeCompraConfirmada/4500376391
-                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenDeCompraConfirmada/${orderId}`;
-                API.Get(path).then(
-                    function (respJson, paramw, param3) {
-                        poModel.setProperty('/busy', false);
-                        if (respJson && respJson.data) {
-                            poModel.setProperty('/busy', false);
-                            var result = [];
-                            result[0] = respJson.data;
-                            poModel.setProperty('/PurchaseOrders', result)
-                            if (respJson.data) {
-                                poModel.setProperty('/Count', respJson.data.length)
-
-                            } else {
-                                poModel.setProperty('/Count', 0)
-                                poModel.setProperty('/PurchaseOrders', [])
-                            }
-
-                            poModel.refresh();
-                        } else {
-                            MessageToast.show(respJson.message);
-                            poModel.setProperty('/Count', 0)
-                            poModel.setProperty('/PurchaseOrders', [])
-
-                        }
-                    }, function (err) {
-                        poModel.setProperty('/busy', false);
-                        MessageToast.show(err.error.message);
-                        poModel.setProperty('/Count', 0)
-                        poModel.setProperty('/PurchaseOrders', [])
-
-                        console.log("error in processing your request", err);
-                    });
             }
         });
     })

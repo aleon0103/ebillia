@@ -131,7 +131,7 @@ sap.ui.define([
                     this.oSubmitDialog = new Dialog({
                         type: DialogType.Message,
                         contentWidth: "50%",
-                        title: "Carga los documentos del complemento",
+                        title: "{i18n>dialogFilesTitle}",
                         content: [
                             new sap.m.HBox("hbox", {
                                 justifyContent: FlexJustifyContent.SpaceBetween,
@@ -143,7 +143,7 @@ sap.ui.define([
                                         sameFilenameAllowed: false,
                                         instantUpload: false,
                                         fileType: ["pdf"],
-                                        noDataDescription: "Selecciona un PDF o arrástralo aquí",
+                                        noDataDescription: "{i18n>fileTextpdf}",
                                         change: function (oEvent) {
                                             var file = oEvent.getParameter("files")[0];
                                             this.filePDF = file;
@@ -169,7 +169,7 @@ sap.ui.define([
                                         sameFilenameAllowed: false,
                                         instantUpload: false,
                                         fileType: ["xml"],
-                                        noDataDescription: "Selecciona un XML o arrástralo aquí",
+                                        noDataDescription: "{i18n>fileTextxml}",
                                         change: function (oEvent) {
                                             var file = oEvent.getParameter("files")[0];
                                             this.fileXML = file;
@@ -192,16 +192,14 @@ sap.ui.define([
                         ],
                         beginButton: new Button({
                             type: ButtonType.Emphasized,
-                            text: "Cargar",
+                            text: "{i18n>cargar}",
                             enabled: false,
                             press: function () {
-
                                 this._sendFilesService(this.filePDF, this.fileXML);
-                                // this.oSubmitDialog.close();
                             }.bind(this)
                         }),
                         endButton: new Button({
-                            text: "Cancelar",
+                            text: "{i18n>cancelar}",
                             press: function () {
                                 this.oSubmitDialog.close();
                             }.bind(this)
@@ -292,11 +290,7 @@ sap.ui.define([
                     modelDetail.setProperty("/moneda", item.moneda)
                 }
 
-                modelDetail.refresh(true);
-                
+                modelDetail.refresh(true);   
             }
-
-
-
         });
     })
