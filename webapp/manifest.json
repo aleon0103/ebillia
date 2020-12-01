@@ -159,13 +159,23 @@
                         "reporteComplementos"
                     ]
                 },
-                 {
-                    "name": "ReporteFacturas",
-                    "pattern": "ReporteFacturas",
-                    "target": [
-                        "reporteFacturas"
-                    ]
+				{
+					"pattern": "ReporteFacturas",
+					"name": "ReporteFacturas",
+					"target": [
+						"masterInvoiceProcessed",
+						"detailInvoiceProcessed"
+					]
+				},
+				{
+					"pattern": "reporteFacturaDetail/{id}",
+					"name": "reporteFacturaDetail",
+					"target": [
+						"masterInvoiceProcessed",
+						"detailInvoiceProcessed"
+					]
                 }
+                
             ],
             "targets": {
                 "TargetApp": {
@@ -252,14 +262,24 @@
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
                 },
-                "reporteFacturas": {
-                    "viewName": "reports.ProcessedInvoices",
+                "appInvoicesProcessed": {
                     "parent": "TargetMain",
-					"viewType": "XML",
-					"transition": "slide",
-					"clearControlAggregation": false,
+                    "viewType": "XML",
+                    "viewId": "layoutInvoiceProcessed",
                     "controlId": "pageContainer",
-                    "controlAggregation": "pages"
+                    "viewName": "reports.FlexibleColumnLayout"
+                },
+                "masterInvoiceProcessed": {
+                    "viewName": "reports.InvoicesMaster",
+                    "controlId": "layoutInvoiceProcessed",
+                    "parent": "appInvoicesProcessed",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailInvoiceProcessed": {
+                    "viewName": "reports.InvoicesDetail",
+                    "controlId": "layoutInvoiceProcessed",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appInvoicesProcessed"
                 }
                
             }
