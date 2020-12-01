@@ -16,17 +16,17 @@ sap.ui.define([
                 console.log('on init  Invoice Upload component view');
 
                 var emModel = new JSONModel({ busy: true });
-                this.getOwnerComponent().setModel(emModel, "invoiceUpload");
+                this.getOwnerComponent().setModel(emModel, "facturas");
 
                 var oModel = new JSONModel({ busy: true });
-                this.getView().setModel(oModel, "purchaseOrderModel");
+                this.getView().setModel(oModel, "reporteFacturas");
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("ReporteFacturas").attachPatternMatched(this._routePatternMatched, this);
 
    
             var currentDate = new Date();
-            var previusDate = new Date(currentDate.getFullYear()+'-' +(currentDate.getMonth()-3)+'-' +(currentDate.getDate() - 14))
+            var previusDate = new Date(currentDate.getFullYear()+'-' +(currentDate.getMonth()-3)+'-' +(currentDate.getDate()))
             // var oDRS2 = this.byId("DRS2");
             // oDRS2.setDateValue(previusDate);
             // oDRS2.setSecondDateValue(currentDate);
@@ -122,23 +122,22 @@ sap.ui.define([
 
         },
         searchData: function(){
+            var poModel = this.getModel("reporteFacturas");
+                poModel.setProperty('/busy', true);
+
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
-
             var path = API.serviceList().GET_FACTURAS_PROCESADAS + `?sociedad=${data.filtros.sociedad}&provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
                         if (respJson && respJson.length>0) {
-                             complemetosModel.setProperty("/data/listado", respJson)
-                              complemetosModel.setProperty("/data/cantidad", respJson.length)
-                              complemetosModel.setProperty("/data/download", true)
-                              console.log(data);
+                            poModel.setProperty('/listado', respJson)
                               
                         }else{
-                             complemetosModel.setProperty("/data/listado", [])
-                              complemetosModel.setProperty("/data/cantidad", 0)
-                              complemetosModel.setProperty("/data/download", false)
+                            //  complemetosModel.setProperty("/data/listado", [])
+                            //   complemetosModel.setProperty("/data/cantidad", 0)
+                            //   complemetosModel.setProperty("/data/download", false)
                         }
 
                     }, function (err) {
@@ -192,19 +191,7 @@ sap.ui.define([
                 this._getPurchaseOrders();
             },
 
-            onSelectionChange: function (oEvent) {
-
-                	var oList = oEvent.getSource(),
-				bSelected = oEvent.getParameter("selected");
-
-			// skip navigation when deselecting an item in multi selection mode
-			if (!(oList.getMode() === "MultiSelect" && !bSelected)) {
-				// get the list item, either from the listItem parameter or from the event's source itself (will depend on the device-dependent mode).
-				this._showDetail(oEvent.getParameter("listItem") || oEvent.getSource());
-			}
-            },
-
-
+      
 
 		/**
 		 * Shows the selected item on the detail page
@@ -212,14 +199,24 @@ sap.ui.define([
 		 * @param {sap.m.ObjectListItem} oItem selected Item
 		 * @private
 		 */
-		_showDetail : function (oItem) {
+		_showDetail : function (oEvent) {
 			var bReplace = !Device.system.phone;
 			// set the layout property of FCL control to show two columns
         //	this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-        console.log(oItem);
+
+
+		var productPath = oEvent.getSource().getBindingContext("reporteFacturas").getPath(),
+				item = productPath.split("/").slice(-1).pop();
+        console.log(item);
+        
+        var poModel = this.getModel("reporteFacturas");
+        console.log(poModel);
+            var data = poModel.getProperty("/listado");
+            console.log(data);
+            
         
 			this.getRouter().navTo("reporteFacturaDetail", {
-			    id : 1
+                id : data[item].nodocumento,
             }, bReplace);
             
             
@@ -242,36 +239,36 @@ sap.ui.define([
 
             _getPurchaseOrders: function () {
 
-                var oModel = this.getModel("user");
-                var rol = oModel.getProperty('/rol/id');
-                var userId = oModel.getProperty('/id');
-                console.log('Get purchase orders');
-                var poModel = this.getModel("purchaseOrderModel");
-                poModel.setProperty('/busy', true);
-                var me = this;
-                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/CARGAFACTURA/${userId}`;
-                API.Get(path).then(
-                    function (respJson, paramw, param3) {
-                        poModel.setProperty('/busy', false);
-                        if (respJson && respJson.data) {
+                // var oModel = this.getModel("user");
+                // var rol = oModel.getProperty('/rol/id');
+                // var userId = oModel.getProperty('/id');
+                // console.log('Get purchase orders');
+                // var poModel = this.getModel("purchaseOrderModel");
+                // poModel.setProperty('/busy', true);
+                // var me = this;
+                // var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/CARGAFACTURA/${userId}`;
+                // API.Get(path).then(
+                //     function (respJson, paramw, param3) {
+                //         poModel.setProperty('/busy', false);
+                //         if (respJson && respJson.data) {
 
 
-                            poModel.setProperty('/PurchaseOrders', respJson.data)
-                            if (respJson.data) {
-                                poModel.setProperty('/Count', respJson.data.length)
+                //             poModel.setProperty('/PurchaseOrders', respJson.data)
+                //             if (respJson.data) {
+                //                 poModel.setProperty('/Count', respJson.data.length)
 
-                            } else {
-                                poModel.setProperty('/Count', 0)
-                            }
+                //             } else {
+                //                 poModel.setProperty('/Count', 0)
+                //             }
 
-                            console.log(poModel)
-                            poModel.refresh();
-                        }
-                    }, function (err) {
-                        poModel.setProperty('/busy', false);
+                //             console.log(poModel)
+                //             poModel.refresh();
+                //         }
+                //     }, function (err) {
+                //         poModel.setProperty('/busy', false);
 
-                        console.log("error in processing your request", err);
-                    });
+                //         console.log("error in processing your request", err);
+                //     });
             },
 
 
