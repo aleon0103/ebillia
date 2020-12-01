@@ -162,6 +162,23 @@
                     ]
                 },
                 {
+                    "name": "VerComplementos",
+                    "pattern": "VerComplementos",
+                    "target": [
+                         "masterComplementSee",
+                        "detailComplementSee"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "VerComplementosDetail",
+                    "name": "VerComplementosDetail",
+                    "target": [
+                        "masterComplementSee",
+                        "detailComplementSee"
+                    ]
+                },
+                {
                     "name": "settings",
                     "pattern": "systemSettings",
                     "target": [
@@ -255,6 +272,25 @@
                     "controlId": "layoutComplement",
                     "controlAggregation": "midColumnPages",
                     "parent": "complementUpload"
+                },
+                "complementSee": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutSeeComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "seeComplement.ComplementSee"
+                },
+                "masterComplementSee": {
+                    "viewName": "seeComplement.MasterSee",
+                    "controlId": "layoutSeeComplement",
+                    "parent": "complementSee",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementSee": {
+                    "viewName": "seeComplement.DetailSee",
+                    "controlId": "layoutSeeComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementSee"
                 },
                 "settings": {
                     "parent": "TargetMain",

@@ -85,7 +85,7 @@ sap.ui.define([
                     this.arrComplementos = filter;
                     this._resta(this.objectItem);
                     // @ts-ignore
-                    sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
+                    // sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
                 }
 
                 tablaModel.setProperty("/data", this.arrComplementos);
@@ -98,7 +98,7 @@ sap.ui.define([
                 this.objectTable = oContext.oModel.getProperty(oContext.sPath);
                 this._routePatternMatched();
                 // @ts-ignore
-                sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
+                // sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
             },
 
             _updateListCheck: function (bSelect) {

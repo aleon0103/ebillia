@@ -29,8 +29,7 @@
 					sorter: {
 						path: 'fechaPago',
 						descending: true
-					},
-					groupHeaderFactory: '.createGroupHeader'
+					}
 				}"
 				noDataText="{masterView>/noDataText}"
 				growing="true"
@@ -41,7 +40,7 @@
 				<headerToolbar>
 
 					<OverflowToolbar>
-                        <CheckBox id="check" text="{i18n>checkText}" select="_checkAll"/>
+                        <!-- <CheckBox id="check" text="{i18n>checkText}" select="_checkAll"/> -->
 						<ToolbarSpacer/>
 						<Button
 							id="filterButton"
@@ -78,5 +77,9 @@
 				</items>
 			</List>
 		</semantic:content>
+        <semantic:footerCustomActions>
+			<Button type="Emphasized" text="{i18n>checkText}" press="_checkAll(true)" visible="{= ${facturas>/showSelectedAll} ? true : false}"/>
+            <Button type="Emphasized" text="{i18n>checkText2}" press="_checkAll(false)" visible="{= ${facturas>/showDeselectedAll} ? true : false}"/>
+		</semantic:footerCustomActions>
 	</semantic:SemanticPage>
 </mvc:View>
