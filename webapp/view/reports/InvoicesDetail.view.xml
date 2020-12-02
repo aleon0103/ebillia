@@ -27,7 +27,7 @@
 						</snappedHeading>
 
 						<navigationActions>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://delete" press="_btnCancelar"  tooltip="Cancelar" />
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://delete" press="_btnCancelar"  tooltip="{i18n>Cancelar}" />
 						</navigationActions>
 
 					</ObjectPageDynamicHeaderTitle>

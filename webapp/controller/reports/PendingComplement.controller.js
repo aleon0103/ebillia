@@ -24,7 +24,10 @@ sap.ui.define([
             
 
             var currentDate = new Date();
-            var previusDate = new Date(currentDate.getFullYear()+'-' +(currentDate.getMonth()+1)+'-' +(currentDate.getDate() - 14))
+            var previusDate = new Date()
+
+            var pastDate = previusDate.getDate() - 15;
+            previusDate.setDate(pastDate);
             var oDRS2 = this.byId("DRS2");
             oDRS2.setDateValue(previusDate);
             oDRS2.setSecondDateValue(currentDate);
@@ -113,7 +116,10 @@ sap.ui.define([
         },
         clearAllFilters: function (){
             var currentDate = new Date();
-            var previusDate = new Date(currentDate.getFullYear()+'-' +(currentDate.getMonth()+1)+'-' +(currentDate.getDate() - 14))
+            var previusDate = new Date()
+
+            var pastDate = previusDate.getDate() - 15;
+            previusDate.setDate(pastDate);
             var complemetosModel = this.getView().getModel("complementos"); 
             complemetosModel.setProperty("/data/filtros/fechaI", this._fechaFormato(previusDate));
             complemetosModel.setProperty("/data/filtros/fechaF", this._fechaFormato(currentDate));
@@ -194,6 +200,8 @@ sap.ui.define([
 
             
         },
+        
+        
         onSelectDialogPress: function (oEvent) {
 
             
@@ -273,7 +281,7 @@ sap.ui.define([
 
             var complemetosModel = this.getView().getModel("complementos");
 
-            var path = API.serviceList().GET_PROVEEDORES + `?${sValue}`;
+            var path = API.serviceList().GET_PROVEEDORES + `?value=${sValue}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);

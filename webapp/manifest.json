@@ -174,6 +174,22 @@
 						"masterInvoiceProcessed",
 						"detailInvoiceProcessed"
 					]
+                },
+                {
+					"pattern": "busquedaASN",
+					"name": "busquedaASN",
+					"target": [
+						"masterASN",
+						"detailASN"
+					]
+				},
+				{
+					"pattern": "ASNDetail/{id}",
+					"name": "ASNDetail",
+					"target": [
+						"masterASN",
+						"detailASN"
+					]
                 }
                 
             ],
@@ -280,6 +296,25 @@
                     "controlId": "layoutInvoiceProcessed",
                     "controlAggregation": "midColumnPages",
                     "parent": "appInvoicesProcessed"
+                },
+                "appASN": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutASN",
+                    "controlId": "pageContainer",
+                    "viewName": "searchAsn.AppASN"
+                },
+                "masterASN": {
+                    "viewName": "searchAsn.MasterANS",
+                    "controlId": "layoutASN",
+                    "parent": "appASN",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailASN": {
+                    "viewName": "searchAsn.DetailASN",
+                    "controlId": "layoutASN",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appASN"
                 }
                
             }

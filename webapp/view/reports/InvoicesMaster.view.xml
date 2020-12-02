@@ -25,24 +25,28 @@
 				<headerToolbar>
 					<OverflowToolbar>
 						<ToolbarSpacer></ToolbarSpacer>
+                        
                         <Button
                             text="{i18n>column1}"
                             press=".onSelectDialogPress"
-                            visible="{complementos>/data/showProveedores}"
                             />
-                        
+                        <Button
+                            text="{i18n>SOCIEDAD}"
+                            press=".onSelectDialogSociedades"
+                            />
                         <DateRangeSelection
                             id="DRS2"
                             width="40%"
                             change="handleChange"/>
                         <Button
+                                icon="sap-icon://search"
+                                tooltip="{i18n>search}"
+                                press="searchData"/>
+                        <Button
                                 icon="sap-icon://decline"
                                 tooltip="{i18n>clearFilters}"
                                 press="clearAllFilters"/>
-                        <Button
-                                icon="sap-icon://search"
-                                tooltip="{i18n>search}"
-                                press="searchComplementos"/>
+                        
                         
 					
 					</OverflowToolbar>
