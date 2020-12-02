@@ -284,11 +284,23 @@
 							</Select>
 
 
-                                    							<Input value="{POdetailView>cantidadPropuesta}" type="Number" editable= "{edit}"/>
+                                    							<Input value="{
+                                                                   path: 'POdetailView>cantidadPropuesta',
+                                                                    type: 'sap.ui.model.type.Integer', constraints:{minimum:0}
+                                                                    }" type="Number" editable= "{
+                                                                    path: 'POdetailView>nombreMotivo',
+						formatter: '.formatter.enableQuantityField'
+                                                                    
+                                                                }"/>
 
 
                                     <DatePicker value="{
 								path: 'POdetailView>fecharPropuesta'}"
+                                editable= "{
+                                                                    path: 'POdetailView>nombreMotivo',
+						formatter: '.formatter.enableDateField'
+                                                                    
+                                                                }"
                            
                             />
 
@@ -328,11 +340,11 @@
 		</semantic:exitFullScreenAction>
         	<!-- Semantic Footer Buttons -->
 		<semantic:positiveAction>
-			<semantic:PositiveAction />
+			<semantic:PositiveAction press="onApproveSelect"  />
 		</semantic:positiveAction>
 
 		<semantic:negativeAction>
-			<semantic:NegativeAction />
+			<semantic:NegativeAction  press="onReject" />
 		</semantic:negativeAction>
 	</semantic:SemanticPage>
 </mvc:View>

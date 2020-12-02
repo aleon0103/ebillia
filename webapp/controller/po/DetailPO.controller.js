@@ -5,13 +5,22 @@ sap.ui.define([
     "../../model/formatter",
     "sap/ui/model/json/JSONModel",
     'sap/m/MessageToast',
-    "sap/ui/Device"
+    "sap/ui/Device",
+    "sap/m/Dialog",
+    "sap/m/DialogType",
+    "sap/m/Button",
+    "sap/m/ButtonType",
+    "sap/m/Label",
+    "sap/m/Text",
+    "sap/m/TextArea",
+    "sap/ui/core/Core",
+     "sap/ui/model/resource/ResourceModel"
 ],
-    function (BaseController, API, formatter, JSONModel, MessageToast, Device) {
+    function (BaseController, API, formatter, JSONModel, MessageToast, Device, Dialog, DialogType, Button, ButtonType, Label, Text, TextArea, Core,ResourceModel) {
         "use strict";
 
         return BaseController.extend("ns.EBilliaApp.controller.DetailPO", {
-
+            formatter: formatter,
             onInit: function () {
                 console.log('on Detail PO component view');
                 var motivosRechazo = [
@@ -154,21 +163,21 @@ sap.ui.define([
 
                 var aItems = oTable.getRows();
                 var aIndices = oTable.getSelectedIndices();
-              
+
                 for (var item of aIndices) {
 
-                        console.log('set editable item', item)
-                          aItems[item].getCells()[7].setEditable(false);
-                            aItems[item].getCells()[8].setEditable(false);
-                              aItems[item].getCells()[9].setEditable(false);
+                    console.log('set editable item', item)
+                    aItems[item].getCells()[7].setEditable(false);
+                    aItems[item].getCells()[8].setEditable(false);
+                    aItems[item].getCells()[9].setEditable(false);
 
 
-                    }
-             
+                }
+
             },
 
 
-            onSelectionChange:function (oEvent) {
+            onSelectionChange: function (oEvent) {
 
                 console.log('On table selection change');
 
@@ -179,24 +188,24 @@ sap.ui.define([
                 for (var item of itemArray) {
                     item.getCells()[7].setEditable(!item.getSelected());
 
-                     if (item.getSelected() == true) {
-                         console.log(item);
-                         console.log(item.getBindingContext("POdetailView").getObject())
-                         item.getCells()[7].setSelectedKey('');
-                     item.getCells()[8].setEditable(!item.getSelected());
-                     item.getCells()[8].resetProperty("value");
-                      item.getCells()[9].setEditable(!item.getSelected());
-                      item.getCells()[9].resetProperty("value");
+                    if (item.getSelected() == true) {
+                        console.log(item);
+                        console.log(item.getBindingContext("POdetailView").getObject())
+                        item.getCells()[7].setSelectedKey('');
+                        item.getCells()[8].setEditable(!item.getSelected());
+                        item.getCells()[8].resetProperty("value");
+                        item.getCells()[9].setEditable(!item.getSelected());
+                        item.getCells()[9].resetProperty("value");
 
-                      console.log(item.getBindingContext("POdetailView").getObject())
-                      
+                        console.log(item.getBindingContext("POdetailView").getObject())
+
                     } else {
-                       
+
                     }
 
-                 
 
-                  
+
+
                 }
 
 
@@ -205,9 +214,117 @@ sap.ui.define([
 
             },
 
-            configureTable: function(){
+            configureTable: function () {
+
+            },
+            onApproveSelect: function () {
+
+               // this.onApproveDialogPress();
+
+
+
+            },
+
+            _validarOrden: function () {
+
+
+                //ir order is valid 
+
+                this.onApproveDialogPress();
+
+            },
+
+            onApproveDialogPress: function () {
+                if (!this.oApproveDialog) {
+                    this.oApproveDialog = new Dialog({
+                        type: DialogType.Message,
+                        title: "Confirm",
+                        content: new Text({ text: "Do you want to submit this order?" }),
+                        beginButton: new Button({
+                            type: ButtonType.Emphasized,
+                            text: "Submit",
+                            press: function () {
+                                MessageToast.show("Submit pressed!");
+                                this.oApproveDialog.close();
+                            }.bind(this)
+                        }),
+                        endButton: new Button({
+                            text: "Cancel",
+                            press: function () {
+                                this.oApproveDialog.close();
+                            }.bind(this)
+                        })
+                    });
+                }
+
+                //setear el modelo antes de abrirlo 
+
+                this.oApproveDialog.open();
+            },
+
+
+            onReject: function () {
+                var that=this;
+                 this.getView().getModel("i18n").getResourceBundle().then(function(oBundleInstance) {
+
+                if (!that.oRejectDialog) {
+                    that.oRejectDialog = new Dialog({
+                        title: oBundleInstance.getText("rejectOrderTitle") ,
+                        type: DialogType.Message,
+                        content: [
+                            new Label({
+                                text: oBundleInstance.getText("rejectOrderLabel") ,
+                                labelFor: "rejectionNote"
+                            }),
+                            new TextArea("rejectionNote", {
+                                width: "100%",
+                                placeholder: oBundleInstance.getText("rejectOrderPlaceHolder") ,
+                                liveChange: function (oEvent) {
+                                    var sText = oEvent.getParameter("value");
+                                    that.oRejectDialog.getBeginButton().setEnabled(sText.length > 0);
+                                }.bind(that)
+                            })
+                        ],
+                        beginButton: new Button({
+                            type: ButtonType.Emphasized,
+                            text: "Reject",
+                            enabled: false,
+                            press: function () {
+                                var sText = Core.byId("rejectionNote").getValue();
+                               // MessageToast.show("Note is: " + sText);
+                                that._rejectOrder();
+                                that.oRejectDialog.close();
+                            }.bind(that)
+                        }),
+                        endButton: new Button({
+                            text: "Cancel",
+                            press: function () {
+                                that.oRejectDialog.close();
+                            }.bind(that)
+                        })
+                    });
+                }
+
+                that.oRejectDialog.open();
+
+    
+});
+               
+            
+           
                 
+
+
+
+
+            },
+
+            _rejectOrder:function(){
+                console.log('RECHAZANDO ORDEN');
             }
+
+
+
 
 
 
