@@ -27,9 +27,7 @@
 						</snappedHeading>
 
 						<navigationActions>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://complete" press="handleFullScreen" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://delete" press="_btnCancelar"  tooltip="Cancelar" />
 						</navigationActions>
 
 					</ObjectPageDynamicHeaderTitle>
@@ -85,12 +83,11 @@
 								columnsL="1"
 								columnsM="1">
 								<form:content>
-									<m:Label text="Product ID"/>
-									<m:Text text="{products>ProductId}"/>
-									<m:Label text="Description"/>
-									<m:Text text="{products>Description}"/>
-									<m:Label text="Supplier"/>
-									<m:Text text="{products>SupplierName}"/>
+									<m:Label text="{i18n>DescargarPDF}"/>
+									<m:OverflowToolbarButton type="Transparent" visible="{complementos>/data/showBotones}" press="download('pdf')" icon="sap-icon://download" />
+									<m:Label text="{i18n>DescargarExcel}"/>
+									<m:OverflowToolbarButton type="Transparent" visible="{complementos>/data/showBotones}" press="download('xls')" icon="sap-icon://download" />
+									
 								</form:content>
 							</form:SimpleForm>
 						</blocks>
@@ -105,10 +102,10 @@
 									 items="{path : 'complementos>/data/validaciones'}">
 								<m:columns>
                                     <m:Column>
-                                        <m:Text text="ESTATUS" />
+                                        <m:Text text="{i18n>ESTATUS}" />
                                     </m:Column>
                                     <m:Column>
-                                        <m:Text text="VALIDACION"/>
+                                        <m:Text text="{i18n>VALIDACION}"/>
                                     </m:Column>
 								</m:columns>
 								<m:items>

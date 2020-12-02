@@ -20,7 +20,7 @@ sap.ui.define([
                        validaciones:[],
                        sociedades:[],
                        rol:3,
-                       showProveedores:false,
+                       showBotones:false,
                        filtros:{
                            proveedor:'',
                            usuario:'',
@@ -104,6 +104,7 @@ sap.ui.define([
              var complemetosModel = this.getView().getModel("complementos");               
                 
                 complemetosModel.setProperty("/data/filtros/usuario", userId)
+                complemetosModel.setProperty("/data/showBotones", true)
                  complemetosModel.setProperty("/data/validaciones", validationRows)
 
             var data = complemetosModel.getProperty("/data");
@@ -115,13 +116,13 @@ sap.ui.define([
                             complemetosModel.setProperty('/data/factura', respJson[0])
                               
                         }else{
-                            //  complemetosModel.setProperty("/data/listado", [])
-                            //   complemetosModel.setProperty("/data/cantidad", 0)
-                            //   complemetosModel.setProperty("/data/download", false)
+                           
+                            complemetosModel.setProperty("/data/showBotones", false)
                         }
 
                     }, function (err) {
                         console.log("error in processing your request", err);
+                        complemetosModel.setProperty("/data/showBotones", true)
                     });
         },
 		handleFullScreen: function () {
@@ -142,6 +143,64 @@ sap.ui.define([
 				path: "/ProductCollection/" + this._product,
 				model: "products"
 			});
-		}
+        },
+        _btnCancelar: function () {
+             var complemetosModel = this.getView().getModel("complementos"); 
+            var data = complemetosModel.getProperty("/data");
+            
+              var path = API.serviceList().PUT_CANCELAR_FACTURA + `${data.factura.uuid}/${data.factura.estatus}`;
+                API.Put(path, null).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+                         MessageToast.show(respJson.message);
+                        this._getInvoice();
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                         MessageToast.show(err.error.message);
+                    });
+           
+        },
+       
+        download: function(tipo){
+             var complemetosModel = this.getView().getModel("complementos"); 
+            var data = complemetosModel.getProperty("/data");
+            
+              var path = API.serviceList().GET_ARCHIVOS_FACTURA + `?uuid=${data.factura.uuid}&sociedad=${data.factura.sociedad}&noProveedor=${data.factura.proveedor}`;
+                API.Get(path).then(
+                    function (response, paramw, param3) {
+                        var pdf,xls;
+                         if (response && response['T_FACTURAS']) { 
+                            if (response['T_FACTURAS'].URLPDF !== "" || response['T_FACTURAS'].URLPDF !== null
+                                && response['T_FACTURAS'].URLXML !== "" || response['T_FACTURAS'].URLXML !== null) { 
+                                    this.archivosFlag = true;
+                                    pdf = response['T_FACTURAS'].URLPDF;
+                                    xls = response['T_FACTURAS'].URLXML;
+                            }
+                            
+                            } 
+                            
+                            if (tipo == 'pdf') {
+                             const win = window.open(pdf, '_blank');
+                                if (win) {
+                                    win.focus();
+                                } else {
+                                    alert('Por favor activa los popups en tu navegador');
+                                }
+                            } else {
+                             const win = window.open(xls, '_blank');
+                                if (win) {
+                                    win.focus();
+                                } else {
+                                    alert('Por favor activa los popups en tu navegador');
+                                }
+                            }
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                         MessageToast.show(err.error.message);
+                    });
+        },
+       
 	});
 }, true);

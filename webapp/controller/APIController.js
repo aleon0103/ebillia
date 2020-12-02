@@ -16,7 +16,9 @@ sap.ui.define([
         GET_EXCEL_COMPLEMENTOS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
         GET_FACTURAS_PROCESADAS: '/portal_cloud_api/payment-services/facturas/obtener-facturas',
         GET_SOCIEDADES: '/portal_cloud_api/masterdata-services/catalog/obtener-sociedades',
-        GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento'
+        GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
+        PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
+        GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml'
     };
     return {
 
@@ -89,6 +91,18 @@ sap.ui.define([
 
 
 
+        },
+        Put: function (path, data, callback) {
+            console.log(path);
+            return $.ajax({
+                method: "PUT",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+path,
+                contentType: "application/json; charset=utf-8",
+                data: data,
+            })
         },
 
     };

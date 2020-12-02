@@ -8,7 +8,7 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="Products ({reporteFacturas>/ProductCollectionStats/Counts/Total})"/>
+					<Title text="{i18n>noFacturas} ({reporteFacturas>/cantidad})"/>
 				</f:heading>
 			</f:DynamicPageTitle>
 		</f:title>
@@ -24,38 +24,82 @@
 				   width="auto">
 				<headerToolbar>
 					<OverflowToolbar>
-						<ToolbarSpacer/>
-						<SearchField search="onSearch" width="17.5rem"/>
+						<ToolbarSpacer></ToolbarSpacer>
+                        <Button
+                            text="{i18n>column1}"
+                            press=".onSelectDialogPress"
+                            visible="{complementos>/data/showProveedores}"
+                            />
+                        
+                        <DateRangeSelection
+                            id="DRS2"
+                            width="40%"
+                            change="handleChange"/>
+                        <Button
+                                icon="sap-icon://decline"
+                                tooltip="{i18n>clearFilters}"
+                                press="clearAllFilters"/>
+                        <Button
+                                icon="sap-icon://search"
+                                tooltip="{i18n>search}"
+                                press="searchComplementos"/>
+                        
+					
 					</OverflowToolbar>
 				</headerToolbar>
+                <infoToolbar>
+			    <OverflowToolbar>
+                        <ToolbarSpacer></ToolbarSpacer>
+                        <Button	icon="sap-icon://download" visible="{complementos>/data/download}" press="onDataExport" />
+                    </OverflowToolbar>
+                </infoToolbar>
 				<columns>
+                    <Column>
+						<Text text="{i18n>ESTATUS}" />
+					</Column>
 					<Column>
-						<Text text="Proveedor" />
+						<Text text="{i18n>column1}" />
 					</Column>
 					<Column minScreenWidth="Desktop" demandPopin="true">
-							<Text text="Quantity"/>
+							<Text text="{i18n>column2}"/>
 						</Column>
 
 					<Column minScreenWidth="Desktop" demandPopin="true">
-						<Text text="Description" />
+						<Text text="{i18n>column6}" />
+					</Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>column7}" />
+					</Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>column4}" />
 					</Column>
 					<Column	hAlign="End">
-						<Text text="Price" />
+						<Text text="{i18n>column5}" />
 					</Column>
+
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation" press="_showDetail">
 						<cells>
-							<ObjectIdentifier title="{reporteFacturas>Proveedor}" text="{reporteFacturas>ProductId}" />
+							<ObjectIdentifier title="{reporteFacturas>estatus}" />
+                            <ObjectIdentifier text="{reporteFacturas>proveedor}" />
 							<ObjectIdentifier text="{reporteFacturas>nodocumento}" />
-							<ObjectIdentifier text="{reporteFacturas>Description}" />
-							<ObjectNumber
+                            <ObjectIdentifier text="{reporteFacturas>referencia}" />
+                            <ObjectIdentifier text="{reporteFacturas>fechaPago}" />
+                            <ObjectNumber
 									number="{
-										parts:[{path:'reporteFacturas>Price'},{path:'reporteFacturas>CurrencyCode'}],
+										parts:[{path:'reporteFacturas>iva'},{path:'reporteFacturas>moneda'}],
 										type: 'sap.ui.model.type.Currency',
 										formatOptions: {showMeasure: false}
 									}"
-									unit="{reporteFacturas>CurrencyCode}" />
+									unit="{reporteFacturas>moneda}" />
+							<ObjectNumber
+									number="{
+										parts:[{path:'reporteFacturas>importe'},{path:'reporteFacturas>moneda'}],
+										type: 'sap.ui.model.type.Currency',
+										formatOptions: {showMeasure: false}
+									}"
+									unit="{reporteFacturas>moneda}" />
 						</cells>
 					</ColumnListItem>
 				</items>

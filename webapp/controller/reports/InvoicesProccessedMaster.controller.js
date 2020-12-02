@@ -133,15 +133,15 @@ sap.ui.define([
                         console.log(respJson);
                         if (respJson && respJson.length>0) {
                             poModel.setProperty('/listado', respJson)
+                            poModel.setProperty("/cantidad", respJson.length)
                               
                         }else{
-                            //  complemetosModel.setProperty("/data/listado", [])
-                            //   complemetosModel.setProperty("/data/cantidad", 0)
-                            //   complemetosModel.setProperty("/data/download", false)
+                            poModel.setProperty("/cantidad", 0)
                         }
 
                     }, function (err) {
                         console.log("error in processing your request", err);
+                         poModel.setProperty("/cantidad", 0)
                     });
         },
 
