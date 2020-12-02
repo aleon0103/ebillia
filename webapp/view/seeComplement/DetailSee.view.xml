@@ -3,10 +3,12 @@
 	xmlns="sap.m"
 	xmlns:semantic="sap.f.semantic"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:l="sap.ui.layout">
+	xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:forms="sap.ui.layout.form">
 	<semantic:SemanticPage
 		id="page"
-        showFooter="true">
+        showFooter="false">
 		<semantic:titleHeading>
 			<Title text="{detailView>/nombreProveedor}"/>
 		</semantic:titleHeading>
@@ -14,44 +16,86 @@
 			<l:HorizontalLayout>
 				<l:VerticalLayout class="sapUiMediumMarginEnd">
 					<ObjectAttribute text="RFC: {detailView>/rfcProveedor}"/>
-                    <ObjectNumber
-                        visible="{= ${tablaModel>/Count} !== 0 ? true : false}"
-                        number="{
-                            parts:[{path:'detailView>/total'},{path:'detailView>moneda'}],
-                            type: 'sap.ui.model.type.Currency',
-                            formatOptions: {showMeasure: false}
-                        }"
-                    />
+                    <ObjectAttribute text="{i18n>sociedad}: {detailView>/sociedadProveedor}"/>
                     <ObjectStatus
-                    visible="{= ${tablaModel>/Count} === 0 ? true : false}"
+                    visible="{= ${detailView>/info} === null ? true : false}"
                     class="sapUiSmallMarginTop"
                     text="{i18n>alertTextDetalle}"
                     icon="sap-icon://status-negative"
                     state="Error" />
 				</l:VerticalLayout>
+                <l:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectNumber
+                            visible="{= ${detailView>/info} !== null ? true : false}"
+                            number="{
+                                parts:[{path:'detailView>/info/total'},{path:'detailView>/info/moneda'}],
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {showMeasure: false}
+                            }"
+                            unit="{detailView>/info/moneda}"
+                        />
+                </l:VerticalLayout>
 			</l:HorizontalLayout>
 		</semantic:headerContent>
 		<semantic:content>
 			<l:VerticalLayout>
+            <IconTabBar id="idIconTabBarIcons" tabDensityMode="Compact" expanded="{device>/isNoPhone}" class="sapUiTinyMargin">
+                <items>
+                    <IconTabFilter text="{i18n>info}" icon="sap-icon://information">
+                        <VBox class="sapUiSmallMargin" visible="{= ${detailView>/info} !== null ? true : false}" width="100%">
+                            <sap.ui.layout.form:SimpleForm title="Detalle" xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4"
+                                labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+                                columnsXL="3" columnsL="3" columnsM="3" backgroundDesign="Transparent">
+                                <sap.ui.layout.form:content>
+                                    <core:Title text="Proveedor"/>
+                                    <Text text="{detailView>/info/proveedor}"/> 
+                                    <Label text="Folio"/>
+                                    <Text text="{detailView>/info/folio}"/> 
+                                    <Label text="UUID"/>
+                                    <Text text="{detailView>/info/uuid}"/> 
+
+                                    <core:Title text="Emisor"/>
+                                    <Text text="{detailView>/info/emisor}"/> 
+                                    <Label text="Total"/>
+                                    <ObjectNumber
+                                        number="{
+                                            parts:[{path:'detailView>/info/total'},{path:'detailView>/info/moneda'}],
+                                            type: 'sap.ui.model.type.Currency',
+                                            formatOptions: {showMeasure: false}
+                                        }"
+                                        unit="{detailView>/info/moneda}"
+                                    />
+                                
+                                    <core:Title text="Receptor"/>
+                                    <Text text="{detailView>/info/receptor}"/> 
+                                    <Label text="Fecha de complemento"/>
+                                    <Text text="{detailView>/info/fechaComplemento}"/>
+                                </sap.ui.layout.form:content>
+                            </sap.ui.layout.form:SimpleForm>
+                        </VBox>
+                    </IconTabFilter>
+                    <IconTabFilter text="{i18n>adjuntos}" icon="sap-icon://documents">
+                        
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
             <ScrollContainer width="100%" horizontal="true" vertical="true" focusable="true">
 				<Table
 					id="lineItemsList"
-					class="sapUiSmallMarginTop"
+					class="sapUiLargeMarginBottom"
 					width="auto"
-					items="{tablaModel>/data}"
-                    mode="Delete" 
-                    delete="_deleteRowTable"
+                    mode="None"
+					items="{detailView>/info/listaPagosRelacionados}"
 					alternateRowColors="true" 
                     growingThreshold="10" 
-                    growing="true"
 					noDataText="{i18n>detailLineItemTableNoDataText}">
 					<headerToolbar>
 						<Toolbar id="lineItemsToolbar">
 							<Title
 								text="{
                                     parts: [
-                                        'i18n>totalItems',
-                                        'tablaModel>/Count'
+                                        'i18n>docRelacionados',
+                                        'detailView>/Count'
                                     ],
                                     formatter: 'jQuery.sap.formatMessage'
                             }"/>
@@ -59,40 +103,44 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column>
-							<Text text="{i18n>noDocPago}"/>
+						<Column width="19rem">
+							<Text text="Doc. relacionados"/>
 						</Column>
-						<Column>
-							<Text text="{i18n>iva}"/>
+                        <Column width="5rem">
+							<Text text="Folio"/>
 						</Column>
-						<Column>
+                        <Column width="3rem">
+							<Text text="Serie"/>
+						</Column>
+                        <Column width="5rem">
 							<Text text="{i18n>importe}"/>
 						</Column>
-						<Column>
-							<Text text="{i18n>moneda}"/>
+						<Column width="5rem">
+							<Text text="{i18n>iva}"/>
 						</Column>
-						<Column>
-							<Text text="{i18n>uuid}"/>
+						<Column width="5rem">
+							<Text text="{i18n>moneda}"/>
 						</Column>
 					</columns>
 					<items>
 						<ColumnListItem>
 							<cells>
-								<Text text="{tablaModel>noDocumento}"/>
+								<Text text="{detailView>docRelacionado}"/>
+                                <Text text="{detailView>folio}"/>
+                                <Text text="{detailView>serie}"/>
                                 <ObjectNumber
 									number="{
-                                        parts:[{path:'tablaModel>iva'},{path:'tablaModel>moneda'}],
+                                        parts:[{path:'detailView>impPagado'},{path:'detailView>moneda'}],
                                         type: 'sap.ui.model.type.Currency',
 					                    formatOptions: {showMeasure: false}
 									}"/>
-								<ObjectNumber
+                                <ObjectNumber
 									number="{
-                                        parts:[{path:'tablaModel>importe'},{path:'tablaModel>moneda'}],
+                                        parts:[{path:'detailView>ivaDeFactura'},{path:'detailView>moneda'}],
                                         type: 'sap.ui.model.type.Currency',
 					                    formatOptions: {showMeasure: false}
 									}"/>
-                                <Text text="{tablaModel>moneda}"/>
-                                <Text text="{tablaModel>uuid}"/>
+                                <Text text="{detailView>moneda}"/>
 							</cells>
 						</ColumnListItem>
 					</items>
@@ -123,7 +171,7 @@
 				press="toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
         <semantic:footerCustomActions>
-			<Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>
+			<!-- <Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/> -->
 		</semantic:footerCustomActions>
 	</semantic:SemanticPage>
 </mvc:View>

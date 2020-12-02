@@ -22,7 +22,8 @@ sap.ui.define([
 
                 var oModelFacturas = new JSONModel({
                     results: null,
-                    busy: true
+                    busy: false,
+                    Count: 0
                 });
                 this.getView().setModel(oModelFacturas, "facturas");
 
@@ -36,7 +37,7 @@ sap.ui.define([
                 
             },
 
-            _getFacturasPendientes: function (fechaAtras, fechaHoy) {
+            _getComplementos: function (fechaAtras, fechaHoy) {
                 var oModelUser = this.getModel("user").getData();
                 var userId = oModelUser.id;
 
@@ -44,33 +45,21 @@ sap.ui.define([
                 poModel.setProperty('/busy', true);
                 var that = this;
 
-                var path = API.serviceList().FACTURAS_PENDIENTES + `facturas-pendientes?proveedor=${userId}&fechai=${fechaAtras}&fechaf=${fechaHoy}`;
+                var path = API.serviceList().ENVIO_ARCHIVOS_COMPLEMENTOS + `${userId}?desde=${fechaAtras}&hasta=${fechaHoy}&estatus=Cargado&noDocPago=`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
-
-                        console.log(respJson);
-
-                        // limpiar seleccion de lista
-                        var oList = that.byId("list");
-                        oList.removeSelections(true);
-                        var oBinding = oList.getBinding("items");
-                        
                         if (respJson) {
-
                             poModel.setProperty('/results', respJson)
-                            oBinding.refresh(true);
+                            
                             if (respJson) {
                                 poModel.setProperty('/Count', respJson.length)
-
                             } else {
                                 poModel.setProperty('/Count', 0)
                             }
-
                             poModel.refresh();
                         }
                     }, function (err) {
-
                         console.log("error in processing your request", err);
                     });
             },
@@ -117,9 +106,9 @@ sap.ui.define([
                             press: function () {
                                 var fechaInicio = Core.byId("dpValue1").getValue();
                                 var fechaFin = Core.byId("dpValue2").getValue();
-                                this.getRouter().navTo("CargarComplementos", { param: false}, true);
+                                
                                 this._clearTable();
-                                this._getFacturasPendientes(fechaInicio, fechaFin);
+                                this._getComplementos(fechaInicio, fechaFin);
                                 this.oSubmitDialog.close();
                             }.bind(this)
                         }),
@@ -139,6 +128,31 @@ sap.ui.define([
                 this.oSubmitDialog.open();
             },
 
+            onSelectionChange: function (oEvent) {
+                var oSelectedItem = oEvent.getParameter("listItem");
+                var oSelected = oEvent.getParameter("selected");
+                var oContext = oSelectedItem.getBindingContext("facturas");
+                var objectSolicitud = oContext.oModel.getProperty(oContext.sPath);
+                
+                objectSolicitud = JSON.stringify(objectSolicitud);
+                this.getRouter().navTo("VerComplementosDetail", { item: objectSolicitud }, true);
+            },
+
+            onRefresh: function () {
+                var modelDetail = sap.ui.getCore().getModel("detailView");
+                console.log(modelDetail)
+                // var fModel = this.getModel("facturas");
+                // this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
+                
+                // // limpiar tabla
+                // this._clearTable()
+            },
+
+            _clearTable: function () {
+                var tablaModel = this.getModel("tablaModel");
+                tablaModel.setProperty("/data", []);
+                tablaModel.refresh(true);
+            }
             
         });
     })

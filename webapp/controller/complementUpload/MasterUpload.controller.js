@@ -28,7 +28,8 @@ sap.ui.define([
                     results: null,
                     busy: true,
                     showSelectedAll: true,
-                    showDeselectedAll: false
+                    showDeselectedAll: false,
+                    Count: 0
                 });
                 this.getView().setModel(oModelFacturas, "facturas");
 
