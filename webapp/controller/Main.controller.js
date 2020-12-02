@@ -68,9 +68,11 @@ sap.ui.define([
 
             _setToggleButtonTooltip: function (bSideExpanded) {
                 var oToggleButton = this.byId('sideNavigationToggleButton');
+                /*
                 this.getBundleText(bSideExpanded ? "expandMenuButtonText" : "collpaseMenuButtonText").then(function (sTooltipText) {
                     oToggleButton.setTooltip(sTooltipText);
                 });
+                */
             },
 
 
@@ -85,9 +87,11 @@ sap.ui.define([
                         oMessagePopover.destroy();
                     }
                     var fnHandleUserMenuItemPress = function (oEvent) {
+                        /*
                         this.getBundleText("clickHandlerMessage", [oEvent.getSource().getText()]).then(function (sClickHandlerMessage) {
                             MessageToast.show(sClickHandlerMessage);
                         });
+                        */
                     }.bind(this);
 
                     var fnHandleUserLogoutPress = function () {
@@ -281,9 +285,11 @@ sap.ui.define([
 		 * @param {string[]} [aPlaceholderValues] The values which will repalce the placeholders in the i18n value
 		 * @returns {Promise<string>} The promise
 		 */
+        /*
             getBundleText: function (sI18nKey, aPlaceholderValues) {
                 return this.getBundleTextByModel(sI18nKey, this.getModel("i18n"), aPlaceholderValues);
             },
+            */
 
             mergeNotifications: function (cotizaciones, pronosticos) {
                 var cCount = cotizaciones ? cotizaciones.length : 0;

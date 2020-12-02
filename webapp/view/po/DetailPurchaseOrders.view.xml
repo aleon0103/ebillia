@@ -200,15 +200,15 @@
 							demandPopin="true">
 							<Text text="{i18n>detailLineItemTablePositionColumn}"/>
 						</Column >
-						<Column minScreenWidth="Tablet"
+						<Column minScreenWidth="XXLarge"
 							demandPopin="true">
 							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
 						</Column>
-						<Column minScreenWidth="Tablet"
+						<Column minScreenWidth="XXLarge"
 							demandPopin="true">
 							<Text text="{i18n>detailLineItemTableMaterialColumn}"/>
 						</Column>
-                        <Column minScreenWidth="Tablet"
+                        <Column minScreenWidth="Desktop"
 							demandPopin="true">
 							<Text text="{i18n>detailLineItemTableDescriptionColumn}"/>
 						</Column>
@@ -239,6 +239,12 @@
 							demandPopin="true"
 							hAlign="End">
 							<Text text="{i18n>detailLineItemTableDateSugestedColumn}"/>
+						</Column>
+                        <Column
+							minScreenWidth="2048px"
+							demandPopin="true"
+							hAlign="Begin">
+							
 						</Column>
 					</columns>
                     <items>
@@ -304,6 +310,9 @@
                            
                             />
 
+	<ObjectStatus
+			text="{POdetailView>stateText}"
+			state="{POdetailView>state}" />
 
 
 							</cells>

@@ -14,13 +14,15 @@ sap.ui.define([
     "sap/m/Text",
     "sap/m/TextArea",
     "sap/ui/core/Core",
-     "sap/ui/model/resource/ResourceModel"
+    "sap/ui/model/resource/ResourceModel",
+    "sap/m/MessageBox",
 ],
-    function (BaseController, API, formatter, JSONModel, MessageToast, Device, Dialog, DialogType, Button, ButtonType, Label, Text, TextArea, Core,ResourceModel) {
+    function (BaseController, API, formatter, JSONModel, MessageToast, Device, Dialog, DialogType, Button, ButtonType, Label, Text, TextArea, Core, ResourceModel, MessageBox) {
         "use strict";
 
         return BaseController.extend("ns.EBilliaApp.controller.DetailPO", {
             formatter: formatter,
+
             onInit: function () {
                 console.log('on Detail PO component view');
                 var motivosRechazo = [
@@ -54,9 +56,14 @@ sap.ui.define([
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("POConfirmDetail").attachPatternMatched(this._routePatternMatched, this);
 
+
+
             },
 
             _routePatternMatched: function (oEvent) {
+
+
+
 
                 console.log("ROUTE U INVOICE DETAIL MATCH")
                 var oArguments = oEvent.getParameter("arguments");
@@ -219,7 +226,8 @@ sap.ui.define([
             },
             onApproveSelect: function () {
 
-               // this.onApproveDialogPress();
+                // this.onApproveDialogPress();
+                this._validarOrden();
 
 
 
@@ -227,10 +235,90 @@ sap.ui.define([
 
             _validarOrden: function () {
 
+                this.getView().getModel("i18n").getResourceBundle().then(function (oBundle) {
+                    var isOrderValid = true;
+                    var oList = this.byId("idProductsTable");
+                    var itemArray = oList.getItems();
+                    for (var item of itemArray) {
+                        var rowData = item.getBindingContext("POdetailView").getObject()
+                        if (!item.getSelected() == true) {
 
-                //ir order is valid 
+                            if (rowData.nombreMotivo == "Solicitud de modificación de fecha de entrega") {
 
-                this.onApproveDialogPress();
+                                item.getCells()[8].setValue('');
+
+                                console.log('sol cambio fecha',rowData);
+                                if (rowData.fecharPropuesta == '' || !rowData.fecharPropuesta) {
+
+                                    item.setHighlight('Error');
+                                    //item.setHighlightText('Need to select a reason')
+                                    item.getCells()[10].setState('Error');
+                                    item.getCells()[10].setText(oBundle.getText("emptySuggestedDate"));
+                                    isOrderValid = false;
+                                }else{
+                                item.setHighlight('None');
+                                item.getCells()[10].setState('None');
+                                item.getCells()[10].setText('');
+                                }
+
+                            } else if (rowData.nombreMotivo == "Solicitud de modificación de cantidad de reparto") {
+                                item.getCells()[9].setValue('');
+                                if (rowData.cantidadPropuesta == '' || !rowData.cantidadPropuesta) {
+                                    item.setHighlight('Error');
+                                    //item.setHighlightText('Need to select a reason')
+                                    item.getCells()[10].setState('Error');
+                                    item.getCells()[10].setText(oBundle.getText("emptySuggestedQuantity"));
+
+                                    isOrderValid = false;
+
+                                }else{
+                                item.setHighlight('None');
+                                item.getCells()[10].setState('None');
+                                item.getCells()[10].setText('');
+                                }
+
+
+                            } else if (!rowData.nombreMotivo || rowData.nombreMotivo == "") {
+
+                                item.setHighlight('Error');
+                                //item.setHighlightText('Need to select a reason')
+                                item.getCells()[10].setState('Error');
+                                item.getCells()[10].setText(oBundle.getText("emptyReasonState"));
+                                isOrderValid = false;
+
+                                //break;
+
+                            } else {
+                                item.setHighlight('None');
+                                item.getCells()[10].setState('None');
+                                item.getCells()[10].setText('');
+
+
+                            }
+
+                            
+
+                        } else {
+                            item.setHighlight('None');
+                            item.getCells()[10].setState('None');
+                            item.getCells()[10].setText('');
+
+
+                        }
+                    }
+
+                    //if order is valid 
+
+                    if (isOrderValid) {
+                        this.onApproveDialogPress();
+                    }else{
+
+
+                        //show dialog messaje 
+                        MessageToast.show(oBundle.getText("POIssuesDetectedToast"));
+                    }
+
+                }.bind(this));
 
             },
 
@@ -238,23 +326,24 @@ sap.ui.define([
                 if (!this.oApproveDialog) {
                     this.oApproveDialog = new Dialog({
                         type: DialogType.Message,
-                        title: "Confirm",
-                        content: new Text({ text: "Do you want to submit this order?" }),
+                        title: "{i18n>ConfirmOrderTitle}",
+                        content: new Text({ text: "{i18n>ConfirmOrderDialogMessage}" }),
                         beginButton: new Button({
                             type: ButtonType.Emphasized,
-                            text: "Submit",
+                            text: "{i18n>ConfirmOrderTitle}",
                             press: function () {
-                                MessageToast.show("Submit pressed!");
+                               // MessageToast.show("Submit pressed!");
                                 this.oApproveDialog.close();
                             }.bind(this)
                         }),
                         endButton: new Button({
-                            text: "Cancel",
+                            text: "{i18n>ConfirmOrderCalcel}",
                             press: function () {
                                 this.oApproveDialog.close();
                             }.bind(this)
                         })
                     });
+                     this.getView().addDependent(this.oApproveDialog);
                 }
 
                 //setear el modelo antes de abrirlo 
@@ -262,66 +351,124 @@ sap.ui.define([
                 this.oApproveDialog.open();
             },
 
+            _approveOrder: function () {
+
+
+
+
+                
+            },
+
 
             onReject: function () {
-                var that=this;
-                 this.getView().getModel("i18n").getResourceBundle().then(function(oBundleInstance) {
+                var that = this;
+                this.getView().getModel("i18n").getResourceBundle().then(function (oBundleInstance) {
 
-                if (!that.oRejectDialog) {
-                    that.oRejectDialog = new Dialog({
-                        title: oBundleInstance.getText("rejectOrderTitle") ,
-                        type: DialogType.Message,
-                        content: [
-                            new Label({
-                                text: oBundleInstance.getText("rejectOrderLabel") ,
-                                labelFor: "rejectionNote"
+                    if (!that.oRejectDialog) {
+                        that.oRejectDialog = new Dialog({
+                            title: oBundleInstance.getText("rejectOrderTitle"),
+                            type: DialogType.Message,
+                            content: [
+                                new Label({
+                                    text: oBundleInstance.getText("rejectOrderLabel"),
+                                    labelFor: "rejectionNote"
+                                }),
+                                new TextArea("rejectionNote", {
+                                    width: "100%",
+                                    placeholder: oBundleInstance.getText("rejectOrderPlaceHolder"),
+                                    liveChange: function (oEvent) {
+                                        var sText = oEvent.getParameter("value");
+                                        that.oRejectDialog.getBeginButton().setEnabled(sText.length > 0);
+                                    }.bind(that)
+                                })
+                            ],
+                            beginButton: new Button({
+                                type: ButtonType.Emphasized,
+                                text: "Reject",
+                                enabled: false,
+                                press: function () {
+                                    var sText = Core.byId("rejectionNote").getValue();
+                                    // MessageToast.show("Note is: " + sText);
+                                    that._rejectOrder(sText);
+                                    Core.byId("rejectionNote").setValue('');
+                                    that.oRejectDialog.close();
+                                }.bind(that)
                             }),
-                            new TextArea("rejectionNote", {
-                                width: "100%",
-                                placeholder: oBundleInstance.getText("rejectOrderPlaceHolder") ,
-                                liveChange: function (oEvent) {
-                                    var sText = oEvent.getParameter("value");
-                                    that.oRejectDialog.getBeginButton().setEnabled(sText.length > 0);
+                            endButton: new Button({
+                                text: "Cancel",
+                                press: function () {
+                                    that.oRejectDialog.close();
                                 }.bind(that)
                             })
-                        ],
-                        beginButton: new Button({
-                            type: ButtonType.Emphasized,
-                            text: "Reject",
-                            enabled: false,
-                            press: function () {
-                                var sText = Core.byId("rejectionNote").getValue();
-                               // MessageToast.show("Note is: " + sText);
-                                that._rejectOrder();
-                                that.oRejectDialog.close();
-                            }.bind(that)
-                        }),
-                        endButton: new Button({
-                            text: "Cancel",
-                            press: function () {
-                                that.oRejectDialog.close();
-                            }.bind(that)
-                        })
-                    });
-                }
+                        });
+                    }
 
-                that.oRejectDialog.open();
+                    that.oRejectDialog.open();
 
-    
-});
-               
-            
-           
-                
+
+                });
+
+
+
+
 
 
 
 
             },
 
-            _rejectOrder:function(){
-                console.log('RECHAZANDO ORDEN');
-            }
+            _rejectOrder: function (note) {
+                console.log('RECHAZANDO ORDEN', note);
+
+                var me = this;
+                var oModel = this.getModel("user");
+                var rol = oModel.getProperty('/rol/id');
+                var userId = oModel.getProperty('/id');
+                var selProveedor = userId; // modificar para tomar el id del proveedor seleccioando 
+
+
+                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/rechazo/${this._sObjectId}/${userId}`
+                API.Put(path, note
+                ).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+
+                        //handle response and redirecto to main list
+
+                        /**
+                         * {message: "La orden de compra ha sido rechazada", errorMessage: null, data: {ENTREGA: null, E_MENSAJES: {TYPE: "S", MENSAJE: "Correo enviado"}}}
+                         */
+
+                        MessageBox.success(respJson.message, {
+                            onClose: function () {
+                                var oViewModel = me.getModel("poMain")
+                                oViewModel.setProperty("/layout", "OneColumn");
+
+                                me.getRouter().navTo("POConfirm");
+
+
+                            }
+                        });
+
+
+
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                        MessageBox.error(err.error.message)
+
+
+                    });
+
+
+
+
+
+
+            },
+            getBundleText: function (sI18nKey, aPlaceholderValues) {
+                return this.getBundleTextByModel(sI18nKey, this.getModel("i18n"), aPlaceholderValues);
+            },
 
 
 
