@@ -8,7 +8,7 @@
         <FlexBox class="columns" alignContent="Center" alignItems="Center" fitContainer="true">
 		<items>
 		<VBox width="50%" direction="Column" id="vbox1" height="100%" backgroundDesign="Solid" alignContent="Center" alignItems="Center" fitContainer="true" justifyContent="SpaceAround">
-		    <items><Label text="Left" width="100%" id="label1"/>
+		    <items><Label text="" width="100%" id="label1"/>
 		    </items>
 		</VBox>
 		<VBox xmlns="sap.m" fitContainer="true" justifyContent="Center" alignContent="Center" height="100%" alignItems="Center" id="VBox">
