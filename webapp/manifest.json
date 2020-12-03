@@ -145,6 +145,23 @@
                     ]
                 },
                 {
+                    "name": "CargarComplementos",
+                    "pattern": "CargarComplementos/{param}",
+                    "target": [
+                         "masterComplementUpload",
+                        "detailComplementUpload"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "cargarComplementosDetail/{item}/{isSelected}",
+                    "name": "cargarComplementosDetail",
+                    "target": [
+                        "masterComplementUpload",
+                        "detailComplementUpload"
+                    ]
+                },
+                {
                     "name": "settings",
                     "pattern": "systemSettings",
                     "target": [
@@ -195,8 +212,48 @@
                         "masterDeliveryNotificationsInt",
                         "detailDeliveryNotificationsInt"
                     ]
-                }
+                },
+                {
                
+                    "name": "ReporteComplemnetosPendientesCarga",
+                    "pattern": "ReporteComplemnetosPendientesCarga",
+                    "target": [
+                        "reporteComplementos"
+                    ]
+                },
+				{
+					"pattern": "ReporteFacturas",
+					"name": "ReporteFacturas",
+					"target": [
+						"masterInvoiceProcessed",
+						"detailInvoiceProcessed"
+					]
+				},
+				{
+					"pattern": "reporteFacturaDetail/{id}",
+					"name": "reporteFacturaDetail",
+					"target": [
+						"masterInvoiceProcessed",
+						"detailInvoiceProcessed"
+					]
+                },
+                {
+					"pattern": "busquedaASN",
+					"name": "busquedaASN",
+					"target": [
+						"masterASN",
+						"detailASN"
+					]
+				},
+				{
+					"pattern": "ASNDetail/{id}",
+					"name": "ASNDetail",
+					"target": [
+						"masterASN",
+						"detailASN"
+					]
+                }
+                
             ],
             
             "targets": {
@@ -266,6 +323,25 @@
                     "controlAggregation": "midColumnPages",
                     "parent": "appInvoiceUpload"
                 },
+                "complementUpload": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "complements.ComplementUpload"
+                },
+                "masterComplementUpload": {
+                    "viewName": "complements.MasterUpload",
+                    "controlId": "layoutComplement",
+                    "parent": "complementUpload",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementUpload": {
+                    "viewName": "complements.DetailUpload",
+                    "controlId": "layoutComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementUpload"
+                },
                 "settings": {
                     "parent": "TargetMain",
                     "viewType": "XML",
@@ -277,6 +353,15 @@
                 },
                 "reporteEntregasPendientes": {
                     "viewName": "reports_.ReporteEntregasPendientes",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "reporteComplementos": {
+                    "viewName": "reports.PendingComplement",
                     "parent": "TargetMain",
 					"viewType": "XML",
 					"transition": "slide",
@@ -330,6 +415,44 @@
                     "controlId": "layoutDeliveryNotificationsInt",
                     "controlAggregation": "midColumnPages",
                     "parent": "deliveryNotificationsInt"
+                },
+                "appInvoicesProcessed": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutInvoiceProcessed",
+                    "controlId": "pageContainer",
+                    "viewName": "reports.FlexibleColumnLayout"
+                },
+                "masterInvoiceProcessed": {
+                    "viewName": "reports.InvoicesMaster",
+                    "controlId": "layoutInvoiceProcessed",
+                    "parent": "appInvoicesProcessed",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailInvoiceProcessed": {
+                    "viewName": "reports.InvoicesDetail",
+                    "controlId": "layoutInvoiceProcessed",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appInvoicesProcessed"
+                },
+                "appASN": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutASN",
+                    "controlId": "pageContainer",
+                    "viewName": "searchAsn.AppASN"
+                },
+                "masterASN": {
+                    "viewName": "searchAsn.MasterANS",
+                    "controlId": "layoutASN",
+                    "parent": "appASN",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailASN": {
+                    "viewName": "searchAsn.DetailASN",
+                    "controlId": "layoutASN",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appASN"
                 }
                 
             }

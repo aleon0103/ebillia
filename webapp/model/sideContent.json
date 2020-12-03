@@ -197,7 +197,7 @@
          "19":{
 			"titleI18nKey": "CargarComplementos",
 			"icon": "sap-icon://customize",
-			"key": "CargarComplementos"
+			"key": "CargarComplementos/true"
         },
         
          "20":{

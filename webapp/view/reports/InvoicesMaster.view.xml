@@ -1,0 +1,122 @@
+<mvc:View displayBlock="true" controllerName="ns.EBilliaApp.controller.reports.InvoicesProccessedMaster" height="100%"
+	  xmlns="sap.m"
+	  xmlns:f="sap.f"
+	  xmlns:mvc="sap.ui.core.mvc">
+	<f:DynamicPage id="dynamicPageId"
+				   toggleHeaderOnTitleClick="false">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>noFacturas} ({reporteFacturas>/cantidad})"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+
+		<!-- DynamicPage Content -->
+		<f:content>
+			<Table id="productsTable"
+				   sticky="ColumnHeaders,HeaderToolbar"
+				   inset="false"
+				   growing="true"
+				   items="{reporteFacturas>/listado}"
+				   class="sapFDynamicPageAlignContent"
+				   width="auto">
+				<headerToolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer></ToolbarSpacer>
+                        
+                        <Button
+                            text="{i18n>column1}"
+                            press=".onSelectDialogPress"
+                            />
+                        <Button
+                            text="{i18n>SOCIEDAD}"
+                            press=".onSelectDialogSociedades"
+                            />
+                        <DateRangeSelection
+                            id="DRS2"
+                            width="40%"
+                            change="handleChange"/>
+                        <Button
+                                icon="sap-icon://search"
+                                tooltip="{i18n>search}"
+                                press="searchData"/>
+                        <Button
+                                icon="sap-icon://decline"
+                                tooltip="{i18n>clearFilters}"
+                                press="clearAllFilters"/>
+                        
+                        
+					
+					</OverflowToolbar>
+				</headerToolbar>
+                <infoToolbar>
+			    <OverflowToolbar>
+                        <ToolbarSpacer></ToolbarSpacer>
+                        <Button	icon="sap-icon://download" visible="{complementos>/data/download}" press="onDataExport" />
+                    </OverflowToolbar>
+                </infoToolbar>
+				<columns>
+                    <Column>
+						<Text text="{i18n>ESTATUS}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>column1}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+							<Text text="{i18n>column2}"/>
+						</Column>
+
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>column6}" />
+					</Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>column7}" />
+					</Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>column4}" />
+					</Column>
+					<Column	hAlign="End">
+						<Text text="{i18n>column5}" />
+					</Column>
+
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="_showDetail">
+						<cells>
+							<ObjectIdentifier title="{reporteFacturas>estatus}" />
+                            <ObjectIdentifier text="{reporteFacturas>proveedor}" />
+							<ObjectIdentifier text="{reporteFacturas>nodocumento}" />
+                            <ObjectIdentifier text="{reporteFacturas>referencia}" />
+                            <ObjectIdentifier text="{reporteFacturas>fechaPago}" />
+                            <ObjectNumber
+									number="{
+										parts:[{path:'reporteFacturas>iva'},{path:'reporteFacturas>moneda'}],
+										type: 'sap.ui.model.type.Currency',
+										formatOptions: {showMeasure: false}
+									}"
+									unit="{reporteFacturas>moneda}" />
+							<ObjectNumber
+									number="{
+										parts:[{path:'reporteFacturas>importe'},{path:'reporteFacturas>moneda'}],
+										type: 'sap.ui.model.type.Currency',
+										formatOptions: {showMeasure: false}
+									}"
+									unit="{reporteFacturas>moneda}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+
+		<!-- DynamicPage Footer -->
+		<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="Accept"/>
+				<Button type="Reject" text="Reject"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

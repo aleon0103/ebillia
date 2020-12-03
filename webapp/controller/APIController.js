@@ -15,7 +15,18 @@ sap.ui.define([
         GET_REPORTE_ENTREGAS_PENDIENTES: '/portal_cloud_api/logistic-services/Proveedores-facturas/ReporteSaldos/',
         GET_ORDENES_COMPRA_ASN: '/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenesDeCompra/ASN/',
         GET_POSICIONES_OC: '/portal_cloud_api/logistic-services/Proveedores-facturas/posicionesOC/',
-        GET_ORDENES_CONFIRMADAS_: '/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenDeCompraConfirmada/'
+        GET_ORDENES_CONFIRMADAS_: '/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenDeCompraConfirmada/',
+        FACTURAS_PENDIENTES:'/portal_cloud_api/payment-services/master-factura/',
+        ENVIO_ARCHIVOS_COMPLEMENTOS: '/portal_cloud_api/payment-services/complementos/',
+        GET_COMPLEMENTOS_PENDIENTES: '/portal_cloud_api/payment-services/master-factura/facturas-pendientes-complemento',
+        GET_PROVEEDORES:'/portal_cloud_api/masterdata-services/catalog/obtener-proveedores',
+        GET_EXCEL_COMPLEMENTOS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
+        GET_FACTURAS_PROCESADAS: '/portal_cloud_api/payment-services/facturas/obtener-facturas',
+        GET_SOCIEDADES: '/portal_cloud_api/masterdata-services/catalog/obtener-sociedades',
+        GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
+        PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
+        GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
+        GET_ASN:'/portal_cloud_api/logistic-services/asn/'
     };
     return {
 
@@ -79,6 +90,20 @@ sap.ui.define([
 
         },
 
+        PostFiles: function (path, formData, callback) {
+            return $.ajax({
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: { 
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                    'Authorization': jwt
+                 },
+                type: "POST",
+                url: URL+path,
+            })
+        },
+
         Update: function () {
 
 
@@ -88,6 +113,18 @@ sap.ui.define([
 
 
 
+        },
+        Put: function (path, data, callback) {
+            console.log(path);
+            return $.ajax({
+                method: "PUT",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+path,
+                contentType: "application/json; charset=utf-8",
+                data: data,
+            })
         },
 
     };
