@@ -22,20 +22,6 @@ sap.ui.define([
             objectItem: null,
             onInit: function () {
 
-                var oModel = new JSONModel({
-                    busy: false,
-                    delay: 0,
-                    info: null,
-                    Count: 0
-                });
-
-                this.getView().setModel(oModel, "detailView");
-
-                // modelUser = new sap.ui.model.json.JSONModel(response);
-                //     //Guarda el modelo usuario de manera global 
-                //     //para obtenerlo en todas las vistas
-                //     sap.ui.getCore().setModel(modelUser, "user");
-
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("VerComplementosDetail").attachPatternMatched(this._routePatternMatched, this);
 
@@ -43,7 +29,7 @@ sap.ui.define([
 
             onAfterRendering: function () {
                 var oModelUser = this.getModel("user").getData();
-                var modelDetail = this.getModel("detailView");
+                var modelDetail = this.getModel("mDetailSeeComplement");
                 modelDetail.setProperty("/nombreProveedor", oModelUser.nombre);
                 modelDetail.setProperty("/rfcProveedor", oModelUser.rfc);
                 modelDetail.setProperty("/sociedadProveedor", oModelUser.sociedad);
@@ -52,7 +38,7 @@ sap.ui.define([
             },
 
             _routePatternMatched: function (oEvent) {
-                var modelDetail = this.getModel("detailView");
+                var modelDetail = this.getModel("mDetailSeeComplement");
                 var oArguments = oEvent.getParameter("arguments");
                 this.objectItem = JSON.parse(oArguments.item);
 
@@ -75,7 +61,7 @@ sap.ui.define([
                 var oModelUser = this.getModel("user").getData();
                 var userId = oModelUser.id;
 
-                var poModel = this.getModel("detailView");
+                var poModel = this.getModel("mDetailSeeComplement");
                 poModel.setProperty('/busy', true);
                 var that = this;
 
@@ -93,6 +79,11 @@ sap.ui.define([
                     }, function (err) {
                         console.log("error in processing your request", err);
                     });
+            },
+
+            handlePress: function (evt) {
+                var sSrc = evt.getSource().getTarget();
+                console.log(sSrc);
             }
         });
     })

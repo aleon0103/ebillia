@@ -33,8 +33,7 @@ sap.ui.define([
             },
 
             _routePatternMatched: function (oEvent) {
-                
-                
+                this.onRefresh();
             },
 
             _getComplementos: function (fechaAtras, fechaHoy) {
@@ -107,7 +106,6 @@ sap.ui.define([
                                 var fechaInicio = Core.byId("dpValue1").getValue();
                                 var fechaFin = Core.byId("dpValue2").getValue();
                                 
-                                this._clearTable();
                                 this._getComplementos(fechaInicio, fechaFin);
                                 this.oSubmitDialog.close();
                             }.bind(this)
@@ -139,19 +137,19 @@ sap.ui.define([
             },
 
             onRefresh: function () {
-                var modelDetail = sap.ui.getCore().getModel("detailView");
-                console.log(modelDetail)
-                // var fModel = this.getModel("facturas");
-                // this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
+                var modelDetail = this.getModel("mDetailSeeComplement");
+                var oModelFacturas = this.getModel("facturas");
+                oModelFacturas.setProperty("/results", []);
+                oModelFacturas.setProperty("/Count", 0);
+                oModelFacturas.refresh(true);
                 
-                // // limpiar tabla
-                // this._clearTable()
-            },
+                modelDetail.setProperty("/info", null);
+                modelDetail.setProperty("/Count", 0);
 
-            _clearTable: function () {
-                var tablaModel = this.getModel("tablaModel");
-                tablaModel.setProperty("/data", []);
-                tablaModel.refresh(true);
+                var oList = this.byId("list");
+                oList.removeSelections(true);
+                var oBinding = oList.getBinding("items");
+                oBinding.refresh(true);
             }
             
         });

@@ -36,6 +36,16 @@ sap.ui.define([
             });
 			return oModelTable;
         },
+
+        detailModelSeeComplement: function () {
+			var oModel = new JSONModel({
+                busy: false,
+                delay: 0,
+                info: null,
+                Count: 0
+            });
+			return oModel;
+        },
         
         
 
