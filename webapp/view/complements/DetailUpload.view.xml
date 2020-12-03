@@ -1,0 +1,129 @@
+<mvc:View
+	controllerName="ns.EBilliaApp.controller.complementUpload.DetailUpload"
+	xmlns="sap.m"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout">
+	<semantic:SemanticPage
+		id="page"
+        showFooter="true">
+		<semantic:titleHeading>
+			<Title text="{detailView>/nombreProveedor}"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+			<l:HorizontalLayout>
+				<l:VerticalLayout class="sapUiMediumMarginEnd">
+					<ObjectAttribute text="RFC: {detailView>/rfcProveedor}"/>
+                    <ObjectNumber
+                        visible="{= ${tablaModel>/Count} !== 0 ? true : false}"
+                        number="{
+                            parts:[{path:'detailView>/total'},{path:'detailView>moneda'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                    />
+                    <ObjectStatus
+                    visible="{= ${tablaModel>/Count} === 0 ? true : false}"
+                    class="sapUiSmallMarginTop"
+                    text="{i18n>alertTextDetalle}"
+                    icon="sap-icon://status-negative"
+                    state="Error" />
+				</l:VerticalLayout>
+			</l:HorizontalLayout>
+		</semantic:headerContent>
+		<semantic:content>
+			<l:VerticalLayout>
+            <ScrollContainer width="100%" horizontal="true" vertical="true" focusable="true">
+				<Table
+					id="lineItemsList"
+					class="sapUiSmallMarginTop"
+					width="auto"
+					items="{tablaModel>/data}"
+                    mode="Delete" 
+                    delete="_deleteRowTable"
+					alternateRowColors="true" 
+                    growingThreshold="10" 
+                    growing="true"
+					noDataText="{i18n>detailLineItemTableNoDataText}">
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title
+								text="{
+                                    parts: [
+                                        'i18n>totalItems',
+                                        'tablaModel>/Count'
+                                    ],
+                                    formatter: 'jQuery.sap.formatMessage'
+                            }"/>
+                            
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Text text="{i18n>noDocPago}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>iva}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>importe}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>moneda}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>uuid}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{tablaModel>noDocumento}"/>
+                                <ObjectNumber
+									number="{
+                                        parts:[{path:'tablaModel>iva'},{path:'tablaModel>moneda'}],
+                                        type: 'sap.ui.model.type.Currency',
+					                    formatOptions: {showMeasure: false}
+									}"/>
+								<ObjectNumber
+									number="{
+                                        parts:[{path:'tablaModel>importe'},{path:'tablaModel>moneda'}],
+                                        type: 'sap.ui.model.type.Currency',
+					                    formatOptions: {showMeasure: false}
+									}"/>
+                                <Text text="{tablaModel>moneda}"/>
+                                <Text text="{tablaModel>uuid}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+                </ScrollContainer>
+			</l:VerticalLayout>
+		</semantic:content>
+		<!-- <semantic:sendEmailAction>
+			<semantic:SendEmailAction
+				id="shareEmail"
+				press=".onSendEmailPress"/>
+		</semantic:sendEmailAction> -->
+		<semantic:closeAction>
+			<semantic:CloseAction
+				id="closeColumn"
+				press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction
+				id="enterFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+				press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction
+				id="exitFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+				press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction>
+        <semantic:footerCustomActions>
+			<Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>
+		</semantic:footerCustomActions>
+	</semantic:SemanticPage>
+</mvc:View>

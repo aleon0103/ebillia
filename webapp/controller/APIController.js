@@ -11,6 +11,8 @@ sap.ui.define([
         GET_BADGE_PRONOSTICOS:'/portal_cloud_api/logistic-services/pronostico/getNotifications/',
         GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/',
         PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
+        FACTURAS_PENDIENTES:'/portal_cloud_api/payment-services/master-factura/',
+        ENVIO_ARCHIVOS_COMPLEMENTOS: '/portal_cloud_api/payment-services/complementos/',
         GET_COMPLEMENTOS_PENDIENTES: '/portal_cloud_api/payment-services/master-factura/facturas-pendientes-complemento',
         GET_PROVEEDORES:'/portal_cloud_api/masterdata-services/catalog/obtener-proveedores',
         GET_EXCEL_COMPLEMENTOS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
@@ -18,7 +20,8 @@ sap.ui.define([
         GET_SOCIEDADES: '/portal_cloud_api/masterdata-services/catalog/obtener-sociedades',
         GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
         PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
-        GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml'
+        GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
+        GET_ASN:'/portal_cloud_api/logistic-services/asn/'
     };
     return {
 
@@ -80,6 +83,20 @@ sap.ui.define([
             })
 
 
+        },
+
+        PostFiles: function (path, formData, callback) {
+            return $.ajax({
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: { 
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                    'Authorization': jwt
+                 },
+                type: "POST",
+                url: URL+path,
+            })
         },
 
         Update: function () {

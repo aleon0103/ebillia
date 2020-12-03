@@ -28,6 +28,14 @@ sap.ui.define([
 		//	oModel.setDefaultBindingMode("OneWay");
 			return oModel;
         },
+
+        tableModelComplements: function () {
+			var oModelTable = new JSONModel({
+                    data: [],
+                    Count: 0
+            });
+			return oModelTable;
+        },
         
         
 
