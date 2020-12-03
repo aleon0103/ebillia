@@ -357,7 +357,7 @@ sap.ui.define([
                             var oBreadCrumb = me.byId("breadcrumb"); 
 
                             oLink = new Link({
-                                text: "arrayTmp", 
+                                text: "Ordenes", 
                                 press:[sPath, me.onBreadcrumbPress, me]
                             }); 
                             oBreadCrumb.addLink(oLink); 

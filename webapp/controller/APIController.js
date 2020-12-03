@@ -12,7 +12,10 @@ sap.ui.define([
         GET_BADGE_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotifications/',
         PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
         GET_PROVEEDORES_CATALOG: '/portal_cloud_api/masterdata-services/catalog/obtener-proveedores',
-        GET_REPORTE_ENTREGAS_PENDIENTES: '/portal_cloud_api/logistic-services/Proveedores-facturas/ReporteSaldos/'
+        GET_REPORTE_ENTREGAS_PENDIENTES: '/portal_cloud_api/logistic-services/Proveedores-facturas/ReporteSaldos/',
+        GET_ORDENES_COMPRA_ASN: '/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenesDeCompra/ASN/',
+        GET_POSICIONES_OC: '/portal_cloud_api/logistic-services/Proveedores-facturas/posicionesOC/',
+        GET_ORDENES_CONFIRMADAS_: '/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenDeCompraConfirmada/'
     };
     return {
 
