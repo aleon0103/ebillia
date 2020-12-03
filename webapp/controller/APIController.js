@@ -18,7 +18,10 @@ sap.ui.define([
         GET_SOCIEDADES: '/portal_cloud_api/masterdata-services/catalog/obtener-sociedades',
         GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
         PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
-        GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml'
+        GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
+        GET_ASN:'/portal_cloud_api/logistic-services/asn/',
+        GET_EXCEL_ASN:'/portal_cloud_api/logistic-services/asn/getAsnExcel/',
+        GET_PDF_ASN:'/portal_cloud_api/logistic-services/asn/generarPDFAsn/'
     };
     return {
 
