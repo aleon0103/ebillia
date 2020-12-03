@@ -1,0 +1,159 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.reports_.ReporteEntregasPendientes" displayBlock="true">
+
+    <Page xmlns="sap.m" id="pageId" title="" floatingFooter="true" showHeader="false" enableScrolling ="true" >
+
+
+    <content>
+
+    <!-- showGoOnFB="false" -->
+        <l:VerticalLayout width="100%">
+		<fb:FilterBar id="filterBarREP" reset="onReset" search="generarReporte" showRestoreButton="true" showGoOnFB="true" showClearButton="true" showFilterConfiguration="false" useToolbar="false">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="__$INTERNAL$" name="REPFechaInicio" label="{i18n>fechaInicialFilterREP}" partOfCurrentVariant="true" mandatory="true" visibleInFilterBar="true">
+					<fb:control>
+						<DatePicker valueFormat="yyyy-MM-dd" displayFormat="short" id="fechaInicioREP" showValueStateMessage="false" />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem groupName="__$INTERNAL$" name="REPFechaFin" label="{i18n>fechaFinalFilterREP}" partOfCurrentVariant="true" mandatory="true" visibleInFilterBar="true">
+					<fb:control>
+						<DatePicker displayFormat="short" valueFormat="YYYY-MM-dd" id="fechaFinREP"  showValueStateMessage="false" />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem groupName="__$INTERNAL$" name="REPProveedor" id="selectProveedores" label="{i18n>proveedorTableREP}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <ComboBox type="Text" 
+                        id="proveedorREP" items="{                                 
+                            path: 'proveedores>/sapProveedor',                                 
+                            template: {                                 
+                                Type: 'sap.ui.core.ListItem',                                 
+                                text: '{proveedores>name1}',                                 
+                                key: '{proveedores>lifnr}'                                 
+                                }                            
+                        }"
+                        change="handleChangeProv"
+                        showValueStateMessage="false"> 
+                        </ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem label="{i18n>ordenDeCompraTableREP}" name="REPNoOrden" partOfCurrentVariant="true"  visibleInFilterBar="true" groupName="__$INTERNAL$" id="item6">
+				    <fb:control>
+
+				        <Input id="ordenCompraREP" type="Number"  showValueStateMessage="false"/>
+
+				    </fb:control>
+				</fb:FilterGroupItem>
+        
+                <!-- <fb:FilterGroupItem name="search" partOfCurrentVariant="true" visibleInFilterBar="true" groupName="__$INTERNAL$">
+				    <fb:control>
+
+				       <Button type="Emphasized" text="{i18n>generarReporteREP}" width="100px" press="generarReporte" />
+
+				    </fb:control>
+				</fb:FilterGroupItem> -->
+                
+			</fb:filterGroupItems>				
+					
+	    </fb:FilterBar>		
+	    </l:VerticalLayout>
+
+       
+        <Table selectionChange="handleSelectionChange" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"  inset="false" id="idProductsTable" noDataText="{i18n>noDataTableREP}" busy="{busyPage>/busy}">
+				<headerToolbar>
+					<OverflowToolbar id="idCrumbToolbar">
+						<Breadcrumbs id="breadcrumb"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+                    <Column id="ordenColumn" width="6em">
+						<Text text="{i18n>ordenDeCompraTableREP}"/>
+					</Column>
+					<Column id="proveedorColumn" width="6em">
+						<Text text="{i18n>proveedorTableREP}"/>
+					</Column>
+					<Column id="fechaDocColumn" width="6em">
+						<Text text="{i18n>fechaDocumentosTableREP}"/>
+					</Column>
+					
+					<Column
+						id="posicionColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="3em"
+						visible="false">
+						<Text text="{i18n>posicionTableREP}" />
+					</Column>
+                    <Column
+						id="materialColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="7em"
+						visible="false">
+						<Text text="{i18n>materialTableREP}" />
+					</Column>
+                    <Column
+						id="descripcionColumn"
+						minScreenWidth="Tablet"
+						demandPopin="true"
+						hAlign="Center"
+                        width="12em"
+						visible="false">
+						<Text text="{i18n>descripcionTableREP}" />
+					</Column>
+                    <Column
+						id="vamColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="3em"
+						visible="false">
+						<Text text="{i18n>vamTableREP}" />
+					</Column>
+                    <Column
+						id="fechaEntregaColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="4em"
+						visible="false">
+						<Text text="{i18n>fechaEntregaTableREP}" />
+					</Column>
+                    <Column
+						id="cantidadPedidoColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="4em"
+						visible="false">
+						<Text text="{i18n>cantidadPedidoTableREP}" />
+					</Column>
+                    <Column
+						id="cantidadPendienteColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="4em"
+						visible="false">
+						<Text text="{i18n>cantidadPendienteTableREP}" />
+					</Column>
+                    <Column
+						id="cantidadRecibidoColumn"
+						minScreenWidth="Desktop"
+						demandPopin="true"
+						hAlign="Center"
+                        width="4em"
+						visible="false">
+						<Text text="{i18n>cantidadRecibido}" />
+					</Column>
+				</columns>
+        </Table>
+
+    </content>
+
+    </Page>
+    
+</mvc:View>

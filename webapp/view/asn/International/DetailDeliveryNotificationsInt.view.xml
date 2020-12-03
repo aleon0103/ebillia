@@ -1,0 +1,134 @@
+<mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="ns.EBilliaApp.controller.asn.International.DetailDeliveryNotificationsInt">
+	<semantic:SemanticPage id="page" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:titleHeading>
+			<Title text="{      parts: [       'i18n>commonItemTitle',       'POdetailView&gt;/orderId'      ],      formatter: 'jQuery.sap.formatMessage'     }"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<l:VerticalLayout>
+				<!--
+                <IconTabBar
+					id="iconTabBar"
+					headerBackgroundDesign="Transparent"
+					select=".onTabSelect"
+					selectedKey="{detailView>/selectedTab}">
+					<items>
+						<IconTabFilter
+							id="iconTabFilterShipping"
+							icon="sap-icon://shipping-status"
+							tooltip="{i18n>detailIconTabBarShipping}"
+							key="shipping">
+						</IconTabFilter>
+						<IconTabFilter
+							id="iconTabFilterProcessor"
+							icon="sap-icon://employee"
+							tooltip="{i18n>detailIconTabBarProcessor}"
+							key="processor">
+						</IconTabFilter>
+					</items>
+				</IconTabBar>
+-->
+				<Table id="lineItemsList" class="sapUiSmallMarginTop" width="auto" items="{POdetailView>/GoodReceipts}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column >
+							<Text text="{i18n>proveedorTableDN}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>facturaTableDN}"/>
+						</Column>
+						
+						<Column>
+							<Text text="{i18n>materialTaTableDn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>loteTableDn}"/>
+						</Column>
+                        <Column >
+							<Text text="{i18n>vamTableDn}"/>
+						</Column>
+                        <Column >
+							<Text text="{i18n>cantidadTableDN}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier text="{POdetailView>num_pos_doc_comp}"/>
+                               
+                                <ObjectIdentifier title="{POdetailView>idMaterial}" text="{POdetailView>descripcionMaterial}" class="sapUiTinyMarginTopBottom"/>
+
+
+                                <ObjectIdentifier text="{POdetailView>valorMatriz}"/>
+                            
+								
+                                <ObjectNumber number="{           path: 'POdetailView>cantidadEntregaEfectivamente'                     }" unit="{POdetailView>unidad}"/>
+
+								<ObjectNumber number="{                                         path:'POdetailView>cantidad'                            }" unit="{POdetailView>unidad}"/>
+
+                                <Switch  enabled="true" customTextOn=" " customTextOff=" " state="{POdetailView>verificarIngreso}" change=".onCheckIngreso(${POdetailView>idTmp}, ${POdetailView>verificarIngreso});.verificarEntrada(${POdetailView>idTmp});.validarCompleta)">
+                                    <layoutData>
+                                        <FlexItemData growFactor="1"/>
+                                    </layoutData>
+                                </Switch>
+
+                                <Input xmlns="sap.m" type="Number" value="{POdetailView>cantidadIngreso}" id="input0" description="{POdetailView>unidad}" width="100px" fieldWidth="60%" class="sapUiSmallMarginBottom" change=".changeIngreso(${POdetailView>idTmp}, $event)"/>
+                                
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</l:VerticalLayout>
+		</semantic:content>
+		<!-- <semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onSendEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction id="closeColumn" press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction id="enterFullScreen" visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction id="exitFullScreen" visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction> -->
+	<semantic:headerContent>
+	    <l:VerticalLayout width="100%" id="layout4">
+	        <l:content>
+        
+	            <l:HorizontalLayout id="layout6">
+	                <l:content>
+	                    <ObjectAttribute id="attribute4" title="Confirmar"  class="sapUiMediumMarginBottom sapUiTinyMarginEnd" />
+                        <Label text="Completa" />
+	                    <Switch xmlns="sap.m" id="switchCompletar" class="sapUiSmallMarginBegin" customTextOff=" " customTextOn=" " change=".switchTipoCarga"/>
+                        <Label text="Parcial" />
+                    </l:content>
+	            </l:HorizontalLayout>
+
+
+                 <l:HorizontalLayout id="layout5">
+	                <l:content >
+	            
+                        <l:VerticalLayout>
+                            <u:FileUploader
+                                id="fileUploader"
+                                name="myFileUpload"
+                                uploadUrl="upload/"
+                                fileType="XLSX,xlsx"
+                                buttonOnly="true"
+                                buttonText="Cargar Excel"
+                                icon="sap-icon://excel-attachment"
+                                change="handleUploadPress"/>
+                        </l:VerticalLayout>
+
+                     </l:content>
+	            </l:HorizontalLayout>
+
+	        </l:content>
+	    </l:VerticalLayout>
+	</semantic:headerContent>
+	</semantic:SemanticPage>
+</mvc:View>
