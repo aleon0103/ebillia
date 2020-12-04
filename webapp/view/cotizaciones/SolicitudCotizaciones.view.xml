@@ -3,7 +3,13 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	height="100%">
-	<Page showHeader="false" >
+	<Page
+    	title="{i18n>SCotizaciones}"
+
+     >
+        <headerContent>
+				<Button text="{i18n>send}" visible="{cotizacionesModel>/okSend}" press="sendData" type="Accept" />
+		</headerContent>
 		<subHeader>
 			<OverflowToolbar>
                 
@@ -22,6 +28,7 @@
             busy="{cotizacionesModel>/busy}"
 			growingThreshold="50"
 			includeItemInSelection="true">
+        
             
 			<infoToolbar>
 				<OverflowToolbar visible="false" id="idInfoToolbar">
@@ -35,13 +42,6 @@
 				iconDensityAware="false"
 				iconInset="false" />
 		</List>
-        <footer>
-			<OverflowToolbar>
-                <Label text="{cotizacionesModel>/selected} {i18n>seleccionados}"/>
-				<ToolbarSpacer/>
-				<Button text="{i18n>send}"  press="sendData" type="Accept" />
-				
-			</OverflowToolbar>
-		</footer>
+      
 	</Page>
 </mvc:View>

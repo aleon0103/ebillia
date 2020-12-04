@@ -23,6 +23,7 @@ sap.ui.define([
         getProveedores: function(){
             var poModel = this.getModel("cotizacionesModel");
                 poModel.setProperty('/busy', true);
+                poModel.setProperty('/okSend', false);
                 poModel.setProperty('/selected', 0);
                 poModel.setProperty('/posiciones', []);
             var path = API.serviceList().GET_PROVEEDORES;
@@ -104,6 +105,11 @@ sap.ui.define([
             var poModel = this.getModel("cotizacionesModel");
             poModel.setProperty('/selected', aContexts.length);
             poModel.setProperty('/posiciones', seleccion);
+            if (seleccion.length>0) {
+                poModel.setProperty('/okSend', true);
+            }else{
+                 poModel.setProperty('/okSend', false);
+            }
 			oInfoToolbar.setVisible(bSelected);
             oLabel.setText(sText);
             console.log(seleccion);
