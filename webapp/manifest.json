@@ -145,6 +145,23 @@
                     ]
                 },
                 {
+                    "name": "CargarComplementos",
+                    "pattern": "CargarComplementos/{param}",
+                    "target": [
+                         "masterComplementUpload",
+                        "detailComplementUpload"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "cargarComplementosDetail/{item}/{isSelected}",
+                    "name": "cargarComplementosDetail",
+                    "target": [
+                        "masterComplementUpload",
+                        "detailComplementUpload"
+                    ]
+                },
+                {
                     "name": "settings",
                     "pattern": "systemSettings",
                     "target": [
@@ -152,7 +169,7 @@
                     ],
                     "controlId": "mainContents"
                 },
-                 {
+                {
                     "name": "ReporteComplemnetosPendientesCarga",
                     "pattern": "ReporteComplemnetosPendientesCarga",
                     "target": [
@@ -190,6 +207,13 @@
 						"masterASN",
 						"detailASN"
 					]
+                },
+                {
+                    "name": "SolicitudlistaPrecios",
+                    "pattern": "SolicitudlistaPrecios",
+                    "target": [
+                        "crearCotizacion"
+                    ]
                 }
                 
             ],
@@ -260,6 +284,25 @@
                     "controlAggregation": "midColumnPages",
                     "parent": "appInvoiceUpload"
                 },
+                "complementUpload": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "complements.ComplementUpload"
+                },
+                "masterComplementUpload": {
+                    "viewName": "complements.MasterUpload",
+                    "controlId": "layoutComplement",
+                    "parent": "complementUpload",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementUpload": {
+                    "viewName": "complements.DetailUpload",
+                    "controlId": "layoutComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementUpload"
+                },
                 "settings": {
                     "parent": "TargetMain",
                     "viewType": "XML",
@@ -315,8 +358,16 @@
                     "controlId": "layoutASN",
                     "controlAggregation": "midColumnPages",
                     "parent": "appASN"
+                },
+                "crearCotizacion": {
+                    "viewName": "cotizaciones.SolicitudCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
                 }
-               
             }
         }
     }

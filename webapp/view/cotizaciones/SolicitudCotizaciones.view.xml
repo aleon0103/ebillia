@@ -1,0 +1,47 @@
+<mvc:View
+	controllerName="ns.EBilliaApp.controller.cotizaciones.SolicitudCotizaciones"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	height="100%">
+	<Page showHeader="false" >
+		<subHeader>
+			<OverflowToolbar>
+                
+				<SearchField liveChange=".onSearch" width="100%" />
+                
+			</OverflowToolbar>
+            
+		</subHeader>
+        
+		<List
+			id="idList"
+			items="{cotizacionesModel>/proveedores}"
+			selectionChange=".onSelectionChange"
+			mode="MultiSelect"
+			growing="true"
+            busy="{cotizacionesModel>/busy}"
+			growingThreshold="50"
+			includeItemInSelection="true">
+            
+			<infoToolbar>
+				<OverflowToolbar visible="false" id="idInfoToolbar">
+					<Label id="idFilterLabel" />
+                    <Label text="{i18n>seleccionados}" />
+				</OverflowToolbar>
+			</infoToolbar>
+			<StandardListItem
+				title="{cotizacionesModel>lifnr}"
+				description="{cotizacionesModel>name1}"
+				iconDensityAware="false"
+				iconInset="false" />
+		</List>
+        <footer>
+			<OverflowToolbar>
+                <Label text="{cotizacionesModel>/selected} {i18n>seleccionados}"/>
+				<ToolbarSpacer/>
+				<Button text="{i18n>send}"  press="sendData" type="Accept" />
+				
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>
