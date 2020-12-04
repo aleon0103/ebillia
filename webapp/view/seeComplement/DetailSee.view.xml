@@ -75,7 +75,7 @@
                         </VBox>
                     </IconTabFilter>
                     <IconTabFilter text="{i18n>adjuntos}" icon="sap-icon://documents">
-                        <List headerText="Archivos adjuntos" mode="None" >
+                        <List headerText="{i18n>archivosAdjuntos}" mode="None" >
                             <CustomListItem>
                                 <HBox>
                                     <core:Icon size="2rem" src="sap-icon://document" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
@@ -83,8 +83,6 @@
                                         <Link text="Nombre" target="" press="handlePress"/>
                                         <Label text="ID"/>
                                     </VBox>
-                                    <ToolbarSpacer/>
-                                    <Button icon="sap-icon://download" type="Transparent" press="onPress"/>
                                 </HBox>
                             </CustomListItem>
                         </List>
