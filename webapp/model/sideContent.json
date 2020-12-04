@@ -203,7 +203,7 @@
          "20":{
 			"titleI18nKey": "VerComplementos",
 			"icon": "sap-icon://customize",
-			"key": "verComplementos"
+			"key": "VerComplementos/true"
         },
           
          "22":{

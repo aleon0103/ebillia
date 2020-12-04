@@ -46,6 +46,16 @@ sap.ui.define([
             });
 			return oModel;
         },
+
+        layoutComplementModel: function () {
+            var oModel = new JSONModel({
+                fullScreen: true,
+                exitFullScreen: null,
+                closeColumn: true,
+                layout: "TwoColumnsMidExpanded"
+            });
+			return oModel;
+        }
         
         
 

@@ -103,27 +103,23 @@
                 </ScrollContainer>
 			</l:VerticalLayout>
 		</semantic:content>
-		<!-- <semantic:sendEmailAction>
-			<semantic:SendEmailAction
-				id="shareEmail"
-				press=".onSendEmailPress"/>
-		</semantic:sendEmailAction> -->
 		<semantic:closeAction>
 			<semantic:CloseAction
 				id="closeColumn"
-				press=".onCloseDetailPress"/>
+                visible="{= ${layoutComplementModel>/closeColumn} !== null ? true : false}"
+				press="handleClose"/>
 		</semantic:closeAction>
 		<semantic:fullScreenAction>
 			<semantic:FullScreenAction
 				id="enterFullScreen"
-				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				visible="{= ${layoutComplementModel>/fullScreen} !== null ? true : false}"
+				press="handleFullScreen"/>
 		</semantic:fullScreenAction>
 		<semantic:exitFullScreenAction>
 			<semantic:ExitFullScreenAction
 				id="exitFullScreen"
-				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				visible="{= ${layoutComplementModel>/exitFullScreen} !== null ? true : false}"
+				press="handleExitFullScreen"/>
 		</semantic:exitFullScreenAction>
         <semantic:footerCustomActions>
 			<Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>

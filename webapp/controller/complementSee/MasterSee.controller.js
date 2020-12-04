@@ -17,7 +17,7 @@ sap.ui.define([
             NumberFormat, DateFormat) {
         "use strict";
         return BaseController.extend("ns.EBilliaApp.controller.MasterSee", {
-
+            layoutModel: null,
             onInit: function () {
 
                 var oModelFacturas = new JSONModel({
@@ -32,8 +32,23 @@ sap.ui.define([
 
             },
 
+            onAfterRendering: function () {
+                this.layoutModel = this.getModel("layoutComplementModel");
+            },
+
             _routePatternMatched: function (oEvent) {
-                this.onRefresh();
+                var oArguments = oEvent.getParameter("arguments");
+                var oList = this.byId("list");
+                var param = JSON.parse(oArguments.param);
+
+                if (param) {
+                    this.onRefresh();
+                    this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
+                    this.layoutModel.setProperty("/exitFullScreen", null);
+                    this.layoutModel.setProperty("/fullScreen", true);
+                } else {
+                    oList.removeSelections(true);
+                }
             },
 
             _getComplementos: function (fechaAtras, fechaHoy) {

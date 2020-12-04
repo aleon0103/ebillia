@@ -46,7 +46,7 @@
 
 
 
-                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
+                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" submit="goToMain" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
 
 
 
@@ -70,7 +70,7 @@
 
 
 
-                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
+                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" submit="goToMain" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
 
 
 

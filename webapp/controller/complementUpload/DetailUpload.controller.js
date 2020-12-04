@@ -23,6 +23,7 @@ sap.ui.define([
             objectTable: null,
             filePDF: null,
             fileXML: null,
+            layoutModel: null,
             onInit: function () {
 
                 var oModel = new JSONModel({
@@ -38,6 +39,7 @@ sap.ui.define([
             },
 
             onAfterRendering: function () {
+                this.layoutModel = this.getModel("layoutComplementModel");
                 var oModelUser = this.getModel("user").getData();
                 var modelDetail = this.getModel("detailView");
                 modelDetail.setProperty("/nombreProveedor", oModelUser.nombre);
@@ -57,6 +59,7 @@ sap.ui.define([
                     this._updateListCheck(isSelected);
                 }
 
+                this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
                 this._addRowTable(isSelected);
             },
 
@@ -291,6 +294,23 @@ sap.ui.define([
                 }
 
                 modelDetail.refresh(true);   
+            },
+
+            handleClose: function () {
+                this.layoutModel.setProperty("/layout", "OneColumn");
+                this.getRouter().navTo("CargarComplementos", { param: false }, true);
+            },
+
+            handleFullScreen: function () {
+                this.layoutModel.setProperty("/layout", "MidColumnFullScreen");
+                this.layoutModel.setProperty("/exitFullScreen", true);
+                this.layoutModel.setProperty("/fullScreen", null);
+            },
+
+            handleExitFullScreen: function () {
+                this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
+                this.layoutModel.setProperty("/exitFullScreen", null);
+                this.layoutModel.setProperty("/fullScreen", true);
             }
         });
     })

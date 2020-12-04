@@ -19,7 +19,7 @@ sap.ui.define([
         return BaseController.extend("ns.EBilliaApp.controller.MasterUpload", {
             dateFormattedFinish: null,
             dateFormattedToday: null,
-
+            layoutModel: null,
             onInit: function () {
                 this.dateFormattedFinish = "";
                 this.dateFormattedToday = "";
@@ -36,6 +36,10 @@ sap.ui.define([
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("CargarComplementos").attachPatternMatched(this._routePatternMatched, this);
 
+            },
+
+            onAfterRendering: function () {
+                this.layoutModel = this.getModel("layoutComplementModel");
             },
 
             _routePatternMatched: function (oEvent) {
@@ -60,6 +64,9 @@ sap.ui.define([
                 
                 if (updateList) {
                     this.onRefresh();
+                    this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
+                    this.layoutModel.setProperty("/exitFullScreen", null);
+                    this.layoutModel.setProperty("/fullScreen", true);
                 }
                 
             },

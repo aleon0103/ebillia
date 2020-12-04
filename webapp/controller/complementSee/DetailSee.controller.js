@@ -20,14 +20,14 @@ sap.ui.define([
         return BaseController.extend("ns.EBilliaApp.controller.DetailSee", {
             arrImports: [],
             objectItem: null,
+            layoutModel: null,
             onInit: function () {
-
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("VerComplementosDetail").attachPatternMatched(this._routePatternMatched, this);
-
             },
 
             onAfterRendering: function () {
+                this.layoutModel = this.getModel("layoutComplementModel");
                 var oModelUser = this.getModel("user").getData();
                 var modelDetail = this.getModel("mDetailSeeComplement");
                 modelDetail.setProperty("/nombreProveedor", oModelUser.nombre);
@@ -53,6 +53,7 @@ sap.ui.define([
 
                 modelDetail.setProperty("/info", this.objectItem);
                 modelDetail.setProperty("/Count", this.objectItem.listaPagosRelacionados.length);
+                this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
                 console.log(this.objectItem);
                 this._getFiles();
             },
@@ -81,9 +82,26 @@ sap.ui.define([
                     });
             },
 
-            handlePress: function (evt) {
+            handlePressLink: function (evt) {
                 var sSrc = evt.getSource().getTarget();
                 console.log(sSrc);
+            },
+
+            handleClose: function () {
+                this.layoutModel.setProperty("/layout", "OneColumn");
+                this.getRouter().navTo("VerComplementos", { param: false }, true);
+            },
+
+            handleFullScreen: function () {
+                this.layoutModel.setProperty("/layout", "MidColumnFullScreen");
+                this.layoutModel.setProperty("/exitFullScreen", true);
+                this.layoutModel.setProperty("/fullScreen", null);
+            },
+
+            handleExitFullScreen: function () {
+                this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
+                this.layoutModel.setProperty("/exitFullScreen", null);
+                this.layoutModel.setProperty("/fullScreen", true);
             }
         });
     })

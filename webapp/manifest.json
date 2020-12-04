@@ -163,7 +163,7 @@
                 },
                 {
                     "name": "VerComplementos",
-                    "pattern": "VerComplementos",
+                    "pattern": "VerComplementos/{param}",
                     "target": [
                          "masterComplementSee",
                         "detailComplementSee"
