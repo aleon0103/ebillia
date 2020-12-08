@@ -31,6 +31,8 @@ sap.ui.define([
         DELETE_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/borrar-hm',
         CREATE_MONEDAS: '/portal_cloud_api/masterdata-services/moneda/insertar-moneda',
         CREATE_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/insertar-hm',
+        GET_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotificationsEnviadas/',
+        GET_FILE_COTIZACION: '/portal_cloud_api/logistic-services/quotation/getFile'
     };
     return {
 

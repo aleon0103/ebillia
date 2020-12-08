@@ -1,0 +1,123 @@
+<mvc:View
+	controllerName="ns.EBilliaApp.controller.cotizaciones.VerCotizaciones"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+	xmlns:semantic="sap.f.semantic">
+	<semantic:SemanticPage id="page">
+		<semantic:titleHeading>
+			<Title
+				id="masterHeaderTitle"
+			 	text="{
+					parts: [
+						'i18n>cotizaciones',
+						'cotizacionesModel>/Count'
+					],
+					formatter: 'jQuery.sap.formatMessage'
+			}"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+			<List
+				id="list"
+				width="auto"
+				class="sapFDynamicPageAlignContent"
+				items="{
+					path: 'cotizacionesModel>/listado',
+					parameters: {expand: 'Customer'},
+					
+					groupHeaderFactory: '.createGroupHeader'
+				}"
+				noDataText="{masterView>/noDataText}"
+				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished"
+                busy="{cotizacionesModel>/busy}"
+                >
+			
+				<headerToolbar>
+
+					<OverflowToolbar>
+                        <ToolbarSpacer></ToolbarSpacer>
+						<SearchField
+							id="searchField"
+							showRefreshButton="true"
+							tooltip="{i18n>search}"
+							width="100%"
+							search=".onSearch">
+							<layoutData>
+								<OverflowToolbarLayoutData
+									minWidth="150px"
+									maxWidth="240px"
+									shrinkable="true"
+									priority="NeverOverflow"/>
+							</layoutData>
+						</SearchField>
+						
+					</OverflowToolbar>
+				</headerToolbar>
+				<items>
+					<ObjectListItem
+						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
+						press=".onSelectionChange"
+						title="{
+                            parts: [
+                                'i18n>noCotizacion',
+                                'cotizacionesModel>idInbox'
+                            ]
+                        }"
+                           
+                        >
+						<firstStatus>
+                            <ObjectStatus
+                                text="{cotizacionesModel>estatus}"
+                                state="{
+                                    path: 'cotizacionesModel>estatus',
+                                    formatter: '.formatter.POEMState'
+                                }" />
+                                
+                        </firstStatus>
+						<attributes>
+							<ObjectAttribute 
+                                id="fecha" 
+                                text="{
+                                    parts:[
+                                            'i18n>fechaM',
+                                            'cotizacionesModel>fecha_modificacion'
+                                        ]
+                                    }" 
+                            />
+                            <ObjectAttribute 
+                                id="usuario" 
+                                text="{
+                                    parts:[
+                                        'i18n>solicitante',
+                                        'cotizacionesModel>usuario_solicitante'
+                                    ]
+                                }"
+                            />
+                            <ObjectAttribute 
+                                id="desc" 
+                                text="{
+                                    parts:[
+                                        'i18n>notas',
+                                        'cotizacionesModel>descripcion'
+                                    ]
+                                }"
+                            />
+                            <ObjectAttribute>
+                                <!-- <Button icon="sap-icon://download" tooltip="{i18n>download}" visible="{cotizacionesModel>download}" press="download"/> -->
+                            </ObjectAttribute>
+                            <ObjectAttribute
+                                text="{i18n>downloadC}"
+                                active="true"
+                                visible="{cotizacionesModel>download}"
+                                press="download" />
+						</attributes>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>

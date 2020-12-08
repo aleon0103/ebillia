@@ -216,6 +216,13 @@
                     ]
                 },
                 {
+                    "name": "ConfirmarListaPrecios",
+                    "pattern": "ConfirmarListaPrecios",
+                    "target": [
+                        "verCotizaciones"
+                    ]
+                },
+                {
                     "name": "configMonedas",
                     "pattern": "configMonedas",
                     "target": [
@@ -368,6 +375,15 @@
                 },
                 "crearCotizacion": {
                     "viewName": "cotizaciones.SolicitudCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "verCotizaciones": {
+                    "viewName": "cotizaciones.VerCotizaciones",
                     "parent": "TargetMain",
 					"viewType": "XML",
 					"transition": "slide",
