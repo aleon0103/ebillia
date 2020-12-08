@@ -25,7 +25,12 @@ sap.ui.define([
         GET_EXCEL_ASN:'/portal_cloud_api/logistic-services/asn/getAsnExcel/',
         GET_PDF_ASN:'/portal_cloud_api/logistic-services/asn/generarPDFAsn/',
         CREATE_COTIZACION:'/portal_cloud_api/logistic-services/quotation/createNotification',
-        
+        GET_MONEDAS:'/portal_cloud_api/masterdata-services/moneda/obtener-moneda-por-modulo?modulo=P',
+        GET_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/obtener-hm',
+        DELETE_MONEDAS: '/portal_cloud_api/masterdata-services/moneda/borrar-moneda',
+        DELETE_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/borrar-hm',
+        CREATE_MONEDAS: '/portal_cloud_api/masterdata-services/moneda/insertar-moneda',
+        CREATE_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/insertar-hm',
     };
     return {
 
@@ -78,6 +83,7 @@ sap.ui.define([
         },
 
         Post: function (url, data, callback) {
+            console.log(url);
             console.log(data)
             return $.ajax({
                 data: JSON.stringify(data),
@@ -124,7 +130,22 @@ sap.ui.define([
                 contentType: "application/json; charset=utf-8",
                 data: data,
             })
-        }
+        },
+        PostData: function (url, data, callback) {
+            console.log(url);
+            console.log(data)
+            return $.ajax({
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: "POST",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+url,
+            })
+
+
+        },
 
     };
 

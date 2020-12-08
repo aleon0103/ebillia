@@ -214,6 +214,13 @@
                     "target": [
                         "crearCotizacion"
                     ]
+                },
+                {
+                    "name": "configMonedas",
+                    "pattern": "configMonedas",
+                    "target": [
+                        "currency"
+                    ]
                 }
                 
             ],
@@ -361,6 +368,15 @@
                 },
                 "crearCotizacion": {
                     "viewName": "cotizaciones.SolicitudCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "currency": {
+                    "viewName": "currency.Currency",
                     "parent": "TargetMain",
 					"viewType": "XML",
 					"transition": "slide",
