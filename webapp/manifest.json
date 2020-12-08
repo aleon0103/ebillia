@@ -252,6 +252,23 @@
 						"masterASN",
 						"detailASN"
 					]
+                },
+                {
+                    "name": "cancelarASN",
+                    "pattern": "cancelarASN",
+                    "target": [
+                        "masterCancelarASN",
+                        "detailCancelarASN"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "cancelarASN/{orderId}",
+                    "name": "cancelarASNDetail",
+                    "target": [
+                        "masterCancelarASN",
+                        "detailCancelarASN"
+                    ]
                 }
                 
             ],
@@ -453,6 +470,25 @@
                     "controlId": "layoutASN",
                     "controlAggregation": "midColumnPages",
                     "parent": "appASN"
+                },
+                "revokeAsn": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutRevokeAsn",
+                    "controlId": "pageContainer",
+                    "viewName": "revokeAsn.RevokeAsn"
+                },
+                "masterCancelarASN": {
+                    "viewName": "revokeAsn.MasterRevokeAsn",
+                    "controlId": "layoutRevokeAsn",
+                    "parent": "revokeAsn",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailCancelarASN": {
+                    "viewName": "revokeAsn.DetailRevokeAsn",
+                    "controlId": "layoutRevokeAsn",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "revokeAsn"
                 }
                 
             }

@@ -26,7 +26,10 @@ sap.ui.define([
         GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
         PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
         GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
-        GET_ASN:'/portal_cloud_api/logistic-services/asn/'
+        GET_ASN:'/portal_cloud_api/logistic-services/asn/',
+        GET_ALL_ASN: '/portal_cloud_api/logistic-services/asn/getAllAsn/',
+        GET_ASN_BY_NUMBER: '/portal_cloud_api/logistic-services/asn/getAsn/',
+        POST_ANULAR_ASN: '/portal_cloud_api/logistic-services/asn/anular/'
     };
     return {
 
