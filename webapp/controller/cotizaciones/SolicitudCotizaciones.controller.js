@@ -33,7 +33,7 @@ sap.ui.define([
                         if (respJson.sapProveedor) {
                             
                              poModel.setProperty("/proveedores", respJson.sapProveedor)
-                              
+                        
                         }else{
                              poModel.setProperty("/proveedores", [])
                         }
@@ -43,8 +43,10 @@ sap.ui.define([
                         console.log("error in processing your request", err);
                     });
 
+               
+
         },
-        sendData: function (){
+        sendData: async function (){
             var oModel = this.getModel("user");
             var userId = oModel.getProperty('/id');
 
@@ -58,15 +60,17 @@ sap.ui.define([
             poModel.setProperty('/busy', true);
 
             var path = API.serviceList().CREATE_COTIZACION+`?userId=${userId}&ids=${ids}`;
-                API.Post(path, null).then(
+            await API.PostData(path, null).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
                         MessageToast.show(respJson.message)
-                        this.getProveedores()
+                        
                     }, function (err) {
                         poModel.setProperty('/busy', false);
                         console.log("error in processing your request", err);
                     });
+            this.getProveedores()
+            
         },
 		onSearch: function (oEvent) {
 			// add filter for search
@@ -89,7 +93,6 @@ sap.ui.define([
 			var oInfoToolbar = this.byId("idInfoToolbar");
 
 			console.log(oList._aSelectedPaths);
-            oList.s
 			var aContexts = oList.getSelectedContexts(true);
             console.log(aContexts);
             var seleccion = []

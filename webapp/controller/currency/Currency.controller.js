@@ -98,32 +98,26 @@ sap.ui.define([
             this.confirmDelete(moneda, id)
         },
         confirmDelete: function (moneda, id) {
-			MessageBox.confirm("¿Seguro de borrar "+ moneda + "?", {
-				actions: ["Aceptar", MessageBox.Action.CLOSE],
-				emphasizedAction: "Aceptar",
-				onClose: function (sAction) {
-                    if (sAction == 'Aceptar') {
-                        this.deleteItem(id)
-                    }
-					
-				}
-			});
+			
+                this.deleteItem(id)
+            
 		},
-        deleteItem: function (id){
+        deleteItem: async function (id){
 
             var poModel = this.getModel("currencyModel");
             poModel.setProperty('/busy', true);
 
             var path = API.serviceList().DELETE_MONEDAS+`?idMoneda=${id}`;
-                API.Put(path, null).then(
+             await   API.Put(path, null).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
-                        MessageToast.show(respJson.result.message)
-                        this.getMonedas()
+                        MessageToast.show(respJson.result.mensaje)
+                        
                     }, function (err) {
                         poModel.setProperty('/busy', false);
                         console.log("error in processing your request", err);
                     });
+            this.getMonedas()
         },
         handleDetailsPressH : function(oEvent) {
             var moneda = oEvent.getSource().getBindingContext("currencyModel").getProperty('hmoneda');
@@ -132,32 +126,33 @@ sap.ui.define([
             this.confirmDeleteH(moneda, id)
         },
         confirmDeleteH: function (moneda, id) {
-			MessageBox.confirm("¿Seguro de borrar "+ moneda + "?", {
-				actions: ["Aceptar", MessageBox.Action.CLOSE],
-				emphasizedAction: "Aceptar",
-				onClose: function (sAction) {
-                    if (sAction == 'Aceptar') {
+			// MessageBox.confirm("¿Seguro de borrar "+ moneda + "?", {
+			// 	actions: ["Aceptar", MessageBox.Action.CLOSE],
+			// 	emphasizedAction: "Aceptar",
+			// 	onClose: function (sAction) {
+            //         if (sAction == 'Aceptar') {
                         this.deleteItemH(id)
-                    }
+            //         }
 					
-				}
-			});
+			// 	}
+			// });
 		},
-        deleteItemH: function (id){
+        deleteItemH:async function (id){
 
             var poModel = this.getModel("currencyModel");
             poModel.setProperty('/busy', true);
 
             var path = API.serviceList().DELETE_HOMOLOGACION+`?idHomologacion=${id}`;
-                API.Put(path, null).then(
+             await   API.Put(path, null).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
                         MessageToast.show(respJson.result.message)
-                        this.getHomologacion()
+                        
                     }, function (err) {
                         poModel.setProperty('/busy', false);
                         console.log("error in processing your request", err);
                     });
+            this.getHomologacion()
         },
         handleDialogCreatePress: function (oEvent) {
 			var poModel = this.getModel("currencyModel");
@@ -181,7 +176,7 @@ sap.ui.define([
             this._createCurrency(modelo)
             
         },
-        _createCurrency: function (datos){
+        _createCurrency: async function (datos){
             const body = {
                 'descripcionMoneda': datos.identificador,
                 'codigoMoneda': datos.codigo,
@@ -197,15 +192,16 @@ sap.ui.define([
             poModel.setProperty('/form', false);
             poModel.setProperty('/noform', true);
             var path = API.serviceList().CREATE_MONEDAS;
-                API.PostData(path, body).then(
+              await  API.PostData(path, body).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
                         MessageToast.show(respJson.result.mensaje)
-                        this.getMonedas()
+                        
                     }, function (err) {
                         poModel.setProperty('/busy', false);
                         console.log("error in processing your request", err);
                     });
+            this.getMonedas()
         },
         handleDialogCreatePressH: function (oEvent) {
 			var poModel = this.getModel("currencyModel");
@@ -229,7 +225,7 @@ sap.ui.define([
             this._createCurrencyH(modelo)
             
         },
-        _createCurrencyH: function (datos){
+        _createCurrencyH: async function (datos){
            
             var poModel = this.getModel("currencyModel");
             const objModelH = {
@@ -240,15 +236,16 @@ sap.ui.define([
             poModel.setProperty('/formH', false);
             poModel.setProperty('/noformH', true);
             var path = API.serviceList().CREATE_HOMOLOGACION+ `?descripcionMoneda=${datos.identificador}&hMoneda=${datos.codigo}`;
-                API.PostData(path, null).then(
+            await API.PostData(path, null).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
                         MessageToast.show(respJson.result.mensaje)
-                        this.getHomologacion()
+                        
                     }, function (err) {
                         poModel.setProperty('/busy', false);
                         console.log("error in processing your request", err);
                     });
+            this.getHomologacion()
         }
 		
 		

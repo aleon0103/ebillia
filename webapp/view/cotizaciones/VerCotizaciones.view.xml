@@ -93,7 +93,7 @@
                                 text="{
                                     parts:[
                                         'i18n>solicitante',
-                                        'cotizacionesModel>usuario_solicitante'
+                                        'cotizacionesModel>usuario_procesador'
                                     ]
                                 }"
                             />

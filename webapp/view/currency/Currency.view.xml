@@ -50,7 +50,7 @@
                                 </template>
                             </Column>
                             <Column hAlign="End">
-                                <m:Label text="Quantity"/>
+                                <m:Label text=""/>
                                 <template>
                                     <m:Button icon="sap-icon://delete" tooltip="{i18n>borrar}" press="handleDetailsPress"/>
                                 </template>
@@ -106,7 +106,7 @@
                                 </template>
                             </Column>
                             <Column hAlign="End">
-                                <m:Label text="Quantity"/>
+                                <m:Label text=""/>
                                 <template>
                                     <m:Button icon="sap-icon://delete" tooltip="{i18n>borrar}" press="handleDetailsPressH"/>
                                 </template>

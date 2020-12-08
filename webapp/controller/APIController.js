@@ -149,6 +149,19 @@ sap.ui.define([
 
         },
 
+        GetFile: function (path, callback) {
+            console.log(path);
+            return $.ajax({
+                method: "GET",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+path,
+                responseType: 'arraybuffer',
+               
+            })
+        },
+
     };
 
 });
