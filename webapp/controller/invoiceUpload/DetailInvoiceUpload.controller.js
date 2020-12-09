@@ -5,9 +5,11 @@ sap.ui.define([
     "../../model/formatter",
     "sap/ui/model/json/JSONModel",
     'sap/m/MessageToast',
-    "sap/ui/Device"
+    "sap/ui/Device",
+    	"sap/ui/core/Fragment"
+
 ],
-    function (BaseController, API, formatter, JSONModel, MessageToast, Device) {
+    function (BaseController, API, formatter, JSONModel, MessageToast, Device,Fragment) {
         "use strict";
 
         return BaseController.extend("ns.EBilliaApp.controller.DetailInvoiceUpload", {
@@ -24,7 +26,7 @@ sap.ui.define([
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("cargaFacturaDetail").attachPatternMatched(this._routePatternMatched, this);
-               
+
 
             },
 
@@ -42,7 +44,7 @@ sap.ui.define([
                 } else {
                     console.log("ORDER NO SELECTED ");
 
-                   // this.getRouter().getTargets().display("detailObjectNotFound");
+                    // this.getRouter().getTargets().display("detailObjectNotFound");
                 }
 
                 console.log(this.getModel("invoiceUpload"));
@@ -75,7 +77,7 @@ sap.ui.define([
 
                     if (item.getSelected() == true) {
                         console.log("item selected");
-                       // console.log(item.getBindingContext("POdetailView").getObject())
+                        // console.log(item.getBindingContext("POdetailView").getObject())
                         var item = item.getBindingContext("POdetailView").getObject();
                         this._updateTempModel(item, 'push');
                     } else {
@@ -93,30 +95,54 @@ sap.ui.define([
             },
 
             _updateTempModel: function (item, method) {
-               // console.log(item);
+                // console.log(item);
                 var oInvoiceModel = this.getModel("invoiceUpload");
                 var originalItems = oInvoiceModel.getProperty('/tempItems');
 
                 if (method == 'push') {
-                       if (originalItems.filter(itemb=> itemb == item).length == 0){
-                   originalItems.push(item);
-        }
-                    
-                }else if(method == 'delete'){
-                originalItems = originalItems.filter(x => x  !== item)
+                    if (originalItems.filter(itemb => JSON.stringify(itemb) === JSON.stringify(item)).length == 0) {
+                        originalItems.push(item);
+                    }
+
+                } else if (method == 'delete') {
+                    originalItems = originalItems.filter(x => JSON.stringify(x) !== JSON.stringify(item))
 
                 }
 
                 oInvoiceModel.setProperty('/tempItems', originalItems);
-                 oInvoiceModel.setProperty('/selectedCount', originalItems.length);
+                oInvoiceModel.setProperty('/selectedCount', originalItems.length);
 
-                
+
                 //console.log(oInvoiceModel);
 
             },
 
             _configureTable: function () {
-                this.byId("lineItemsList").removeSelections(true);
+                console.log('configurando tabla');
+                 this.byId("lineItemsList").removeSelections(true);
+                 var oInvoiceModel = this.getModel("invoiceUpload");
+                 var tempItems = oInvoiceModel.getProperty('/tempItems');
+                 var itemArray = this.byId("lineItemsList").getItems();
+
+                 console.log(tempItems,itemArray);
+
+                for (var item of itemArray) {
+                  var itemObj=  item.getBindingContext("POdetailView").getObject();
+                  console.log(itemObj)
+
+                  if (tempItems.filter(itemb => JSON.stringify(itemb) === JSON.stringify(itemObj)).length == 0) {
+                       // se encontro item marcar
+                       console.log('Item no encontrado');
+                       //marcar check
+                       
+                    }else{
+                        console.log('item  encontrado');
+                        item.setSelected(true);
+                    }
+                }
+
+
+
 
             },
 
@@ -171,13 +197,41 @@ sap.ui.define([
                         console.log("error in processing your request", err);
                     });
             },
-            onCountPress: function(){
- this.getRouter().getTargets().display("detailObjectNotFound");
-console.log(this.getRouter());
+            onCountPress: function () {
+                this.getRouter().getTargets().display("detailObjectNotFound");
+                console.log(this.getRouter());
                 console.log('on count press');
-        
 
+
+            },
+            onShowResumeTable:function (){
+
+             if (!this._oEMHelpDialog) {
+				Fragment.load({
+					name: "ns.EBilliaApp.view.invoice.uploadInvoiceDialog",
+					controller: this
+				}).then(function (oValueHelpDialog) {
+					this._oEMHelpDialog = oValueHelpDialog;
+					this.getView().addDependent(this._oEMHelpDialog);
+					//this._configValueHelpDialog();
+					this._oEMHelpDialog.open();
+				}.bind(this));
+			} else {
+				//this._configValueHelpDialog();
+				this._oEMHelpDialog.open();
             }
+        },
+
+        onChangeFileUpload:function(oEvent){
+
+console.log(oEvent.getSource());
+        },
+
+        onBeforeUploadStarts:function(oEvent){
+            console.log('before upload on')
+            console.log(oEvent.getSource());
+
+        }
 
 
         });

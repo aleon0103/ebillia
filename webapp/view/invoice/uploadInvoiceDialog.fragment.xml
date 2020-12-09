@@ -1,0 +1,119 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+    xmlns:custom="ns.EBilliaApp.controls"
+    >
+	<Dialog
+		id="helloDialog"
+		title="{i18n>uploadInvoiceTitle}"
+        contentWidth="600px"
+       
+        >
+        <Table
+					id="resumetemsList"
+					class="sapUiSmallMarginTop"
+					width="auto"
+                    mode="Delete"
+					items="{invoiceUpload>/tempItems}"
+					>
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title
+								id="lineItemsHeader"
+								text="{i18n>EmListTitle}"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Text text="{i18n>detailLineItemTablePOColumn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>detailLineItemTableEMColumn}"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="{i18n>detailLineItemTableUnitQuantityColumn}"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="{i18n>detailLineItemTableTotalColumn}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier
+			
+									text="{invoiceUpload>num_doc_comp}"/>
+
+                                    <ObjectIdentifier
+			
+									text="{invoiceUpload>fecha_cont}"/>
+
+                                           <ObjectIdentifier
+			
+									text="{invoiceUpload>num_doc_material}"/>
+								
+								
+                                    	<ObjectNumber
+									number="{
+										path: 'invoiceUpload>cantidad'
+										
+									}"
+									unit="{invoiceUpload>unidad}"/>
+								<ObjectNumber
+									number="{
+                                        path:'invoiceUpload>importe'
+						
+										
+									}"
+									unit="{invoiceUpload>clave_moneda}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+
+                <custom:CustomUploadCollection
+    id="UploadCollection"
+    class="sapUiSmallMarginTop"
+    noDataText=""
+    noDataDescription="{i18n>fileTextXmlandPdf}"
+    maximumFileSize="10"
+    multiple="false"
+    sameFilenameAllowed="false"
+    instantUpload="false"
+    change="onChangeFileUpload"
+    fileDeleted="onFileDeleted"
+    filenameLengthExceed="onFilenameLengthExceed"
+    fileSizeExceed="onFileSizeExceed"
+    typeMissmatch="onTypeMissmatch"
+    uploadComplete="onUploadComplete"
+    beforeUploadStarts="onBeforeUploadStarts"
+    fileType = "pdf,xml"
+    >
+</custom:CustomUploadCollection>
+
+
+
+
+
+
+  <beginButton>
+         <Button
+            text="{i18n>cargar}"
+            press="onCloseDialog"/>
+      </beginButton>
+        <endButton>
+         <Button
+            text="{i18n>cancelar}"
+            press="onCloseDialog"/>
+      </endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -70,9 +70,9 @@ sap.ui.define([
                 this._sObjectId = oArguments.orderId;
                 console.log(this._sObjectId);
                 var oViewModel = this.getModel("poMain")
-                var oInvoiceModel = this.getModel("invoiceUpload");
+                var oInvoiceModel = this.getModel("POdetailView");
 
-                if (oInvoiceModel && oInvoiceModel.getProperty("/orderSelected")) {
+                if (oViewModel && oViewModel.getProperty("/orderSelected")) {
                     console.log("ORDER SELECTED");
                 } else {
                     console.log("ORDER NO SELECTED ");
@@ -80,9 +80,9 @@ sap.ui.define([
                     // this.getRouter().getTargets().display("detailObjectNotFound");
                 }
 
-                console.log(this.getModel("invoiceUpload"));
+                console.log(this.getModel("POdetailView"));
 
-                oViewModel.setProperty("/orderId", this._sObjectId);
+                oInvoiceModel.setProperty("/orderId", this._sObjectId);
                 // gets called for ...#/
                 // gets called for ...#/products/
                 // gets called for ...#/products/Product/<productId>
@@ -158,6 +158,12 @@ sap.ui.define([
                 var oViewModel = this.getModel("poMain")
                 oViewModel.setProperty('/layout', 'TwoColumnsMidExpanded')
 
+
+            },
+            onCloseDetailPress: function () {
+                var oViewModel = this.getModel("poMain");
+                oViewModel.setProperty("/layout", "OneColumn");
+                this.getRouter().navTo("POConfirm");
 
             },
 
@@ -247,7 +253,7 @@ sap.ui.define([
 
                                 item.getCells()[8].setValue('');
 
-                                console.log('sol cambio fecha',rowData);
+                                console.log('sol cambio fecha', rowData);
                                 if (rowData.fecharPropuesta == '' || !rowData.fecharPropuesta) {
 
                                     item.setHighlight('Error');
@@ -255,10 +261,10 @@ sap.ui.define([
                                     item.getCells()[10].setState('Error');
                                     item.getCells()[10].setText(oBundle.getText("emptySuggestedDate"));
                                     isOrderValid = false;
-                                }else{
-                                item.setHighlight('None');
-                                item.getCells()[10].setState('None');
-                                item.getCells()[10].setText('');
+                                } else {
+                                    item.setHighlight('None');
+                                    item.getCells()[10].setState('None');
+                                    item.getCells()[10].setText('');
                                 }
 
                             } else if (rowData.nombreMotivo == "Solicitud de modificación de cantidad de reparto") {
@@ -271,10 +277,10 @@ sap.ui.define([
 
                                     isOrderValid = false;
 
-                                }else{
-                                item.setHighlight('None');
-                                item.getCells()[10].setState('None');
-                                item.getCells()[10].setText('');
+                                } else {
+                                    item.setHighlight('None');
+                                    item.getCells()[10].setState('None');
+                                    item.getCells()[10].setText('');
                                 }
 
 
@@ -296,7 +302,7 @@ sap.ui.define([
 
                             }
 
-                            
+
 
                         } else {
                             item.setHighlight('None');
@@ -311,7 +317,7 @@ sap.ui.define([
 
                     if (isOrderValid) {
                         this.onApproveDialogPress();
-                    }else{
+                    } else {
 
 
                         //show dialog messaje 
@@ -323,6 +329,7 @@ sap.ui.define([
             },
 
             onApproveDialogPress: function () {
+                var that = this;
                 if (!this.oApproveDialog) {
                     this.oApproveDialog = new Dialog({
                         type: DialogType.Message,
@@ -332,7 +339,8 @@ sap.ui.define([
                             type: ButtonType.Emphasized,
                             text: "{i18n>ConfirmOrderTitle}",
                             press: function () {
-                               // MessageToast.show("Submit pressed!");
+                                // MessageToast.show("Submit pressed!");
+                                that._approveOrder();
                                 this.oApproveDialog.close();
                             }.bind(this)
                         }),
@@ -343,7 +351,7 @@ sap.ui.define([
                             }.bind(this)
                         })
                     });
-                     this.getView().addDependent(this.oApproveDialog);
+                    this.getView().addDependent(this.oApproveDialog);
                 }
 
                 //setear el modelo antes de abrirlo 
@@ -353,10 +361,139 @@ sap.ui.define([
 
             _approveOrder: function () {
 
+                var oViewModel = this.getModel("poMain")
+                var selectedOrder = oViewModel.getProperty("/orderSelected");
+
+                var me = this;
+                var oModel = this.getModel("user");
+                var rol = oModel.getProperty('/rol/id');
+                var userId = oModel.getProperty('/id');
+                var selProveedor = userId; // modificar para tomar el id del proveedor seleccioando 
+
+                var oDate = new Date();
+                var currentDate = sap.ui.core.format.DateFormat.getDateInstance({
+                    pattern: "yyyy-MM-dd"
+                }).format(oDate);
+                var posiciones = [];
+
+                var oList = this.byId("idProductsTable");
+                var itemArray = oList.getItems();
+                for (var item of itemArray) {
+
+                     var rowData = item.getBindingContext("POdetailView").getObject()
+
+                    let obj = {
+                        "bwart": "",
+                        "cantidad": rowData.cantidad,
+                        "clase_cond": "",
+                        "denominacion": "",
+                        "doc_ref": "",
+                        "ejerDocMatnr": "",
+                        "estatus": "",
+                        "fechaPrefEntrega": rowData.fechaEntregaPosicion,
+                        "idMaterial": rowData.idMaterial,
+                        "idOrdenDeCompra": rowData.num_doc_comp,
+                        "importePosOC": rowData.precio_neto,
+                        "indicadorIva": "",
+                        "noPosicion": rowData.num_pos_doc_comp,
+                        "posDocMatnr": "",
+                        "poscicion_doc": rowData.num_pos_doc_comp,
+                        "precioUnitario": rowData.precio_neto,
+                        "referencia": "",
+                        "texto_breve": rowData.descripcionMaterial,
+                        "tipocambio": "",
+                        "unidad": rowData.unidad,
+                        "zaehk": "",
+                        "motivo": rowData.nombreMotivo,
+                        "vam": rowData.valorMatriz,
+                        "confirmada": item.getSelected(),
+                        "fechaEntrega": rowData.fechaPropuesta,
+                        "cantidadPropuesta": rowData.cantidadPropuesta,
+                        "noReparto": rowData.noReparto
+                    }
+
+                    posiciones.push(obj);
 
 
 
-                
+
+                }
+
+
+                let body = {
+                    "centro": selectedOrder.centro,
+                    "clase_documento": selectedOrder.clase_documento,
+                    "condPago": selectedOrder.condPago,
+                    "dummy_nombre": selectedOrder.dummy_nombre,
+                    "dummy_rfc": selectedOrder.dummy_rfc,
+                    "estatus": selectedOrder.estatus,
+                    "fechaConfirma": currentDate,
+                    "fechaCreacion": currentDate,
+                    "idOrdenCompra": selectedOrder.idOrdenCompra,
+                    "idProveedor": selProveedor,
+                    "importeFactura": selectedOrder.importeFactura,
+                    "indicadorWebre": selectedOrder.indicadorWebre,
+                    "moneda": selectedOrder.moneda,
+                    "posiciones": posiciones,
+                    "requisitor": selectedOrder.requisitor,
+                    "sociedad": selectedOrder.sociedad,
+                    "tipoDeImputacion": selectedOrder.tipoDeImputacion,
+                    "tipo_op": selectedOrder.tipo_op,
+                    "tipocambio": selectedOrder.tipocambio,
+                    "totalOc": selectedOrder.totalOc,
+                    "txt_breve": selectedOrder.txt_breve,
+                    "wo_em": selectedOrder.wo_em
+                }
+
+                console.log(body);
+
+
+                var me = this;
+                var oModel = this.getModel("user");
+                var rol = oModel.getProperty('/rol/id');
+                var userId = oModel.getProperty('/id');
+                var selProveedor = userId; // modificar para tomar el id del proveedor seleccioando 
+
+
+                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/confirmacion/`
+                API.Put(path, body
+                ).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+
+                        //handle response and redirecto to main list
+
+                        /**
+                         * {message: "La orden de compra ha sido rechazada", errorMessage: null, data: {ENTREGA: null, E_MENSAJES: {TYPE: "S", MENSAJE: "Correo enviado"}}}
+                         */
+
+                        MessageBox.success(respJson.message, {
+                            onClose: function () {
+                                var oViewModel = me.getModel("poMain")
+                                oViewModel.setProperty("/layout", "OneColumn");
+
+                                me.getRouter().navTo("POConfirm");
+
+
+                            }
+                        });
+
+
+
+
+                    }, function (err) {
+                        console.log("error in processing your request", err);
+                        MessageBox.error(err.error.message)
+
+
+                    });
+
+
+
+
+
+
+
             },
 
 
