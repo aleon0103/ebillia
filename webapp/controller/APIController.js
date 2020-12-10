@@ -130,6 +130,21 @@ sap.ui.define([
             })
         },
 
+         PostService: function (path, data, callback) {
+            console.log(data)
+            return $.ajax({
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: "POST",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+path,
+            })
+
+
+        },
+
     };
 
 });

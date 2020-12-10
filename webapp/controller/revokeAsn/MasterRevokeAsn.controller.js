@@ -75,7 +75,7 @@ sap.ui.define([
                 } else {
                     this.getProveedores(sValue);
                 }
-                
+                console.log('1')
             },
 
             providerSelected: function (oControlEvent) {
@@ -87,13 +87,18 @@ sap.ui.define([
                     this.getView().byId("searchFieldAsn").setEnabled(true);
                } else {
                    this.getView().byId("searchFieldAsn").setEnabled(false);
+                    var itemId = this.getView().byId("list");
+                    itemId.removeSelections(true);
+                  
+                   this._showDetail(null);
+                  
 
                    poModel.setProperty('/ASN', [])
                    poModel.refresh();
                }
 
                 
-               
+               console.log('2')
                
             },
 
@@ -108,17 +113,22 @@ sap.ui.define([
 
                 if (sQuery) {
                     //	this._oListFilterState.aSearch = [new Filter("CustomerName", FilterOperator.Contains, sQuery)];
+                    
                     this._getASNByNumber(sQuery);
                 } else {
                     //	this._oListFilterState.aSearch = [];
                     this._getASNs();
                 }
 
+                var itemId = this.getView().byId("list");
+                    itemId.removeSelections(true);
+
             },
 
             onRefresh: function () {
                 this.getView().byId("searchFieldAsn").setValue("");
                 this._getASNs();
+                this._showDetail(null);
             },
 
             onSelectionChange: function (oEvent) {
@@ -143,12 +153,20 @@ sap.ui.define([
 		 * @private
 		 */
 		_showDetail : function (oItem) {
-            console.log(oItem.getBindingContext("asnModel").getProperty("noAsn"));
 			var bReplace = !Device.system.phone;
-			
+            
+            var id;
+            if (oItem === null) {
+                 id = '0';
+            } else {    
+                id = oItem.getBindingContext("asnModel").getProperty("noAsn")
+            }
+            
+            console.log(id);
 			this.getRouter().navTo("cancelarASNDetail", {
-				orderId : oItem.getBindingContext("asnModel").getProperty("noAsn")
-			}, bReplace);
+				orderId : id
+            }, bReplace);
+            
 		},
 
             /**Method to get POrchaseOrder List */
@@ -197,26 +215,29 @@ sap.ui.define([
             _getASNByNumber: function (asn) {
                 var poModel = this.getModel("asnModel");
                 poModel.setProperty('/busy', true);
-
+                console.log('2')
                 var me = this;
                 var path = API.serviceList().GET_ASN_BY_NUMBER + `${asn}/NA`;
                 API.Get(path).then(
-                    function (respJson, paramw, param3) {
+                    function (respJson, paramw, param3) { 
                         poModel.setProperty('/busy', false);
-                        if (respJson && respJson.data) {
+                        if (respJson && respJson.data) { 
 
-
-                            poModel.setProperty('/ASN', [respJson.data])
-                            if (respJson.data) {
-                                poModel.setProperty('/Count', 1)
-
-                            } else {
+                            if (respJson.data.length === 0) {
+                                poModel.setProperty('/ASN', [])
                                 poModel.setProperty('/Count', 0)
+                               
+                            } else {
+                                var response = [respJson.data];
+                                poModel.setProperty('/ASN', response)
+                                poModel.setProperty('/Count', 1)
+                                
                             }
-
-                            console.log(poModel)
+                            
+                            
                             poModel.refresh();
 
+                            me._showDetail(null);
                         
                         }
                     }, function (err) {

@@ -485,6 +485,7 @@
                     "controlAggregation": "beginColumnPages"
                 },
                 "detailCancelarASN": {
+                    "id": "cancelarASN",
                     "viewName": "revokeAsn.DetailRevokeAsn",
                     "controlId": "layoutRevokeAsn",
                     "controlAggregation": "midColumnPages",

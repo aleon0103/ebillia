@@ -1,5 +1,5 @@
 <mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.revokeAsn.DetailRevokeAsn">
-	<semantic:SemanticPage id="page" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+	<semantic:SemanticPage id="page" busy="{busyPage>/busy}">
 		<semantic:titleHeading>
 			<Title text="{      parts: [       'i18n>ASNListRA',       'asnDetailView&gt;/ASN'      ],      formatter: 'jQuery.sap.formatMessage'     }"/>
 		</semantic:titleHeading>
@@ -7,26 +7,26 @@
 			<l:VerticalLayout>
 			
 				<Table id="lineItemsList" class="sapUiSmallMarginTop" width="auto" items="{asnDetailView>/ASNDetalle}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
-					<headerToolbar>
+					<!-- <headerToolbar>
 						<Toolbar id="lineItemsToolbar">
 							<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
 						</Toolbar>
-					</headerToolbar>
+					</headerToolbar> -->
 					<columns>
-						<Column width="5em">
+						<Column minScreenWidth="Tablet"  demandPopin="true" width="5em">
 							<Text text="{i18n>posicionTableREP}"/>
 						</Column>
-						<Column minScreenWidth="Tablet" width="12em" demandPopin="true" hAlign="Begin">
+						<Column  width="12em" demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>materialTableREP}"/>
 						</Column>
 						
 						<Column minScreenWidth="Tablet" width="4em" demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>vamTableREP}"/>
 						</Column>
-                        <Column width="6em" hAlign="Begin">
+                        <Column minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>FechaEntregaRA}"/>
 						</Column>
-                        <Column width="5em" hAlign="Begin">
+                        <Column  minScreenWidth="Tablet" width="5em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>CantidadRecibidaRA}"/>
 						</Column>
 					</columns>

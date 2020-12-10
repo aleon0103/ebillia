@@ -5,20 +5,7 @@
 		</semantic:titleHeading>
 		<semantic:content>
 			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
-			<List id="list" width="auto" class="sapFDynamicPageAlignContent" 
-            items="{      
-                path: 'asnModel>/ASN',      
-                parameters: {expand: 'Customer'},      
-                sorter: {       path: 'idOrdenCompra',       
-                descending: true      },      
-                groupHeaderFactory: '.createGroupHeader'    
-                 }" noDataText="{masterView>/noDataText}" 
-                mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" 
-                growing="true" 
-                growingScrollToLoad="true" 
-                updateFinished=".onUpdateFinished" 
-                selectionChange=".onSelectionChange" 
-                busy="{asnModel>/busy}">
+			<List id="list" width="auto" class="sapFDynamicPageAlignContent" items="{                       path: 'asnModel>/ASN',                       parameters: {expand: 'Customer'},                       sorter: {       path: 'idOrdenCompra',                        descending: true      },                       groupHeaderFactory: '.createGroupHeader'                      }" noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true" updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange" busy="{asnModel>/busy}">
 				
 				<headerToolbar>
 
@@ -31,18 +18,10 @@
 
                                 <sap.ui.layout:content>
 
-                                    <ComboBox type="Text" width="100%" id="proveedorCA" placeholder="Proveedor" 
-                                    items="{    
-                                            path: 'proveedores>/sapProveedor',                                                                              
-                                            template: {                                                                                  
-                                            Type: 'sap.ui.core.ListItem',                                                                                  
-                                            text: '{proveedores&gt;name1}',                                                                                  
-                                            key: '{proveedores>lifnr}'                                                                                  
-                                        }                                                                    
-                                    }" change="handleChangeProv" selectionChange="providerSelected" showValueStateMessage="false"> 
+                                    <ComboBox type="Text" width="100%" id="proveedorCA" placeholder="{i18n>ProveedorPlaceholderRA}" items="{                                                 path: 'proveedores>/sapProveedor',                                                                                                                           template: {                                                                                                                               Type: 'sap.ui.core.ListItem',                                                                                                                               text: '{proveedores&gt;name1}',                                                                                                                               key: '{proveedores>lifnr}'                                                                                                                           }                                                                                                         }" change="handleChangeProv" selectionChange="providerSelected" showValueStateMessage="false"> 
                                     </ComboBox>
 
-                                   <SearchField id="searchFieldAsn" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" width="100%" search=".onSearch">
+                                   <SearchField id="searchFieldAsn" showRefreshButton="true" tooltip="{i18n>BuscarPorASNRA}" placeholder="{i18n>BuscarPorASNRA}" width="100%" search=".onSearch" maxLength="10">
                                         <layoutData>
                                             <OverflowToolbarLayoutData minWidth="150px" maxWidth="240px" shrinkable="true" priority="NeverOverflow"/>
                                         </layoutData>
@@ -58,16 +37,7 @@
 
 				</headerToolbar>
 				<items>
-					<ObjectListItem 
-                    type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" 
-                    press=".onSelectionChange" 
-                    title="{                                 
-                        parts: [                                       
-                        'asnModel>noAsn'                                
-                         ],                                 
-                         formatter: 'jQuery.sap.formatMessage'                              
-                           }"
-                    >
+					<ObjectListItem type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" press=".onSelectionChange" title="{                                                          parts: [                                                                'asnModel>noAsn'                                                          ],                                                           formatter: 'jQuery.sap.formatMessage'                                                          }">
 							<firstStatus>
                                 <ObjectStatus text="{asnModel>estatus}" state="{                                                                              path: 'asnModel>estatus',                                                                              formatter: '.formatter.POEMState'                                                                         }"/>
 			                </firstStatus>
