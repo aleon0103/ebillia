@@ -6,10 +6,10 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     'sap/m/MessageToast',
     "sap/ui/Device",
-    	"sap/ui/core/Fragment"
+    "sap/ui/core/Fragment"
 
 ],
-    function (BaseController, API, formatter, JSONModel, MessageToast, Device,Fragment) {
+    function (BaseController, API, formatter, JSONModel, MessageToast, Device, Fragment) {
         "use strict";
 
         return BaseController.extend("ns.EBilliaApp.controller.DetailInvoiceUpload", {
@@ -119,23 +119,23 @@ sap.ui.define([
 
             _configureTable: function () {
                 console.log('configurando tabla');
-                 this.byId("lineItemsList").removeSelections(true);
-                 var oInvoiceModel = this.getModel("invoiceUpload");
-                 var tempItems = oInvoiceModel.getProperty('/tempItems');
-                 var itemArray = this.byId("lineItemsList").getItems();
+                this.byId("lineItemsList").removeSelections(true);
+                var oInvoiceModel = this.getModel("invoiceUpload");
+                var tempItems = oInvoiceModel.getProperty('/tempItems');
+                var itemArray = this.byId("lineItemsList").getItems();
 
-                 console.log(tempItems,itemArray);
+                console.log(tempItems, itemArray);
 
                 for (var item of itemArray) {
-                  var itemObj=  item.getBindingContext("POdetailView").getObject();
-                  console.log(itemObj)
+                    var itemObj = item.getBindingContext("POdetailView").getObject();
+                    console.log(itemObj)
 
-                  if (tempItems.filter(itemb => JSON.stringify(itemb) === JSON.stringify(itemObj)).length == 0) {
-                       // se encontro item marcar
-                       console.log('Item no encontrado');
-                       //marcar check
-                       
-                    }else{
+                    if (tempItems.filter(itemb => JSON.stringify(itemb) === JSON.stringify(itemObj)).length == 0) {
+                        // se encontro item marcar
+                        console.log('Item no encontrado');
+                        //marcar check
+
+                    } else {
                         console.log('item  encontrado');
                         item.setSelected(true);
                     }
@@ -204,34 +204,105 @@ sap.ui.define([
 
 
             },
-            onShowResumeTable:function (){
+            onShowResumeTable: function () {
 
-             if (!this._oEMHelpDialog) {
-				Fragment.load({
-					name: "ns.EBilliaApp.view.invoice.uploadInvoiceDialog",
-					controller: this
-				}).then(function (oValueHelpDialog) {
-					this._oEMHelpDialog = oValueHelpDialog;
-					this.getView().addDependent(this._oEMHelpDialog);
-					//this._configValueHelpDialog();
-					this._oEMHelpDialog.open();
-				}.bind(this));
-			} else {
-				//this._configValueHelpDialog();
-				this._oEMHelpDialog.open();
+                if (!this._oEMHelpDialog) {
+                    Fragment.load({
+                        name: "ns.EBilliaApp.view.invoice.uploadInvoiceDialog",
+                        controller: this
+                    }).then(function (oValueHelpDialog) {
+                        this._oEMHelpDialog = oValueHelpDialog;
+                        this.getView().addDependent(this._oEMHelpDialog);
+                        //this._configValueHelpDialog();
+                        this._oEMHelpDialog.open();
+                    }.bind(this));
+                } else {
+                    //this._configValueHelpDialog();
+                    this._oEMHelpDialog.open();
+                }
+            },
+
+            onChangeFileUpload: function (oEvent) {
+
+                var aItems = oEvent.getSource().getItems();
+                var newItem = oEvent.getParameter("files");
+                console.log(oEvent.getParameter("files"));
+                var sUploadedFileName = oEvent.getParameter("files")[0].name;
+                var fileExtesion = this.getFileExtension3(sUploadedFileName);
+                console.log(sUploadedFileName);
+                for (var item of aItems) {
+                    var currentFile = item.getFileName()
+                    if (this.getFileExtension3(currentFile) === fileExtesion) {
+                        oEvent.getSource().removeItem(item);
+                    }
+                }
+
+
+            },
+
+            getFileExtension3: function (filename) {
+                return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+            },
+
+            handleDeleteDialog: function (oEvent) {
+
+                var oSelectedItem = oEvent.getParameter("listItem");
+
+                var oContext = oSelectedItem.getBindingContext("invoiceUpload");
+
+
+
+                var oTable = oEvent.getSource();
+
+                var oModel2 = this.getModel("invoiceUpload");
+                var aRows = oModel2.getProperty("/tempItems");
+
+
+                console.log(aRows);
+
+
+
+                var oThisObj = oContext.getObject();
+
+                var index = $.map(aRows, function (obj, index) {
+
+                    if (obj === oThisObj) {
+
+                        return index;
+
+                    }
+
+                })
+
+                console.log(index)
+                aRows.splice(index, 1);
+
+
+
+
+
+
+
+                oModel2.setProperty(
+
+                    '/tempItems', aRows
+
+                );
+                oModel2.setProperty('/selectedCount', aRows.length);
+
+                oTable.removeSelections();
+                oModel2.refresh(true);
+
+
+
+
+                this._configureTable();
+
+
+
             }
-        },
 
-        onChangeFileUpload:function(oEvent){
 
-console.log(oEvent.getSource());
-        },
-
-        onBeforeUploadStarts:function(oEvent){
-            console.log('before upload on')
-            console.log(oEvent.getSource());
-
-        }
 
 
         });

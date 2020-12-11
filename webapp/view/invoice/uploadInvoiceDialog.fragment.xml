@@ -15,6 +15,7 @@
 					width="auto"
                     mode="Delete"
 					items="{invoiceUpload>/tempItems}"
+                    delete="handleDeleteDialog"
 					>
 					<headerToolbar>
 						<Toolbar id="lineItemsToolbar">

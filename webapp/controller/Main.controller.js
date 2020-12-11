@@ -6,8 +6,9 @@ sap.ui.define([
     'sap/m/Button',
     'sap/m/library',
     './APIController',
+    'sap/ui/Device'
 ],
-    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary, API) {
+    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary, API,Device) {
         "use strict";
 
         // shortcut for sap.m.PlacementType
@@ -30,6 +31,23 @@ sap.ui.define([
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("main").attachPatternMatched(this._routePatternMatched, this);
+
+
+                // if the app starts on desktop devices with small or meduim screen size, collaps the sid navigation
+				if (Device.resize.width <= 1024) {
+					this.onSideNavButtonPress();
+				}
+				Device.media.attachHandler(function (oDevice) {
+					if ((oDevice.name === "Tablet" && this._bExpanded) || oDevice.name === "Desktop") {
+						this.onSideNavButtonPress();
+						// set the _bExpanded to false on tablet devices
+						// extending and collapsing of side navigation should be done when resizing from
+						// desktop to tablet screen sizes)
+						this._bExpanded = (oDevice.name === "Desktop");
+					}
+				}.bind(this));
+
+
             },
 
             /**
@@ -39,6 +57,11 @@ sap.ui.define([
      */
             onAfterRendering: function () {
                 console.log('on Main View After Render');
+            },
+
+            onNotificationPress: function (oEvent) {
+
+                console.log('on notifications push');
             },
 
 
