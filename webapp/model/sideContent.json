@@ -131,7 +131,7 @@
          "5":{
 			"titleI18nKey": "NotificacionEntregaNacional",
 			"icon": "sap-icon://sales-notification",
-			"key": "NotificacionEntregaNacional"
+			"key": "NotificacionEntregaNacional/true"
         },
          "6":{
 			"titleI18nKey": "NotificacionEntregaInternacional",

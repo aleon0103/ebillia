@@ -143,7 +143,6 @@ sap.ui.define([
 
             onSelectionChange: function (oEvent) {
                 var oSelectedItem = oEvent.getParameter("listItem");
-                var oSelected = oEvent.getParameter("selected");
                 var oContext = oSelectedItem.getBindingContext("facturas");
                 var objectSolicitud = oContext.oModel.getProperty(oContext.sPath);
                 
@@ -165,6 +164,7 @@ sap.ui.define([
                 oList.removeSelections(true);
                 var oBinding = oList.getBinding("items");
                 oBinding.refresh(true);
+                this.getRouter().navTo("VerComplementos", { param: false }, true);
             }
             
         });

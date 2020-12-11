@@ -19,7 +19,10 @@ sap.ui.define([
                 var emModel = new JSONModel({ busy: true });
                 this.getOwnerComponent().setModel(emModel, "invoiceUpload");
 
-                var oModel = new JSONModel({ busy: true });
+                var oModel = new JSONModel({ 
+                    busy: true,
+                    Count: 0
+                });
                 this.getOwnerComponent().setModel(oModel, "purchaseOrderModel");
 
                 this._oRouter = this.getRouter();
@@ -33,18 +36,12 @@ sap.ui.define([
             },
 
             _routePatternMatched: function (oEvent) {
+                var oArguments = oEvent.getParameter("arguments");
+                var param = JSON.parse(oArguments.param);
 
-                console.log("ROUTE U INVOICE MATCH")
-
-                // gets called for ...#/
-                // gets called for ...#/products/
-                // gets called for ...#/products/Product/<productId>
-                // for example: ...#/products/Product/1 . 
-                // or #/products/Product/123
-
-                //  this._initNotifications();
-                this._getPurchaseOrders();
-
+                if (param) {
+                    this.onRefresh();
+                }
             },
 
             onSearch: function (oEvent) {
@@ -71,38 +68,42 @@ sap.ui.define([
             },
 
             onRefresh: function () {
+                var mDetail = this.getModel("detailDeliveryN");
+                var oDateDetail = sap.ui.getCore().byId("__xmlview3--deliveryDateDN");
+                var oSwitchDetail = sap.ui.getCore().byId("__xmlview3--switchCompletar");
+                // @ts-ignore
+                oDateDetail.setValue("");
+                // @ts-ignore
+                oSwitchDetail.setState(false);
+                
+                mDetail.setProperty("/orderId", "");
+                mDetail.setProperty("/GoodReceipts", []);
+                mDetail.setProperty("/count", 0);
+                mDetail.setProperty("/fecha_entrega", null);
+
                 this._getPurchaseOrders();
+
+                var oList = this.byId("list");
+                oList.removeSelections(true);
+                var oBinding = oList.getBinding("items");
+                oBinding.refresh(true);
+                this.getRouter().navTo("NotificacionEntregaNacional", {
+                    param : false
+                }, true);
             },
 
             onSelectionChange: function (oEvent) {
+                var oSelectedItem = oEvent.getParameter("listItem");
+                var oContext = oSelectedItem.getBindingContext("purchaseOrderModel");
+                var objectSolicitud = oContext.oModel.getProperty(oContext.sPath);
+                var idOrdenCompra = objectSolicitud.idOrdenCompra;
 
-                	var oList = oEvent.getSource(),
-				bSelected = oEvent.getParameter("selected");
+                console.log(idOrdenCompra);
 
-			// skip navigation when deselecting an item in multi selection mode
-			if (!(oList.getMode() === "MultiSelect" && !bSelected)) {
-				// get the list item, either from the listItem parameter or from the event's source itself (will depend on the device-dependent mode).
-				this._showDetail(oEvent.getParameter("listItem") || oEvent.getSource());
-			}
+                this.getRouter().navTo("NotificacionEntregaNacionalDetail", {
+                    orderId : idOrdenCompra
+                }, true);
             },
-
-
-
-		/**
-		 * Shows the selected item on the detail page
-		 * On phones a additional history entry is created
-		 * @param {sap.m.ObjectListItem} oItem selected Item
-		 * @private
-		 */
-		_showDetail : function (oItem) {
-			var bReplace = !Device.system.phone;
-			
-			this.getRouter().navTo("NotificacionEntregaNacionalDetail", {
-				orderId : oItem.getBindingContext("purchaseOrderModel").getProperty("idOrdenCompra")
-			}, bReplace);
-		},
-
-            /**Method to get POrchaseOrder List */
 
             _getPurchaseOrders: function () {
                 var oModel = this.getModel("user");

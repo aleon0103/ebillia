@@ -183,6 +183,7 @@ sap.ui.define([
                 // mostrar btn seleccionar todos
                 fModel.setProperty("/showDeselectedAll", false);
                 fModel.setProperty("/showSelectedAll", true);
+                this.getRouter().navTo("CargarComplementos", { param: false }, true);
             },
 
             onSelectionChange: function (oEvent) {

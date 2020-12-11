@@ -1,16 +1,124 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.asn.NationalSecondView.DeliveryNotificationsSecond" displayBlock="true">
+<mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" 
+xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="ns.EBilliaApp.controller.asn.NationalSecondView.DeliveryNotificationsSecond">
+	<semantic:SemanticPage id="page" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:titleHeading>
+			<Title text="Notificaciones de entrega"/>
+		</semantic:titleHeading>
+        <semantic:headerContent>
+	    <l:VerticalLayout width="100%" id="layout4">
+	        <l:content>
+                
+	            <l:HorizontalLayout id="layout6">
+                    <l:content>
+                        <l:VerticalLayout class="sapUiMediumMarginEnd">
+                            <Label text="Fecha de entrega" labelFor="DP1"/>
+                            <DatePicker
+                                id="DP1"
+                                displayFormat="yyyy-MM-dd"
+                                valueFormat="yyyy-MM-dd"
+                                change="handleChange"
+                                class="sapUiMediumMarginBottom"/>
+                        </l:VerticalLayout>
+                        <ObjectAttribute id="attribute4" title="Confirmar"  class="sapUiMediumMarginBottom sapUiTinyMarginEnd" />
+                        <Label text="Completa" />
+                        <Switch xmlns="sap.m" id="switchCompletar" class="sapUiSmallMarginBegin" customTextOff=" " customTextOn=" " change=".switchTipoCarga"/>
+                        <Label text="Parcial" />
+                    </l:content>
+                </l:HorizontalLayout>
 
-    <Page xmlns="sap.m" id="pageId" title="" floatingFooter="true" showHeader="false" enableScrolling ="true" >
 
+                 <l:HorizontalLayout id="layout5">
+	                <l:content >
+                        <l:VerticalLayout>
+                            <u:FileUploader
+                                id="fileUploader"
+                                name="myFileUpload"
+                                uploadUrl="upload/"
+                                fileType="XLSX,xlsx"
+                                buttonOnly="true"
+                                buttonText="Cargar Excel"
+                                icon="sap-icon://excel-attachment"
+                                change="handleUploadPress"/>
+                        </l:VerticalLayout>
+                     </l:content>
+	            </l:HorizontalLayout>
 
-    <content>
-
-        <l:VerticalLayout width="100%">
-		
+	        </l:content>
 	    </l:VerticalLayout>
+	</semantic:headerContent>
+		<semantic:content>
+			<l:VerticalLayout>
+	
+				<Table id="lineItemsList" class="sapUiSmallMarginTop" width="auto" items="{POdetailView>/GoodReceipts}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column >
+							<Text text="{i18n>proveedorTableDN}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>facturaTableDN}"/>
+						</Column>
+						
+						<Column>
+							<Text text="{i18n>materialTaTableDn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>loteTableDn}"/>
+						</Column>
+                        <Column >
+							<Text text="{i18n>vamTableDn}"/>
+						</Column>
+                        <Column >
+							<Text text="{i18n>cantidadTableDN}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier text="{POdetailView>num_pos_doc_comp}"/>
+                               
+                                <ObjectIdentifier title="{POdetailView>idMaterial}" text="{POdetailView>descripcionMaterial}" class="sapUiTinyMarginTopBottom"/>
 
-    </content>
 
-    </Page>
-    
+                                <ObjectIdentifier text="{POdetailView>valorMatriz}"/>
+                            
+								
+                                <ObjectNumber number="{           path: 'POdetailView>cantidadEntregaEfectivamente'                     }" unit="{POdetailView>unidad}"/>
+
+								<ObjectNumber number="{                                         path:'POdetailView>cantidad'                            }" unit="{POdetailView>unidad}"/>
+
+                                <Switch  enabled="true" customTextOn=" " customTextOff=" " state="{POdetailView>verificarIngreso}" change=".onCheckIngreso(${POdetailView>idTmp}, ${POdetailView>verificarIngreso});.verificarEntrada(${POdetailView>idTmp});.validarCompleta)">
+                                    <layoutData>
+                                        <FlexItemData growFactor="1"/>
+                                    </layoutData>
+                                </Switch>
+
+                                <Input xmlns="sap.m" type="Number" value="{POdetailView>cantidadIngreso}" id="input0" description="{POdetailView>unidad}" width="100px" fieldWidth="60%" class="sapUiSmallMarginBottom" change=".changeIngreso(${POdetailView>idTmp}, $event)"/>
+                                
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</l:VerticalLayout>
+		</semantic:content>
+		<!-- <semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onSendEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction id="closeColumn" press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction id="enterFullScreen" visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction id="exitFullScreen" visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction> -->
+        <semantic:footerCustomActions>
+			<Button type="Emphasized" text="Crear ASN" press="onCrearAsn" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>
+		</semantic:footerCustomActions>
+	</semantic:SemanticPage>
 </mvc:View>

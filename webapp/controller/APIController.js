@@ -27,6 +27,7 @@ sap.ui.define([
         GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
         PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
         GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
+        CREAR_ASN_NACIONAL: '/portal_cloud_api/logistic-services/asn/createAsnNacional',
         GET_ASN:'/portal_cloud_api/logistic-services/asn/'
     };
     return {
@@ -79,13 +80,16 @@ sap.ui.define([
             })
         },
 
-        Post: function (url, data, callback) {
+        Post: function (path, data, callback) {
             console.log(data)
             return $.ajax({
                 data: JSON.stringify(data),
                 contentType: "application/json",
+                headers: { 
+                    'Authorization': jwt
+                },
                 method: "POST",
-                url: url,
+                url: URL+path,
             })
 
 
@@ -99,7 +103,7 @@ sap.ui.define([
                 headers: { 
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'Authorization': jwt
-                 },
+                },
                 type: "POST",
                 url: URL+path,
             })

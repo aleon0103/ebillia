@@ -40,7 +40,6 @@
 				<headerToolbar>
 
 					<OverflowToolbar>
-                        <!-- <CheckBox id="check" text="{i18n>checkText}" select="_checkAll"/> -->
 						<ToolbarSpacer/>
 						<Button
 							id="filterButton"

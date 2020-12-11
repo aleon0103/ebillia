@@ -193,7 +193,7 @@
                 },
                 {
                     "name": "NotificacionEntregaNacional",
-                    "pattern": "NotificacionEntregaNacional",
+                    "pattern": "NotificacionEntregaNacional/{param}",
                     "target": [
                         "masterDeliveryNotifications",
                         "detailDeliveryNotifications"
@@ -201,7 +201,7 @@
                     "controlId": "mainContents"
                 },
                 {
-                    "pattern": "NotificacionEntregaNacional/{orderId}",
+                    "pattern": "NotificacionEntregaNacionalDetail/{orderId}",
                     "name": "NotificacionEntregaNacionalDetail",
                     "target": [
                         "masterDeliveryNotifications",
@@ -422,7 +422,8 @@
                     "viewName": "asn.National.DetailDeliveryNotifications",
                     "controlId": "layoutDeliveryNotifications",
                     "controlAggregation": "midColumnPages",
-                    "parent": "deliveryNotifications"
+                    "parent": "deliveryNotifications",
+                    "viewId": "detailN"
                 },
                 "masterDeliveryNotificationsG1": {
                     "viewName": "asn.NationalSecondView.DeliveryNotificationsSecond",

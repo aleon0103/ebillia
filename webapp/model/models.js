@@ -55,6 +55,18 @@ sap.ui.define([
                 layout: "TwoColumnsMidExpanded"
             });
 			return oModel;
+        },
+
+        detailDeliveryN: function () {
+            var oModel = new JSONModel({
+                busy: false,
+                delay: 0,
+                orderId: '',
+                GoodReceipts: null,
+                count: 0,
+                fecha_entrega: null
+            });
+            return oModel;
         }
         
         
