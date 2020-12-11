@@ -1,0 +1,135 @@
+<mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.asn.National.DetailDeliveryNotifications">
+	<semantic:SemanticPage id="page" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:titleHeading>
+			<Title text="{      parts: [       'i18n>commonItemTitle',       'POdetailView&gt;/orderId'      ],      formatter: 'jQuery.sap.formatMessage'     }"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<l:VerticalLayout>
+				<!--
+                <IconTabBar
+					id="iconTabBar"
+					headerBackgroundDesign="Transparent"
+					select=".onTabSelect"
+					selectedKey="{detailView>/selectedTab}">
+					<items>
+						<IconTabFilter
+							id="iconTabFilterShipping"
+							icon="sap-icon://shipping-status"
+							tooltip="{i18n>detailIconTabBarShipping}"
+							key="shipping">
+						</IconTabFilter>
+						<IconTabFilter
+							id="iconTabFilterProcessor"
+							icon="sap-icon://employee"
+							tooltip="{i18n>detailIconTabBarProcessor}"
+							key="processor">
+						</IconTabFilter>
+					</items>
+				</IconTabBar>
+-->
+				<Table id="lineItemsList" class="sapUiSmallMarginTop" width="auto" items="{POdetailView>/GoodReceipts}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="5em">
+							<Text text="{i18n>posicionTableREP}"/>
+						</Column>
+						<Column minScreenWidth="Tablet" width="12em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>materialTableREP}"/>
+						</Column>
+						
+						<Column minScreenWidth="Tablet" width="4em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>vamTableREP}"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true" width="6em" hAlign="Begin">
+							<Text text="{i18n>cantidadEntregadaTableDN}"/>
+						</Column>
+                        <Column width="6em" hAlign="Begin">
+							<Text text="{i18n>cantidadTableDN}"/>
+						</Column>
+                        <Column width="5em" hAlign="Center">
+							<Text text="{i18n>verificarIngresoTableDN}"/>
+						</Column>
+                        <Column hAlign="Begin">
+							<Text text="{i18n>cantidadIngresoTableDN}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier text="{POdetailView>num_pos_doc_comp}"/>
+                               
+                                <ObjectIdentifier title="{POdetailView>idMaterial}" text="{POdetailView>descripcionMaterial}" class="sapUiTinyMarginTopBottom"/>
+
+
+                                <ObjectIdentifier text="{POdetailView>valorMatriz}"/>
+                            
+								
+                                <ObjectNumber number="{           path: 'POdetailView>cantidadEntregaEfectivamente'                     }" unit="{POdetailView>unidad}"/>
+
+								<ObjectNumber number="{                                         path:'POdetailView>cantidad'                            }" unit="{POdetailView>unidad}"/>
+
+                                <Switch  enabled="true" customTextOn=" " customTextOff=" " state="{POdetailView>verificarIngreso}" change=".onCheckIngreso(${POdetailView>idTmp}, ${POdetailView>verificarIngreso});.verificarEntrada(${POdetailView>idTmp});.validarCompleta)">
+                                    <layoutData>
+                                        <FlexItemData growFactor="1"/>
+                                    </layoutData>
+                                </Switch>
+
+                                <Input xmlns="sap.m" type="Number" value="{POdetailView>cantidadIngreso}" id="input0" description="{POdetailView>unidad}" width="100px" fieldWidth="60%" class="sapUiSmallMarginBottom" change=".changeIngreso(${POdetailView>idTmp}, $event)"/>
+                                
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</l:VerticalLayout>
+		</semantic:content>
+		<!-- <semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onSendEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction id="closeColumn" press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction id="enterFullScreen" visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction id="exitFullScreen" visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction> -->
+	<semantic:headerContent>
+	    <l:VerticalLayout width="100%" id="layout4">
+	        <l:content>
+                <!-- <Button
+					id="BadgedButton"
+					class="sapUiTinyMarginBeginEnd"
+					icon="{= ${/buttonWithIcon} ? ${/buttonIcon} : '' }"
+					type="{/buttonType}"
+					tooltip="{= ${/buttonWithIcon} &amp;&amp; !${/buttonWithText} &amp;&amp; ${/buttonWithTooltip} ? ${/buttonTooltip} : '' }"
+					text="{= ${/buttonWithText} ? ${/buttonText} : '' }"
+                    press=".reviewData">
+					<customData>
+						<BadgeCustomData
+							key="badge"
+							value="99"
+							visible=""/>
+					</customData>
+				</Button> -->
+	            <l:HorizontalLayout id="layout5">
+	                <l:content>
+	                    <ObjectAttribute id="attribute3" class="sapUiSmallMarginEnd" title="Fecha entrega"/>
+	                    <DatePicker xmlns="sap.m" id="deliveryDateDN" class="sapUiSmallMarginBottom sapUiMediumMarginEnd" valueFormat="yyyy-MM-dd" displayFormat="short" width="150px" change=".deliveryDateSelected"/>
+	                </l:content>
+	            </l:HorizontalLayout>
+	            <l:HorizontalLayout id="layout6">
+	                <l:content>
+	                    <ObjectAttribute id="attribute4" class="sapUiSmallMarginEnd" title="Confirmar orden completa"/>
+	                    <Switch xmlns="sap.m" id="switchCompletar" class="sapUiMediumMarginBottom sapUiMediumMarginEnd" customTextOff="  " customTextOn=" " change=".switchConfirm"/>
+	                </l:content>
+	            </l:HorizontalLayout>
+	        </l:content>
+	    </l:VerticalLayout>
+	</semantic:headerContent>
+	</semantic:SemanticPage>
+</mvc:View>

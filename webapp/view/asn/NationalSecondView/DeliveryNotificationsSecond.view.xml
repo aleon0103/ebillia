@@ -1,0 +1,16 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.asn.NationalSecondView.DeliveryNotificationsSecond" displayBlock="true">
+
+    <Page xmlns="sap.m" id="pageId" title="" floatingFooter="true" showHeader="false" enableScrolling ="true" >
+
+
+    <content>
+
+        <l:VerticalLayout width="100%">
+		
+	    </l:VerticalLayout>
+
+    </content>
+
+    </Page>
+    
+</mvc:View>
