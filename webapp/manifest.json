@@ -269,8 +269,24 @@
                         "masterCancelarASN",
                         "detailCancelarASN"
                     ]
+                },
+                {
+                    "name": "RevisionPronosticosDemanda",
+                    "pattern": "RevisionPronosticosDemanda",
+                    "target": [
+                        "masterReviewForecast",
+                        "detailReviewForecast"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "RevisionPronosticosDemanda/{orderId}",
+                    "name": "RevisionPronosticosDemandaDetail",
+                    "target": [
+                        "masterReviewForecast",
+                        "detailReviewForecast"
+                    ]
                 }
-                
             ],
             
             "targets": {
@@ -490,6 +506,25 @@
                     "controlId": "layoutRevokeAsn",
                     "controlAggregation": "midColumnPages",
                     "parent": "revokeAsn"
+                },
+                "reviewForecast": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutReviewForecast",
+                    "controlId": "pageContainer",
+                    "viewName": "reviewForecast.ReviewForecast"
+                },
+                "masterReviewForecast": {
+                    "viewName": "reviewForecast.MasterReviewForecast",
+                    "controlId": "layoutReviewForecast",
+                    "parent": "reviewForecast",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailReviewForecast": {
+                    "viewName": "reviewForecast.DetailReviewForecast",
+                    "controlId": "layoutReviewForecast",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "reviewForecast"
                 }
                 
             }

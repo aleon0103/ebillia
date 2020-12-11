@@ -29,7 +29,8 @@ sap.ui.define([
         GET_ASN:'/portal_cloud_api/logistic-services/asn/',
         GET_ALL_ASN: '/portal_cloud_api/logistic-services/asn/getAllAsn/',
         GET_ASN_BY_NUMBER: '/portal_cloud_api/logistic-services/asn/getAsn/',
-        POST_ANULAR_ASN: '/portal_cloud_api/logistic-services/asn/anular/'
+        POST_ANULAR_ASN: '/portal_cloud_api/logistic-services/asn/anular/',
+        GET_NOTIFICATIONS_ENV: '/portal_cloud_api/logistic-services/pronostico/getNotificationsEnviadas/'
     };
     return {
 
