@@ -13,6 +13,8 @@ sap.ui.define([
         PROVEEDORES_FACTURAS:'/portal_cloud_api/logistic-services/Proveedores-facturas/',
         FACTURAS_PENDIENTES:'/portal_cloud_api/payment-services/master-factura/',
         ENVIO_ARCHIVOS_COMPLEMENTOS: '/portal_cloud_api/payment-services/complementos/',
+        MASTER_DATA_CATALOG:'/portal_cloud_api/masterdata-services/catalog/',
+        MASTER_DATA_MONEDA:'/portal_cloud_api/masterdata-services/moneda/'
     };
     return {
 

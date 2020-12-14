@@ -7,6 +7,7 @@
 	<semantic:SemanticPage
 		id="page"
 		busy="{detailView>/busy}"
+          showFooter="true"
 		busyIndicatorDelay="{detailView>/delay}">
 		<semantic:titleHeading>
 			<Title
@@ -177,6 +178,7 @@
 				id="shareEmail"
 				press=".onSendEmailPress"/>
 		</semantic:sendEmailAction>
+        -->
 		<semantic:closeAction>
 			<semantic:CloseAction
 				id="closeColumn"
@@ -194,6 +196,26 @@
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
 				press="toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
--->
+
+<!-- Semantic Footer Buttons -->
+        	<semantic:footerCustomActions>
+			
+            <Button icon="sap-icon://customer-order-entry" text="Enviar Factura {invoiceUpload>/selectedCount}" press=".onShowResumeTable" >
+             <customData>
+						<!--
+                        <BadgeCustomData
+							key="badge"
+							value="{
+                               invoiceUpload>/selectedCount
+                            }"
+							visible="true"/>
+                            -->
+					</customData>
+            </Button>
+
+
+		  </semantic:footerCustomActions>
+
+
 	</semantic:SemanticPage>
 </mvc:View>

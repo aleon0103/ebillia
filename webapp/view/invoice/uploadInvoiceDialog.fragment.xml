@@ -4,9 +4,9 @@
     xmlns:custom="ns.EBilliaApp.controls"
     >
 	<Dialog
-		id="helloDialog"
+		id="uploadDialog"
 		title="{i18n>uploadInvoiceTitle}"
-        contentWidth="600px"
+        contentWidth="640px"
        
         >
         <Table
@@ -27,6 +27,9 @@
 					<columns>
 						<Column>
 							<Text text="{i18n>detailLineItemTablePOColumn}"/>
+						</Column>
+                        	<Column>
+							<Text text="{i18n>detailLineItemTableDescriptionColumn}"/>
 						</Column>
 						<Column>
 							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
@@ -49,10 +52,15 @@
 					</columns>
 					<items>
 						<ColumnListItem>
-							<cells>
+							<cells> 
 								<ObjectIdentifier
 			
 									text="{invoiceUpload>num_doc_comp}"/>
+
+                                    <ObjectIdentifier
+			
+									text="{invoiceUpload>texto_breve}"/>
+
 
                                     <ObjectIdentifier
 			
@@ -81,10 +89,24 @@
 					</items>
 				</Table>
 
-                <custom:CustomUploadCollection
+                <!--ZINC -->
+                <!--Si la factura es zinc colocar el check pra ver si es factura o no -->
+
+                <!-- si pais no no es xml colocar formulario 
+
+                Moneda 
+                Referencia 
+                Fecha
+
+                 fin formulario -->
+
+
+
+                <UploadCollection
     id="UploadCollection"
     class="sapUiSmallMarginTop"
     noDataText=""
+     fileType="pdf"
     noDataDescription="{i18n>fileTextXmlandPdf}"
     maximumFileSize="10"
     multiple="false"
@@ -93,13 +115,10 @@
     change="onChangeFileUpload"
     fileDeleted="onFileDeleted"
     filenameLengthExceed="onFilenameLengthExceed"
-    fileSizeExceed="onFileSizeExceed"
-    typeMissmatch="onTypeMissmatch"
-    uploadComplete="onUploadComplete"
-    beforeUploadStarts="onBeforeUploadStarts"
-    fileType = "pdf,xml"
+    
+   
     >
-</custom:CustomUploadCollection>
+</UploadCollection>
 
 
 
@@ -108,13 +127,14 @@
 
   <beginButton>
          <Button
+         type="Emphasized"
             text="{i18n>cargar}"
-            press="onCloseDialog"/>
+            press="validarCarga"/>
       </beginButton>
         <endButton>
          <Button
             text="{i18n>cancelar}"
-            press="onCloseDialog"/>
+            press="closeDialog"/>
       </endButton>
 	</Dialog>
 </core:FragmentDefinition>
