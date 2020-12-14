@@ -15,7 +15,7 @@
                             <ObjectAttribute id="attribute3" class="sapUiSmallMarginEnd" title="Fecha entrega"/>
                             <DatePicker xmlns="sap.m" id="deliveryDateDN" class="sapUiSmallMarginBottom sapUiMediumMarginEnd" valueFormat="yyyy-MM-dd" displayFormat="short" width="150px" change=".deliveryDateSelected"/>
                             <ObjectAttribute id="attribute4" class="sapUiSmallMarginEnd" title="Confirmar orden completa"/>
-                            <Switch xmlns="sap.m" id="switchCompletar" class="sapUiMediumMarginBottom sapUiMediumMarginEnd" change=".switchConfirm"/>
+                            <Switch xmlns="sap.m" id="switchCompletar" enabled="{= ${detailDeliveryN>/GoodReceipts}.length !== 0 }" class="sapUiMediumMarginBottom sapUiMediumMarginEnd" change=".switchConfirm"/>
                         </l:content>
                     </l:HorizontalLayout>
                     <l:HorizontalLayout id="layout6">

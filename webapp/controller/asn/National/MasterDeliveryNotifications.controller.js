@@ -69,8 +69,8 @@ sap.ui.define([
 
             onRefresh: function () {
                 var mDetail = this.getModel("detailDeliveryN");
-                var oDateDetail = sap.ui.getCore().byId("__xmlview3--deliveryDateDN");
-                var oSwitchDetail = sap.ui.getCore().byId("__xmlview3--switchCompletar");
+                var oDateDetail = sap.ui.getCore().byId("container-EBilliaApp---ddn--deliveryDateDN");
+                var oSwitchDetail = sap.ui.getCore().byId("container-EBilliaApp---ddn--switchCompletar");
                 // @ts-ignore
                 oDateDetail.setValue("");
                 // @ts-ignore

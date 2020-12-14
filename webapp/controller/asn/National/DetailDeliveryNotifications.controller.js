@@ -45,13 +45,6 @@ sap.ui.define([
                 });
                 this.getView().setModel(this.btnModel);
 
-                // var oModel = new JSONModel({
-                //     busy: false,
-                //     delay: 0,
-                //     orderId: ''
-                // });
-                // this.getView().setModel(oModel, "detailDeliveryN");
-
                 var pModel = new JSONModel({
                     positions: null
                 });
@@ -59,7 +52,6 @@ sap.ui.define([
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("NotificacionEntregaNacionalDetail").attachPatternMatched(this._routePatternMatched, this);
-                console.log(this.getView());
             },
 
             onAfterRendering: function () {
@@ -99,8 +91,6 @@ sap.ui.define([
                 if (this._sObjectId) {
                     this._getGoodsReceipts();
                 }
-
-
 
             },
 
@@ -156,9 +146,10 @@ sap.ui.define([
                                 var posiciones = me.ordenCompra[me.index].posicion;
 
                                 for (let i = 0; i < posiciones.length; i++) {
-                                    if (posiciones[i].grupoMaterial === "001") {
+                                    if (posiciones[i].grupoMaterial !== "001") {
                                         console.log('termino');
-                                        me.getRouter().navTo("masterDeliveryNotificationsG1");
+
+                                        me.getRouter().navTo("masterDeliveryNotificationsG1", { }, true);
                                         break;
                                     }
 

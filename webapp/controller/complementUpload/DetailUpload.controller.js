@@ -87,8 +87,6 @@ sap.ui.define([
                     const filter = this.arrComplementos.filter(c => c.noDocumento != this.objectItem.noDocumento);
                     this.arrComplementos = filter;
                     this._resta(this.objectItem);
-                    // @ts-ignore
-                    // sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
                 }
 
                 tablaModel.setProperty("/data", this.arrComplementos);
@@ -100,12 +98,10 @@ sap.ui.define([
                 var oContext = oSelectedItem.getBindingContext("tablaModel");
                 this.objectTable = oContext.oModel.getProperty(oContext.sPath);
                 this._routePatternMatched();
-                // @ts-ignore
-                // sap.ui.getCore().byId("__xmlview2--check").setSelected(false);
             },
 
             _updateListCheck: function (bSelect) {
-                var oList = sap.ui.getCore().byId("__xmlview2--list");
+                var oList = sap.ui.getCore().byId("container-EBilliaApp---mcu--list");
                 // @ts-ignore
                 var itemsList = oList.getItems();
                 

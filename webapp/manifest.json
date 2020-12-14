@@ -351,7 +351,8 @@
                     "viewName": "complements.MasterUpload",
                     "controlId": "layoutComplement",
                     "parent": "complementUpload",
-                    "controlAggregation": "beginColumnPages"
+                    "controlAggregation": "beginColumnPages",
+                    "viewId": "mcu"
                 },
                 "detailComplementUpload": {
                     "viewName": "complements.DetailUpload",
@@ -423,16 +424,14 @@
                     "controlId": "layoutDeliveryNotifications",
                     "controlAggregation": "midColumnPages",
                     "parent": "deliveryNotifications",
-                    "viewId": "detailN"
+                    "viewId": "ddn"
                 },
                 "masterDeliveryNotificationsG1": {
                     "viewName": "asn.NationalSecondView.DeliveryNotificationsSecond",
                     "parent": "TargetMain",
 					"viewType": "XML",
 					"transition": "slide",
-					"clearControlAggregation": false,
-                    "controlId": "pageContainer",
-                    "controlAggregation": "pages"
+                    "controlId": "pageContainer"
                 },
                 "deliveryNotificationsInt": {
                     "parent": "TargetMain",

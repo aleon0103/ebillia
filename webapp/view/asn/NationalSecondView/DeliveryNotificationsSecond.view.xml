@@ -1,6 +1,6 @@
 <mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" 
 xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="ns.EBilliaApp.controller.asn.NationalSecondView.DeliveryNotificationsSecond">
-	<semantic:SemanticPage id="page" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+	<semantic:SemanticPage id="page" busy="{detailView>/busy}" showFooter="true" busyIndicatorDelay="{detailView>/delay}">
 		<semantic:titleHeading>
 			<Title text="Notificaciones de entrega"/>
 		</semantic:titleHeading>
@@ -33,8 +33,6 @@ xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="ns.EBilliaApp.c
                             <u:FileUploader
                                 id="fileUploader"
                                 name="myFileUpload"
-                                uploadUrl="upload/"
-                                fileType="XLSX,xlsx"
                                 buttonOnly="true"
                                 buttonText="Cargar Excel"
                                 icon="sap-icon://excel-attachment"
@@ -49,55 +47,43 @@ xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="ns.EBilliaApp.c
 		<semantic:content>
 			<l:VerticalLayout>
 	
-				<Table id="lineItemsList" class="sapUiSmallMarginTop" width="auto" items="{POdetailView>/GoodReceipts}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+				<Table id="table" inset="false" busy="{file>/busy}" growing="true" growingThreshold="15" class="sapUiSmallMarginTop" items="{file>/results}" width="auto">
 					<headerToolbar>
 						<Toolbar id="lineItemsToolbar">
-							<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
+							<Title text="Resultado"/>
 						</Toolbar>
 					</headerToolbar>
 					<columns>
 						<Column >
-							<Text text="{i18n>proveedorTableDN}"/>
+							<Text text="{i18n>numOC}"/>
 						</Column>
 						<Column>
-							<Text text="{i18n>facturaTableDN}"/>
+							<Text text="{i18n>renglon}"/>
 						</Column>
 						
 						<Column>
-							<Text text="{i18n>materialTaTableDn}"/>
+							<Text text="{i18n>seleccion}"/>
 						</Column>
 						<Column>
-							<Text text="{i18n>loteTableDn}"/>
+							<Text text="{i18n>dcm}"/>
 						</Column>
                         <Column >
-							<Text text="{i18n>vamTableDn}"/>
+							<Text text="{i18n>factura}"/>
 						</Column>
                         <Column >
-							<Text text="{i18n>cantidadTableDN}"/>
+							<Text text="{i18n>lados}"/>
 						</Column>
 					</columns>
 					<items>
 						<ColumnListItem>
 							<cells>
-								<ObjectIdentifier text="{POdetailView>num_pos_doc_comp}"/>
-                               
-                                <ObjectIdentifier title="{POdetailView>idMaterial}" text="{POdetailView>descripcionMaterial}" class="sapUiTinyMarginTopBottom"/>
-
-
-                                <ObjectIdentifier text="{POdetailView>valorMatriz}"/>
                             
-								
-                                <ObjectNumber number="{           path: 'POdetailView>cantidadEntregaEfectivamente'                     }" unit="{POdetailView>unidad}"/>
-
-								<ObjectNumber number="{                                         path:'POdetailView>cantidad'                            }" unit="{POdetailView>unidad}"/>
-
-                                <Switch  enabled="true" customTextOn=" " customTextOff=" " state="{POdetailView>verificarIngreso}" change=".onCheckIngreso(${POdetailView>idTmp}, ${POdetailView>verificarIngreso});.verificarEntrada(${POdetailView>idTmp});.validarCompleta)">
-                                    <layoutData>
-                                        <FlexItemData growFactor="1"/>
-                                    </layoutData>
-                                </Switch>
-
-                                <Input xmlns="sap.m" type="Number" value="{POdetailView>cantidadIngreso}" id="input0" description="{POdetailView>unidad}" width="100px" fieldWidth="60%" class="sapUiSmallMarginBottom" change=".changeIngreso(${POdetailView>idTmp}, $event)"/>
+								<ObjectNumber number="{ path: 'file>NUMERO_OC' }" />
+                                <ObjectNumber number="{ path: 'file>RENGLON' }"/>
+                                <ObjectNumber number="{ path: 'file>SELECCION' }"/>
+                                <ObjectNumber number="{ path: 'file>DCM' }"/>
+                                <ObjectIdentifier text="{file>FACTURA}"/>
+                                <ObjectNumber number="{ path: 'file>LADOS' }"/>
                                 
 							</cells>
 						</ColumnListItem>
