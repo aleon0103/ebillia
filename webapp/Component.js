@@ -28,6 +28,9 @@ sap.ui.define([
             this.setModel(models.createUserModel(), "user");
              this.setModel(models.createJSONModel(), "notifications");
              this.setModel(models.tableModelComplements(), "tablaModel");
+             this.setModel(models.detailModelSeeComplement(), "mDetailSeeComplement");
+             this.setModel(models.layoutComplementModel(), "layoutComplementModel");
+             this.setModel(models.detailDeliveryN(), "detailDeliveryN");
             //  this.setModel(models.createEMModel(), "invoiceUpload");
         },
         getContentDensityClass: function () {

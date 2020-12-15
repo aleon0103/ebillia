@@ -14,14 +14,6 @@
 			<l:HorizontalLayout>
 				<l:VerticalLayout class="sapUiMediumMarginEnd">
 					<ObjectAttribute text="RFC: {detailView>/rfcProveedor}"/>
-                    <ObjectNumber
-                        visible="{= ${tablaModel>/Count} !== 0 ? true : false}"
-                        number="{
-                            parts:[{path:'detailView>/total'},{path:'detailView>moneda'}],
-                            type: 'sap.ui.model.type.Currency',
-                            formatOptions: {showMeasure: false}
-                        }"
-                    />
                     <ObjectStatus
                     visible="{= ${tablaModel>/Count} === 0 ? true : false}"
                     class="sapUiSmallMarginTop"
@@ -29,6 +21,17 @@
                     icon="sap-icon://status-negative"
                     state="Error" />
 				</l:VerticalLayout>
+                <l:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectNumber
+                            visible="{= ${tablaModel>/Count} !== 0 ? true : false}"
+                            number="{
+                                parts:[{path:'detailView>/total'},{path:'detailView>/moneda'}],
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {showMeasure: false}
+                            }"
+                            unit="{detailView>/moneda}"
+                        />
+                </l:VerticalLayout>
 			</l:HorizontalLayout>
 		</semantic:headerContent>
 		<semantic:content>
@@ -100,27 +103,23 @@
                 </ScrollContainer>
 			</l:VerticalLayout>
 		</semantic:content>
-		<!-- <semantic:sendEmailAction>
-			<semantic:SendEmailAction
-				id="shareEmail"
-				press=".onSendEmailPress"/>
-		</semantic:sendEmailAction> -->
 		<semantic:closeAction>
 			<semantic:CloseAction
 				id="closeColumn"
-				press=".onCloseDetailPress"/>
+                visible="{= ${layoutComplementModel>/closeColumn} !== null ? true : false}"
+				press="handleClose"/>
 		</semantic:closeAction>
 		<semantic:fullScreenAction>
 			<semantic:FullScreenAction
 				id="enterFullScreen"
-				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				visible="{= ${layoutComplementModel>/fullScreen} !== null ? true : false}"
+				press="handleFullScreen"/>
 		</semantic:fullScreenAction>
 		<semantic:exitFullScreenAction>
 			<semantic:ExitFullScreenAction
 				id="exitFullScreen"
-				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				visible="{= ${layoutComplementModel>/exitFullScreen} !== null ? true : false}"
+				press="handleExitFullScreen"/>
 		</semantic:exitFullScreenAction>
         <semantic:footerCustomActions>
 			<Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>

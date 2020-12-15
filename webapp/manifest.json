@@ -162,6 +162,23 @@
                     ]
                 },
                 {
+                    "name": "VerComplementos",
+                    "pattern": "VerComplementos/{param}",
+                    "target": [
+                         "masterComplementSee",
+                        "detailComplementSee"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "VerComplementosDetail/{item}",
+                    "name": "VerComplementosDetail",
+                    "target": [
+                        "masterComplementSee",
+                        "detailComplementSee"
+                    ]
+                },
+                {
                     "name": "settings",
                     "pattern": "systemSettings",
                     "target": [
@@ -176,7 +193,7 @@
                 },
                 {
                     "name": "NotificacionEntregaNacional",
-                    "pattern": "NotificacionEntregaNacional",
+                    "pattern": "NotificacionEntregaNacional/{param}",
                     "target": [
                         "masterDeliveryNotifications",
                         "detailDeliveryNotifications"
@@ -184,7 +201,7 @@
                     "controlId": "mainContents"
                 },
                 {
-                    "pattern": "NotificacionEntregaNacional/{orderId}",
+                    "pattern": "NotificacionEntregaNacionalDetail/{orderId}",
                     "name": "NotificacionEntregaNacionalDetail",
                     "target": [
                         "masterDeliveryNotifications",
@@ -355,13 +372,33 @@
                     "viewName": "complements.MasterUpload",
                     "controlId": "layoutComplement",
                     "parent": "complementUpload",
-                    "controlAggregation": "beginColumnPages"
+                    "controlAggregation": "beginColumnPages",
+                    "viewId": "mcu"
                 },
                 "detailComplementUpload": {
                     "viewName": "complements.DetailUpload",
                     "controlId": "layoutComplement",
                     "controlAggregation": "midColumnPages",
                     "parent": "complementUpload"
+                },
+                "complementSee": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutSeeComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "seeComplement.ComplementSee"
+                },
+                "masterComplementSee": {
+                    "viewName": "seeComplement.MasterSee",
+                    "controlId": "layoutSeeComplement",
+                    "parent": "complementSee",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementSee": {
+                    "viewName": "seeComplement.DetailSee",
+                    "controlId": "layoutSeeComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementSee"
                 },
                 "settings": {
                     "parent": "TargetMain",
@@ -407,16 +444,15 @@
                     "viewName": "asn.National.DetailDeliveryNotifications",
                     "controlId": "layoutDeliveryNotifications",
                     "controlAggregation": "midColumnPages",
-                    "parent": "deliveryNotifications"
+                    "parent": "deliveryNotifications",
+                    "viewId": "ddn"
                 },
                 "masterDeliveryNotificationsG1": {
                     "viewName": "asn.NationalSecondView.DeliveryNotificationsSecond",
                     "parent": "TargetMain",
 					"viewType": "XML",
 					"transition": "slide",
-					"clearControlAggregation": false,
-                    "controlId": "pageContainer",
-                    "controlAggregation": "pages"
+                    "controlId": "pageContainer"
                 },
                 "deliveryNotificationsInt": {
                     "parent": "TargetMain",
