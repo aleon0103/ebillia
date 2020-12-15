@@ -150,17 +150,24 @@ sap.ui.define([
         },
 
         GetFile: function (path, callback) {
-            console.log(path);
-            return $.ajax({
-                method: "GET",
-                headers: {
-                    'Authorization': jwt
-                },
-                url: URL+path,
-                responseType: 'arraybuffer',
-               
-            })
+             var xhr = new XMLHttpRequest();
+             
+
+            xhr.open("GET", URL+path, true);
+            xhr.setRequestHeader('Authorization', jwt);
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+
+                callback(xhr.response, xhr.status);
+
+            };
+            xhr.onerror = function() {
+                console.log('Error request...');
+            };
+
+            xhr.send(null);
         },
+        
 
     };
 

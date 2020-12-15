@@ -169,7 +169,9 @@ sap.ui.define([
             
             const modelo = poModel.getProperty('/monedaObj')
             if (modelo.codigo == '' || modelo.identificador == '') {
-                MessageToast.show('Favor de completar todos los campos')
+                 this.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                                MessageToast.show(oBundle.getText("camposIncompletos"));
+                            });
                 return;
             }
             
@@ -218,7 +220,9 @@ sap.ui.define([
             
             const modelo = poModel.getProperty('/monedaObjH')
             if (modelo.codigo == '' || modelo.identificador == '') {
-                MessageToast.show('Favor de completar todos los campos')
+                 this.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                                MessageToast.show(oBundle.getText("camposIncompletos"));
+                            });
                 return;
             }
             

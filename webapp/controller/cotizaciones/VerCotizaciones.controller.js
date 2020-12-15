@@ -122,29 +122,30 @@ sap.ui.define([
                  var poModel = this.getModel("cotizacionesModel");
                  poModel.setProperty('/busy', true);
                 var path = API.serviceList().GET_FILE_COTIZACION + `?rutaArchivo=${ruta}`;
-                API.GetFile(path).then(
-                    function (data) {
-                        poModel.setProperty('/busy', false);
-                        if (data) {
-                            console.log(data);
-                            
-                         var file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                        var fileURL = URL.createObjectURL(file);
+                API.GetFile(path, function (responseText, status) {
+                    // console.log(responseText, status);
+                    if (status === 200) {
+                        var parts = ruta.split('/');
+                        var name = parts[parts.length - 1];
 
-                        var win = window.open();
-                        win.document.write('<iframe src="' + fileURL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
-                            
+                        let blob = new Blob([responseText], {type: 'application/json'});
+                
+                        var downloadURL = window.URL.createObjectURL(blob);
+                        var link = document.createElement('a');
+                        link.href = downloadURL;
+                        link.download = name + ".xlsx";
+                        link.click();
 
-                        }else {
-                            MessageToast.show('Error')
-                        }
-                    }, function (err) {
-                        poModel.setProperty('/busy', false);
-                        console.log(err.responseText);
-                        
-                       
-                        console.log("error in processing your request", err);
-                    });
+                    } else {
+                        this.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                                MessageToast.show(oBundle.getText("errorMessage"));
+                            });
+                    }
+
+                     poModel.setProperty('/busy', false);
+                });
+            
+              
 
             },
             visualizarArchivo: function(data) {
