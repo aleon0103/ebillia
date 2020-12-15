@@ -1,32 +1,33 @@
 <mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.reviewForecast.DetailReviewForecast">
 	<semantic:SemanticPage id="page" busy="{busyPage>/busy}">
 		<semantic:titleHeading>
-			<Title text="{i18n>ProveedorRevP} {pronosticoDetailView>/Pronostico}"/>
+			<Title text="{i18n>ProveedorRevP} {pronosticoDetailView&gt;/Pronostico}"/>
 		</semantic:titleHeading>
         	<semantic:headerContent>
 			<l:HorizontalLayout>
 				<l:VerticalLayout>
-					<ObjectIdentifier text="{i18n>SemanasRevP} {pronosticoDetailView>/PronosticoDetalle/0/descripcion}"/>
+					<ObjectIdentifier text="{i18n>SemanasRevP} {pronosticoDetailView&gt;/PronosticoDetalle/0/descripcion}"/>
 				</l:VerticalLayout>
 			</l:HorizontalLayout>
 		</semantic:headerContent>
 		<semantic:content>
 			<l:VerticalLayout>
 			
-				<Table id="lineItemsList" class="sapUiSmallMarginTop" width="auto" items="{pronosticoDetailView>/PronosticoDetalle}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+				<Table id="detailForecastTable" class="sapUiSmallMarginTop" width="auto" items="{pronosticoDetailView>/PronosticoDetalle}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
 					<!-- <headerToolbar>
 						<Toolbar id="lineItemsToolbar">
 							<Title id="lineItemsHeader" text="{detailView>/lineItemListTitle}"/>
 						</Toolbar>
 					</headerToolbar> -->
 					<columns>
-						<Column >
+						<Column>
 							<Text text=""/>
 						</Column>
 						
-                        <Column   hAlign="End">
+                        <Column hAlign="End">
 							<Text text=""/>
 						</Column>
+
 					</columns>
 					<items>
 						<ColumnListItem>
@@ -35,17 +36,14 @@
                                 <l:VerticalLayout>
                                     <Label text="{pronosticoDetailView>fecha_modificacion}"/>
                                     
-                                    <ObjectStatus
-                                        state="{
-                                            path: 'pronosticoDetailView>estatus',                                                                              
-                                            formatter: '.formatter.ForecastItemState'                                                                         
-                                        }" text="{pronosticoDetailView>estatus}" class="sapUiTinyMarginTopBottom"/> 
+                                    <ObjectStatus state="{                                             
+                                        path: 'pronosticoDetailView>estatus',                                                                                                                           
+                                        formatter: '.formatter.ForecastItemState'                                                                                                                  
+                                    }" text="{pronosticoDetailView>estatus}" class="sapUiTinyMarginTopBottom"/> 
                                 </l:VerticalLayout>
 
-                                <Button icon="sap-icon://download" type="Transparent"  press="downloadFile()">
-                                    
-                                </Button>
-                                
+                                <Button icon="sap-icon://download" type="Transparent" tooltip="{i18n>DescargarRevP}" press=".downloadFile"/>
+                        
 							</cells>
 						</ColumnListItem>
 					</items>

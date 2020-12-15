@@ -30,7 +30,7 @@ sap.ui.define([
             },
 
             onAfterRendering: function () {
-                console.log('on Revoke asn View After Render');
+                console.log('on Master Review Forecast View After Render');
 
             },
 
@@ -43,67 +43,11 @@ sap.ui.define([
                 var poModel = this.getModel("pronosticoModel");
                 poModel.setProperty('/Count', 0);
 
-                this._getASNs();
+                this._getPronosticos();
 
             },
 
-            getProveedores: function (value) {
-                var me = this;
-                var path = API.serviceList().GET_PROVEEDORES_CATALOG + `?value=${value}`;
-                API.Get(path).then(
-                    function (respJson, paramw, param3) {
-                        
-                        if (respJson) {
-                            me.proveedoresData = respJson;
-
-                            var localModel = me.getModel("proveedores");
-							localModel.setData(me.proveedoresData);
-                            sap.ui.getCore().setModel(localModel);
-                            me._proveedoresModel.refresh(true);
-                        }
-
-                    }, function (err) {
-                        console.log("error in processing your request", err);
-                });
-            },
-
-            handleChangeProv: function (oEvent) {
-                var oValidatedComboBox = oEvent.getSource(),
-                    sSelectedKey = oValidatedComboBox.getSelectedKey(),
-                    sValue = oValidatedComboBox.getValue();
-
-                if (sValue.trim() == "") {
-                    this.getView().byId("searchFieldAsn").setValue("");
-                } else {
-                    this.getProveedores(sValue);
-                }
-                console.log('1')
-            },
-
-            providerSelected: function (oControlEvent) {
-               var poModel = this.getModel("pronosticoModel");
-               var prov = this.getView().byId("proveedorCA").getSelectedKey();
-               
-               if (prov.trim() !== "") {
-                    this._getASNs(prov);
-                    // this.getView().byId("searchFieldAsn").setEnabled(true);
-               } else {
-                //    this.getView().byId("searchFieldAsn").setEnabled(false);
-                    var itemId = this.getView().byId("list");
-                    itemId.removeSelections(true);
-                  
-                   this._showDetail(null);
-                  
-
-                   poModel.setProperty('/Pronosticos', [])
-                   poModel.refresh();
-               }
-
-                
-               console.log('2')
-               
-            },
-
+         
             onSearch: function (oEvent) {
                 if (oEvent.getParameters().refreshButtonPressed) {
                     
@@ -119,7 +63,7 @@ sap.ui.define([
                     this._getASNByNumber(sQuery);
                 } else {
                     //	this._oListFilterState.aSearch = [];
-                    this._getASNs();
+                    this._getPronosticos();
                 }
 
                 var itemId = this.getView().byId("list");
@@ -128,9 +72,12 @@ sap.ui.define([
             },
 
             onRefresh: function () {
-                // this.getView().byId("searchFieldAsn").setValue("");
-                this._getASNs();
+                this.byId("refresh0").hide();
+                this._getPronosticos();
                 this._showDetail(null);
+
+                var itemId = this.getView().byId("list");
+                    itemId.removeSelections(true);
             },
 
             onSelectionChange: function (oEvent) {
@@ -173,7 +120,7 @@ sap.ui.define([
 
             /**Method to get POrchaseOrder List */
 
-            _getASNs: function () {
+            _getPronosticos: function () {
                 var poModel = this.getModel("pronosticoModel");
                 poModel.setProperty('/busy', true);
 
@@ -211,40 +158,7 @@ sap.ui.define([
                 
             },
 
-            _getASNByNumber: function (asn) {
-                var poModel = this.getModel("pronosticoModel");
-                poModel.setProperty('/busy', true);
-                console.log('2')
-                var me = this;
-                var path = API.serviceList().GET_ASN_BY_NUMBER + `${asn}/NA`;
-                API.Get(path).then(
-                    function (respJson, paramw, param3) { 
-                        poModel.setProperty('/busy', false);
-                        if (respJson && respJson.data) { 
-
-                            if (respJson.data.length === 0) {
-                                poModel.setProperty('/Pronosticos', [])
-                                poModel.setProperty('/Count', 0)
-                               
-                            } else {
-                                var response = [respJson.data];
-                                poModel.setProperty('/Pronosticos', response)
-                                poModel.setProperty('/Count', 1)
-                                
-                            }
-                            
-                            
-                            poModel.refresh();
-
-                            me._showDetail(null);
-                        
-                        }
-                    }, function (err) {
-                        poModel.setProperty('/busy', false);
-
-                        console.log("error in processing your request", err);
-                    });
-            },
+          
             
 
         });

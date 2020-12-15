@@ -13,7 +13,9 @@ sap.ui.define([
         return BaseController.extend("ns.EBilliaApp.controller.DetailReviewForecast", {
         index: null,
         formatter: FormatterREP,
-        pronosticoObject: null,
+        rutaArchivo: "",
+        rol: null,
+        nombre: "",
 
             onInit: function () {
                 console.log('on Detail Review Forecast component view')
@@ -32,19 +34,45 @@ sap.ui.define([
                 });
                 this.setModel(this.busy, "busyPage");
 
+                
+
+                this.onBeforeRouteMatched();
+
+            },
+
+
+            onBeforeRouteMatched: function(oEvent) {
+                var oModel = this.getOwnerComponent().getModel("user");
+                this.rol = oModel.getProperty('/rol/id');
+                this.nombre = oModel.getProperty('/nombre');
+                
+                var oViewModel = this.getOwnerComponent().getModel("pronosticoDetailView");
+                if (this.rol === 3) {
+                    oViewModel.setProperty('/Pronostico', this.nombre);
+                } else {
+                    oViewModel.setProperty('/Pronostico', "");
+                }
+                
             },
 
             _routePatternMatched: function (oEvent) {
 
                 console.log("ROUTE DETAIL MATCH")
+               
 
                 var oArguments = oEvent.getParameter("arguments");  console.log(oArguments);
                 this._sObjectId = oArguments.orderId;
-
                 
                 var proModel = this.getModel("pronosticoModel").oData; 
                 var oViewModel = this.getModel("pronosticoDetailView");
 
+                var nombreProveedor;
+                if (this.rol === 3) {
+                    nombreProveedor = this.nombre;
+                } else {
+                    nombreProveedor = "";
+                }
+                console.log(nombreProveedor)
                 if (this._sObjectId !== "0") {
                     for (let i = 0; i < proModel.Pronosticos.length; i++) {
                         if (proModel.Pronosticos[i].idInbox == this._sObjectId) {
@@ -57,13 +85,13 @@ sap.ui.define([
                         oViewModel.setProperty('/Pronostico', this.pronosticoObject.nombre_proveedor);
                         oViewModel.setProperty('/PronosticoDetalle', this.pronosticoObject.items);
                     } else {
-                        oViewModel.setProperty('/Pronostico', '');
+                        oViewModel.setProperty('/Pronostico', nombreProveedor);
                         oViewModel.setProperty('/PronosticoDetalle', []);
                     }
                     
                     
                 } else {
-                    oViewModel.setProperty('/Pronostico', '');
+                    oViewModel.setProperty('/Pronostico', nombreProveedor);
                     oViewModel.setProperty('/PronosticoDetalle', []);
                 }
                
@@ -74,50 +102,48 @@ sap.ui.define([
             },
 
             downloadFile: function (oEvent) {
-                console.log(oEvent);
-                //console.log(oEvent.getSource().getText());
+                var row = oEvent.getSource().getBindingContext("pronosticoDetailView").getObject();
+                console.log(row);
+                
+                if (row.ruta_archivo && row.ruta_archivo !== "") {
+                    this.rutaArchivo = row.ruta_archivo;
+                    this.getFilePronostico();
+                } else {
+                    console.log('No file.')
+                }
+
             },
 
-            anularASN: function () {
+            getFilePronostico: function () {
                 var oBusy = this.getModel("busyPage");
                 oBusy.setProperty("/busy", true);
 
-                var oViewModel = this.getModel("asnDetailView");
                 var me = this;
 
-                var path = API.serviceList().POST_ANULAR_ASN + `${this._sObjectId}`;
-                API.PostService(path).then(
-                    function (respJson, paramw, param3) {
-                       // poModel.setProperty('/busy', false);
-                        if (respJson && respJson.data) {
+                var path = API.serviceList().GET_PRONOSTICO_FILE + `?rutaArchivo=${this.rutaArchivo}`;
+                API.GetFiles(path, function (responseText, status) {
+                    // console.log(responseText, status);
+                    if (status === 200) {
+                        var parts = me.rutaArchivo.split('/');
+                        var name = parts[parts.length - 1];
 
-                            let response = respJson.data;
-                            
-                            if (response && response.E_MENSAJES && response.E_MENSAJES.TYPE == 'S') {
-                                me.getView().byId("actionRevoke").setVisible(false);
-                                oViewModel.setProperty('/ASN', '');
-                                oViewModel.setProperty('/ASNDetalle', []);
-                                
-                            } else {
-                            
-                                console.log('Error revoke asn');
-                              
-                            }
+                        let blob = new Blob([responseText], {type: 'application/json'});
+                
+                        var downloadURL = window.URL.createObjectURL(blob);
+                        var link = document.createElement('a');
+                        link.href = downloadURL;
+                        link.download = name + ".xlsx";
+                        link.click();
 
-                            MessageToast.show(respJson.message, {duration: 5000, width: "200px"});
+                    } else {
+                        MessageToast.show('Error');
+                    }
 
-                            oViewModel.refresh();
-                            oBusy.setProperty("/busy", false);
-                        }
-                    }, function (err) {
-                      
-                        oBusy.setProperty("/busy", false);
-                        MessageToast.show(err.error.message, {duration: 5000, width: "200px"});
-
-                        console.log("error in processing your request", err);
-                    });
+                     oBusy.setProperty("/busy", false);
+                });
+            
             },
-
+ 
 
            
 

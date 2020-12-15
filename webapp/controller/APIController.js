@@ -30,7 +30,8 @@ sap.ui.define([
         GET_ALL_ASN: '/portal_cloud_api/logistic-services/asn/getAllAsn/',
         GET_ASN_BY_NUMBER: '/portal_cloud_api/logistic-services/asn/getAsn/',
         POST_ANULAR_ASN: '/portal_cloud_api/logistic-services/asn/anular/',
-        GET_NOTIFICATIONS_ENV: '/portal_cloud_api/logistic-services/pronostico/getNotificationsEnviadas/'
+        GET_NOTIFICATIONS_ENV: '/portal_cloud_api/logistic-services/pronostico/getNotificationsEnviadas/',
+        GET_PRONOSTICO_FILE: '/portal_cloud_api/logistic-services/pronostico/getFile'
     };
     return {
 
@@ -143,6 +144,26 @@ sap.ui.define([
                 url: URL+path,
             })
 
+
+        },
+
+        GetFiles: function (path, callback) {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", URL+path, true);
+            xhr.setRequestHeader('Authorization', jwt);
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+
+                callback(xhr.response, xhr.status);
+
+            };
+            xhr.onerror = function() {
+                console.log('Error request...');
+            };
+
+            xhr.send(null);
+            
 
         },
 

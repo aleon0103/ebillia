@@ -1,7 +1,7 @@
 <mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic" controllerName="ns.EBilliaApp.controller.reviewForecast.MasterReviewForecast">
 	<semantic:SemanticPage id="page">
 		<semantic:titleHeading>
-			<Title id="masterHeaderTitle" text="{i18n>PronosticosRevP} {pronosticoModel>/Count}"/>
+			<Title id="masterHeaderTitle" text="{i18n>PronosticosRevP} {pronosticoModel&gt;/Count}"/>
 		</semantic:titleHeading>
 		<semantic:content>
 			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
@@ -10,13 +10,16 @@
 				<headerToolbar>
 
 
-                    <Toolbar width="100%" id="toolbar1" height="100px">
+                    <Toolbar width="100%" id="toolbar1" height="70px">
 
                         <content>
 
                             <sap.ui.layout:VerticalLayout xmlns:sap.ui.layout="sap.ui.layout" width="100%" id="layout3">
 
                                 <sap.ui.layout:content>
+
+
+                                <PullToRefresh id="refresh0" tooltip="" refresh=".onRefresh"  />
 
 
                                 </sap.ui.layout:content>
@@ -29,24 +32,14 @@
 
 				</headerToolbar>
 				<items>
-					<ObjectListItem 
-                    type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" 
-                        press=".onSelectionChange" title="{                                                          
-                        parts: [                                                                
-                            'pronosticoModel>nombre_proveedor'                                                          
-                            ],                                                          
-                            formatter: 'jQuery.sap.formatMessage'  
-                        }">
+					<ObjectListItem type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" press=".onSelectionChange" title="{                                                                                   parts: [                                                                                             'pronosticoModel>nombre_proveedor'                                                                                       ],                                                                                       formatter: 'jQuery.sap.formatMessage'                           }">
 							<firstStatus>
-                                <ObjectStatus text="{pronosticoModel>estatus}" state="{
-                                    path: 'pronosticoModel>estatus',                                                                              
-                                    formatter: '.formatter.ForecastState'                                                                         
-                                }"/>
+                                <ObjectStatus text="{pronosticoModel>estatus}" state="{                                     path: 'pronosticoModel>estatus',                                                                                                                   formatter: '.formatter.ForecastState'                                                                                                          }"/>
 			                </firstStatus>
                          
 					<attributes>
                          
-					    <ObjectAttribute text="{i18n>SemanasRevP} {pronosticoModel>items/0/descripcion}" id="attribute4"/>
+					    <ObjectAttribute text="{i18n>SemanasRevP} {pronosticoModel&gt;items/0/descripcion}" id="attribute4"/>
                          
 					</attributes>
                          
