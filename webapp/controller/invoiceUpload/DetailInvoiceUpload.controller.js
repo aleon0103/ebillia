@@ -582,10 +582,20 @@ sap.ui.define([
             },
 
 
-            /**FINALIZA UPLOAD*/
+            /**FINALIZA UPLOAD
+             * 
+             * limpia los datos del pop up y actualiza las entradas. 
+            */
             _finishUpload: function(){
 
-                
+                this._XML_FILE=null
+                this._PDF_FILE=null
+                var oInvoiceModel = this.getModel("invoiceUpload");
+                oInvoiceModel.setProperty('/tempItems',[]);
+               // sap.ui.getCore().byId("UploadCollection").getItems();
+
+
+
 
             },
 
@@ -666,7 +676,30 @@ sap.ui.define([
                         console.log("error in processing your request", err);
                     });
 
-            }
+            },
+
+
+            /**PAGE FUNCTIONS*/
+
+                 enterFullScreen: function () {
+                var oViewModel = this.getModel("invoiceUpload")
+                oViewModel.setProperty('/layout', 'MidColumnFullScreen')
+
+            },
+
+            exitFullScreen: function () {
+                var oViewModel = this.getModel("invoiceUpload")
+                oViewModel.setProperty('/layout', 'TwoColumnsMidExpanded')
+
+
+            },
+            onCloseDetailPress: function () {
+                var oViewModel = this.getModel("invoiceUpload");
+                oViewModel.setProperty("/layout", "OneColumn");
+                this.getRouter().navTo("cargaFactura");
+
+            },
+
 
 
 

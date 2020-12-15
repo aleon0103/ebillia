@@ -188,13 +188,13 @@
 			<semantic:FullScreenAction
 				id="enterFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				press="enterFullScreen"/>
 		</semantic:fullScreenAction>
 		<semantic:exitFullScreenAction>
 			<semantic:ExitFullScreenAction
 				id="exitFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				press="exitFullScreen"/>
 		</semantic:exitFullScreenAction>
 
 <!-- Semantic Footer Buttons -->
