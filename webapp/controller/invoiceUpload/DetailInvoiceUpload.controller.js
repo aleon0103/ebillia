@@ -6,10 +6,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     'sap/m/MessageToast',
     "sap/ui/Device",
-    "sap/ui/core/Fragment"
+    "sap/ui/core/Fragment",
+    	"sap/m/MessageBox"
 
 ],
-    function (BaseController, API, formatter, JSONModel, MessageToast, Device, Fragment) {
+    function (BaseController, API, formatter, JSONModel, MessageToast, Device, Fragment,MessageBox) {
         "use strict";
 
         return BaseController.extend("ns.EBilliaApp.controller.DetailInvoiceUpload", {
@@ -247,6 +248,16 @@ sap.ui.define([
                     }
                 }
 
+                //colocar files pfd y xml 
+                if( fileExtesion.toUpperCase() == 'XML' ){
+                    this._XML_FILE = oEvent.getParameter("files")[0];
+
+                }
+                 if( fileExtesion.toUpperCase() == 'XML' ){
+                      this._PDF_FILE = oEvent.getParameter("files")[0];
+                    
+                }
+
 
             },
 
@@ -404,7 +415,7 @@ sap.ui.define([
                     if (this.getFileExtension3(currentFile).toUpperCase() === 'XML') {
                         file2 = item
                     } else if (this.getFileExtension3(currentFile).toUpperCase() === 'PDF') {
-                        file1 = DataTransferItem
+                        file1 = item
                     }
                 }
 
@@ -427,6 +438,15 @@ sap.ui.define([
 
                 } else {
 
+
+                  
+                   this.getView().getModel("i18n").getResourceBundle().then(function (oBundle) {
+
+                     MessageToast.show(oBundle.getText("fileValidationFail"));
+
+                     }.bind(this));
+
+
                 }
 
 
@@ -437,12 +457,12 @@ sap.ui.define([
 
             showAccount: function () {
 
-                if (this.cuentas.length > 1) {
+                if (this._cuentas.length > 1) {
                     this.showCuentas = true;
 
-                } else if (this.cuentas.length === 1) {
+                } else if (this._cuentas.length === 1) {
 
-                    this._accountSelected = this.cuentas[0]
+                    this._accountSelected = this._cuentas[0]
                     this._sendInvoice();
 
                 } else {
@@ -457,6 +477,7 @@ sap.ui.define([
             /**SEND INVOICE*/
 
             _sendInvoice: function () {
+                var me = this;
                 var entradas = []
                 var oInvoiceModel = this.getModel("invoiceUpload");
                 var cuenta = this._accountSelected['cuenta_bancaria'];
@@ -469,9 +490,31 @@ sap.ui.define([
                     moneda = this._monedaSeleccionada;
 
                 } else {
-                    moneda = this.ordenCompra.moneda;
+                    moneda = odercenCompra.moneda;
 
                 }
+
+
+                //formar array de entradas. 
+                var tempItems = oInvoiceModel.getProperty('/tempItems');
+                for (var item of tempItems) {
+                  
+                    let items = {
+                        "ejercicioFiscal": item.ejercicio,
+                        "idEntradaMercancia": item.num_doc_material,
+                        "idOrdenCompra": item.num_doc_comp,
+                        "importeTotalEntrada": item.importe,
+                        "sociedadDeOrdenCompra": item.sociedad
+                    };
+
+                    entradas.push(items);
+
+
+                }
+
+
+
+
 
                 let obj = {
                     "cuentaDePago": cuenta,
@@ -479,7 +522,7 @@ sap.ui.define([
                     "idProveedor": this._provToSend,
                     "moneda": moneda,
                     "requestUploadInvoice": entradas,
-                    "sinCfdi": false//this._noCfdi
+                    "sinCfdi": this._sinCfdi//this._noCfdi
                 }
 
                 const formData = new FormData();
@@ -493,20 +536,57 @@ sap.ui.define([
                     if (this.getFileExtension3(currentFile).toUpperCase() === 'XML') {
                         file2 = item
                     } else if (this.getFileExtension3(currentFile).toUpperCase() === 'PDF') {
-                        file1 = DataTransferItem
+                        file1 = item
                     }
                 }
 
-
-
+                console.log(file1.getSelected());
                 formData.append('documentoFactura', JSON.stringify(obj))
-                formData.append('xmlFile', file2),
-                formData.append('pdfFile', file1);
+                formData.append('xmlFile', this._XML_FILE),
+                formData.append('pdfFile', this._PDF_FILE);
+
+                // Call save invoice function 
+                //     return this.http.post(this.baseFlexi + 'logistic-services/' +  'Proveedores-facturas/guardarFacturaOC',formData, options);
+
+                
+                var path = API.serviceList().ENVIO_ARCHIVOS_EM;
+                API.PostFiles(path, formData).then(
+                    function (respJson, paramw, param3) {
+                        console.log(respJson);
+                        var response = respJson;
+
+                        if (response.status === "E") {
+                           // MessageToast.show(response.message);
+                            	MessageBox.error(response.message);
+                        } else {
+                            MessageBox.success(response.message);
+                            //MessageToast.show(response.message);
+                            me.closeDialog();
+                            me._finishUpload();
+                        }
+                        
+                    }, function (err) {
+
+                        console.log("error in processing your request", err);
+                         MessageBox.error(err.responseJSON.message);
+                    }
+                );
+
+
+
 
             },
 
             closeDialog: function () {
                 this._oEMHelpDialog.close()
+            },
+
+
+            /**FINALIZA UPLOAD*/
+            _finishUpload: function(){
+
+                
+
             },
 
 
