@@ -1,0 +1,30 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<ColumnListItem
+        type="{
+	    	path: 'ORDEN_COMPRA',
+			formatter: 'ns.EBilliaApp.model.FormatterREP.listItemType'
+		}"
+		selected="{
+			path: 'ORDEN_COMPRA',
+            formatter: 'ns.EBilliaApp.model.FormatterREP.isProductSelected'
+		}">
+		<cells>
+        	<!-- <ObjectIdentifier
+				title="{PROVEEDOR}"
+				text="{ORDEN_COMPRA}" /> -->
+            <Text text="{ORDEN_COMPRA}" />
+			<Text text="{PROVEEDOR}" />
+            <Text text="{FECHA_DOC}" />
+            <Text text="{POSICION_OC}" />
+            <Text text="{NUM_MATERIAL}" />
+            <Text text="{DESCRIPCION}" />
+            <Text text="{VAM}" />
+            <Text text="{FECHA_ENTREGA}" />
+            <Text text="{CANTIDAD_PEDIDO}" />
+            <Text text="{CANTIDAD_PENDIENTE}" />
+            <Text text="{CANTIDAD_RECIBIDO}" />
+		</cells>
+	</ColumnListItem>
+</core:FragmentDefinition>

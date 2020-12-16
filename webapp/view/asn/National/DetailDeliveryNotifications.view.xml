@@ -1,0 +1,106 @@
+<mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.asn.National.DetailDeliveryNotifications">
+	<semantic:SemanticPage id="page" busy="{detailDeliveryN>/busy}" showFooter="true" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:titleHeading>
+			<Title text="{ 
+                parts: [ 'i18n>commonItemTitle', 
+                         'detailDeliveryN>/orderId'],      
+                formatter: 'jQuery.sap.formatMessage'
+            }"/>
+		</semantic:titleHeading>
+        <semantic:headerContent>
+            <l:VerticalLayout width="100%" id="layout4">
+                <l:content>
+                    <l:HorizontalLayout id="layout5">
+                        <l:content>
+                            <ObjectAttribute id="attribute3" class="sapUiSmallMarginEnd" title="Fecha entrega"/>
+                            <DatePicker xmlns="sap.m" id="deliveryDateDN" class="sapUiSmallMarginBottom sapUiMediumMarginEnd" valueFormat="yyyy-MM-dd" displayFormat="short" width="150px" change=".deliveryDateSelected"/>
+                            <ObjectAttribute id="attribute4" class="sapUiSmallMarginEnd" title="Confirmar orden completa"/>
+                            <Switch xmlns="sap.m" id="switchCompletar" enabled="{= ${detailDeliveryN>/GoodReceipts}.length !== 0 }" class="sapUiMediumMarginBottom sapUiMediumMarginEnd" change=".switchConfirm"/>
+                        </l:content>
+                    </l:HorizontalLayout>
+                    <l:HorizontalLayout id="layout6">
+                        <l:content>
+                            <Title text="{ 
+                                parts: [ 'i18n>materialesSeleccionados', 
+                                            'detailDeliveryN>/count'],      
+                                formatter: 'jQuery.sap.formatMessage'
+                            }"/>
+                        </l:content>
+                    </l:HorizontalLayout>
+                </l:content>
+            </l:VerticalLayout>
+        </semantic:headerContent>
+		<semantic:content>
+			<l:VerticalLayout>
+				<Table id="lineItemsList" class="sapUiSmallMarginTop" alternateRowColors="true" width="auto" items="{detailDeliveryN>/GoodReceipts}" updateFinished=".onListUpdateFinished" noDataText="{i18n>noDataTableREP}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+					
+					<columns>
+						<Column width="5em">
+							<Text text="{i18n>posicionTableREP}"/>
+						</Column>
+						<Column minScreenWidth="Tablet" width="12em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>materialTableREP}"/>
+						</Column>
+						
+						<Column minScreenWidth="Tablet" width="4em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>vamTableREP}"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true" width="6em" hAlign="Begin">
+							<Text text="{i18n>cantidadEntregadaTableDN}"/>
+						</Column>
+                        <Column width="6em" hAlign="Begin">
+							<Text text="{i18n>cantidadTableDN}"/>
+						</Column>
+                        <Column width="5em" hAlign="Center">
+							<Text text="{i18n>verificarIngresoTableDN}"/>
+						</Column>
+                        <Column hAlign="Begin">
+							<Text text="{i18n>cantidadIngresoTableDN}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier text="{detailDeliveryN>num_pos_doc_comp}"/>
+                               
+                                <ObjectIdentifier title="{detailDeliveryN>idMaterial}" text="{detailDeliveryN>descripcionMaterial}" class="sapUiTinyMarginTopBottom"/>
+
+
+                                <ObjectIdentifier text="{detailDeliveryN>valorMatriz}"/>
+                            
+								
+                                <ObjectNumber number="{           path: 'detailDeliveryN>cantidadEntregaEfectivamente'                     }" unit="{detailDeliveryN>unidad}"/>
+
+								<ObjectNumber number="{                                         path:'detailDeliveryN>cantidad'                            }" unit="{detailDeliveryN>unidad}"/>
+
+                                <Switch  enabled="true" state="{detailDeliveryN>verificarIngreso}" change=".onCheckIngreso(${detailDeliveryN>idTmp}, ${detailDeliveryN>verificarIngreso});.verificarEntrada(${detailDeliveryN>idTmp});.validarCompleta">
+                                    <layoutData>
+                                        <FlexItemData growFactor="1"/>
+                                    </layoutData>
+                                </Switch>
+
+                                <Input xmlns="sap.m" type="Number" value="{detailDeliveryN>cantidadIngreso}" id="input0" description="{detailDeliveryN>unidad}" width="100px" fieldWidth="60%" class="sapUiSmallMarginBottom" change=".changeIngreso(${detailDeliveryN>idTmp}, $event)"/>
+                                
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</l:VerticalLayout>
+		</semantic:content>
+		<!-- <semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onSendEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction id="closeColumn" press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction id="enterFullScreen" visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction id="exitFullScreen" visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction> -->
+        <semantic:footerCustomActions>
+			<Button type="Emphasized" text="Confirmar" press="onConfirm" enabled="{= ${detailDeliveryN>/count} !== 0 &amp;&amp; ${detailDeliveryN>/fecha_entrega} !== null}"/>
+		</semantic:footerCustomActions>
+	</semantic:SemanticPage>
+</mvc:View>

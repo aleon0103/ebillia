@@ -8,7 +8,7 @@
         <FlexBox class="columns" alignContent="Center" alignItems="Center" fitContainer="true">
 		<items>
 		<VBox width="50%" direction="Column" id="vbox1" height="100%" backgroundDesign="Solid" alignContent="Center" alignItems="Center" fitContainer="true" justifyContent="SpaceAround">
-		    <items><Label text="Left" width="100%" id="label1"/>
+		    <items><Label text="" width="100%" id="label1"/>
 		    </items>
 		</VBox>
 		<VBox xmlns="sap.m" fitContainer="true" justifyContent="Center" alignContent="Center" height="100%" alignItems="Center" id="VBox">
@@ -46,7 +46,7 @@
 
 
 
-                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
+                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" submit="goToMain" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
 
 
 
@@ -70,7 +70,7 @@
 
 
 
-                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
+                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" submit="goToMain" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
 
 
 

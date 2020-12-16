@@ -1,0 +1,78 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core">
+
+    <Dialog
+    type="Message"
+    title="Confirmación"
+    afterClose="onAfterCloseDialog">
+        <content>
+            <Table id="lineItemsList" class="sapUiSmallMarginTop" alternateRowColors="true" width="auto" items="{positionsSelected>/positions}" noDataText="{i18n>noDataTableREP}">
+                <headerToolbar>
+                    <Toolbar id="lineItemsToolbar">
+                        <Title text="{ 
+                            parts: [ 'i18n>noArticulos', 
+                                        'detailDeliveryN>/count'],      
+                            formatter: 'jQuery.sap.formatMessage'
+                        }"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="auto">
+                        <Text text="{i18n>noOrden}"/>
+                    </Column>
+                    <Column width="auto">
+                        <Text text="{i18n>posicionTableREP}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" width="12em" demandPopin="true" hAlign="Begin">
+                        <Text text="{i18n>materialTableREP}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" width="13em" demandPopin="true" hAlign="Begin">
+                        <Text text="{i18n>materialDesc}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" width="auto" demandPopin="true" hAlign="Begin">
+                        <Text text="{i18n>vamTableREP}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" width="auto" demandPopin="true" hAlign="Begin">
+                        <Text text="{i18n>fechaEntrega}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" width="auto" hAlign="Begin">
+                        <Text text="{i18n>cantidadEntregadaTableDN}"/>
+                    </Column>
+                    <Column width="auto" hAlign="Begin">
+                        <Text text="{i18n>cantidadTableDN}"/>
+                    </Column>
+                    <Column hAlign="Begin" width="auto">
+                        <Text text="{i18n>cantidadIngresoTableDN}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier text="{positionsSelected>num_doc_comp}"/>
+                            <ObjectIdentifier text="{positionsSelected>num_pos_doc_comp}"/>
+                            <ObjectIdentifier title="{positionsSelected>idMaterial}"/>
+                            <ObjectIdentifier text="{positionsSelected>descripcionMaterial}"/>
+                            <ObjectIdentifier text="{positionsSelected>valorMatriz}"/>
+                            <ObjectIdentifier text="{positionsSelected>fecha_entrega}"/>
+                            <ObjectNumber number="{ path: 'positionsSelected>cantidadEntregaEfectivamente' }" unit="{positionsSelected>unidad}"/>
+                            <ObjectNumber number="{ path:'positionsSelected>cantidad' }" unit="{positionsSelected>unidad}"/>
+                            <ObjectNumber number="{ path:'positionsSelected>cantidadIngreso' }" unit="{positionsSelected>unidad}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <beginButton>
+            <Button
+            text="Crear ASN"
+            press="onCrearASN_Nacional"/>
+        </beginButton>
+        <endButton>
+            <Button
+            text="{i18n>cancelar}"
+            press="onCloseDialog"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

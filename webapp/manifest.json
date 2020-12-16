@@ -111,24 +111,22 @@
                     ],
                     "controlId": "app"
                 },
-                
-               {
-                    "name": "POConfirm",
-                    "pattern": "POConfirm",
+                {
+                    "name": "ConfirmacionOrdenCompra",
+                    "pattern": "ConfirmacionOrdenCompra",
                     "target": [
                         "masterPurchaseOrders",
                         "detailPurchaseOrders"
                     ]
                 },
                 {
-                    "pattern": "POConfirm/{orderId}",
-                    "name": "POConfirmDetail",
+                    "pattern": "ConfirmacionOrdenCompra/{objectId}",
+                    "name": "ConfirmacionOrdenCompraDetail",
                     "target": [
                         "masterPurchaseOrders",
                         "detailPurchaseOrders"
                     ]
                 },
-                
                 {
                     "name": "cargaFactura",
                     "pattern": "cargaFactura",
@@ -164,14 +162,117 @@
                     ]
                 },
                 {
+                    "name": "VerComplementos",
+                    "pattern": "VerComplementos/{param}",
+                    "target": [
+                         "masterComplementSee",
+                        "detailComplementSee"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "VerComplementosDetail/{item}",
+                    "name": "VerComplementosDetail",
+                    "target": [
+                        "masterComplementSee",
+                        "detailComplementSee"
+                    ]
+                },
+                {
                     "name": "settings",
                     "pattern": "systemSettings",
                     "target": [
                         "settings"
                     ],
                     "controlId": "mainContents"
+                },
+                {
+                    "name": "ReporteEntregasPendientes",
+                    "pattern": "ReporteEntregasPendientes",
+                    "target": ["reporteEntregasPendientes"]
+                },
+                {
+                    "name": "NotificacionEntregaNacional",
+                    "pattern": "NotificacionEntregaNacional/{param}",
+                    "target": [
+                        "masterDeliveryNotifications",
+                        "detailDeliveryNotifications"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "NotificacionEntregaNacionalDetail/{orderId}",
+                    "name": "NotificacionEntregaNacionalDetail",
+                    "target": [
+                        "masterDeliveryNotifications",
+                        "detailDeliveryNotifications"
+                    ]
+                },
+                {
+                    "pattern": "masterDeliveryNotificationsG1",
+                    "name": "masterDeliveryNotificationsG1",
+                    "target": "masterDeliveryNotificationsG1"
+                },
+                {
+                    "name": "NotificacionEntregaInternacional",
+                    "pattern": "NotificacionEntregaInternacional",
+                    "target": [
+                        "masterDeliveryNotificationsInt",
+                        "detailDeliveryNotificationsInt"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "NotificacionEntregaInternacional/{orderId}",
+                    "name": "NotificacionEntregaInternacionalDetail",
+                    "target": [
+                        "masterDeliveryNotificationsInt",
+                        "detailDeliveryNotificationsInt"
+                    ]
+                },
+                {
+               
+                    "name": "ReporteComplemnetosPendientesCarga",
+                    "pattern": "ReporteComplemnetosPendientesCarga",
+                    "target": [
+                        "reporteComplementos"
+                    ]
+                },
+				{
+					"pattern": "ReporteFacturas",
+					"name": "ReporteFacturas",
+					"target": [
+						"masterInvoiceProcessed",
+						"detailInvoiceProcessed"
+					]
+				},
+				{
+					"pattern": "reporteFacturaDetail/{id}",
+					"name": "reporteFacturaDetail",
+					"target": [
+						"masterInvoiceProcessed",
+						"detailInvoiceProcessed"
+					]
+                },
+                {
+					"pattern": "busquedaASN",
+					"name": "busquedaASN",
+					"target": [
+						"masterASN",
+						"detailASN"
+					]
+				},
+				{
+					"pattern": "ASNDetail/{id}",
+					"name": "ASNDetail",
+					"target": [
+						"masterASN",
+						"detailASN"
+					]
                 }
+                
             ],
+            
             "targets": {
                 "TargetApp": {
                     "viewType": "XML",
@@ -250,13 +351,33 @@
                     "viewName": "complements.MasterUpload",
                     "controlId": "layoutComplement",
                     "parent": "complementUpload",
-                    "controlAggregation": "beginColumnPages"
+                    "controlAggregation": "beginColumnPages",
+                    "viewId": "mcu"
                 },
                 "detailComplementUpload": {
                     "viewName": "complements.DetailUpload",
                     "controlId": "layoutComplement",
                     "controlAggregation": "midColumnPages",
                     "parent": "complementUpload"
+                },
+                "complementSee": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutSeeComplement",
+                    "controlId": "pageContainer",
+                    "viewName": "seeComplement.ComplementSee"
+                },
+                "masterComplementSee": {
+                    "viewName": "seeComplement.MasterSee",
+                    "controlId": "layoutSeeComplement",
+                    "parent": "complementSee",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailComplementSee": {
+                    "viewName": "seeComplement.DetailSee",
+                    "controlId": "layoutSeeComplement",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "complementSee"
                 },
                 "settings": {
                     "parent": "TargetMain",
@@ -266,7 +387,110 @@
                     "viewName": "SystemSettings",
                     "controlId": "pageContainer",
                     "controlAggregation": "pages"
+                },
+                "reporteEntregasPendientes": {
+                    "viewName": "reports_.ReporteEntregasPendientes",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "reporteComplementos": {
+                    "viewName": "reports.PendingComplement",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "deliveryNotifications": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutDeliveryNotifications",
+                    "controlId": "pageContainer",
+                    "viewName": "asn.National.DeliveryNotifications"
+                },
+                "masterDeliveryNotifications": {
+                    "viewName": "asn.National.MasterDeliveryNotifications",
+                    "controlId": "layoutDeliveryNotifications",
+                    "parent": "deliveryNotifications",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailDeliveryNotifications": {
+                    "viewName": "asn.National.DetailDeliveryNotifications",
+                    "controlId": "layoutDeliveryNotifications",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "deliveryNotifications",
+                    "viewId": "ddn"
+                },
+                "masterDeliveryNotificationsG1": {
+                    "viewName": "asn.NationalSecondView.DeliveryNotificationsSecond",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+                    "controlId": "pageContainer"
+                },
+                "deliveryNotificationsInt": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutDeliveryNotificationsInt",
+                    "controlId": "pageContainer",
+                    "viewName": "asn.International.DeliveryNotificationsInt"
+                },
+                "masterDeliveryNotificationsInt": {
+                    "viewName": "asn.International.MasterDeliveryNotificationsInt",
+                    "controlId": "layoutDeliveryNotificationsInt",
+                    "parent": "deliveryNotificationsInt",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailDeliveryNotificationsInt": {
+                    "viewName": "asn.International.DetailDeliveryNotificationsInt",
+                    "controlId": "layoutDeliveryNotificationsInt",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "deliveryNotificationsInt"
+                },
+                "appInvoicesProcessed": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutInvoiceProcessed",
+                    "controlId": "pageContainer",
+                    "viewName": "reports.FlexibleColumnLayout"
+                },
+                "masterInvoiceProcessed": {
+                    "viewName": "reports.InvoicesMaster",
+                    "controlId": "layoutInvoiceProcessed",
+                    "parent": "appInvoicesProcessed",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailInvoiceProcessed": {
+                    "viewName": "reports.InvoicesDetail",
+                    "controlId": "layoutInvoiceProcessed",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appInvoicesProcessed"
+                },
+                "appASN": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutASN",
+                    "controlId": "pageContainer",
+                    "viewName": "searchAsn.AppASN"
+                },
+                "masterASN": {
+                    "viewName": "searchAsn.MasterANS",
+                    "controlId": "layoutASN",
+                    "parent": "appASN",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailASN": {
+                    "viewName": "searchAsn.DetailASN",
+                    "controlId": "layoutASN",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "appASN"
                 }
+                
             }
         }
     }

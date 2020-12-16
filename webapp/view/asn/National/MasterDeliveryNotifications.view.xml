@@ -1,0 +1,72 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic" controllerName="ns.EBilliaApp.controller.asn.National.MasterDeliveryNotifications">
+	<semantic:SemanticPage id="page">
+		<semantic:titleHeading>
+			<Title id="masterHeaderTitle" text="{      parts: [       'i18n>masterTitleCount',       'purchaseOrderModel>/Count'      ],      formatter: 'jQuery.sap.formatMessage'    }"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+			<List id="list" 
+            width="auto" 
+            class="sapFDynamicPageAlignContent" 
+            items="{ 
+                path: 'purchaseOrderModel>/PurchaseOrders',      
+                parameters: { expand: 'Customer'},      
+                sorter: { 
+                    path: 'idOrdenCompra', 
+                    descending: false
+                }
+            }" 
+            noDataText="{masterView>/noDataText}" 
+            mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" 
+            growing="true" 
+            growingScrollToLoad="true" 
+            selectionChange="onSelectionChange" 
+            busy="{purchaseOrderModel>/busy}">
+                
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                            <Button
+                            id="refreshButton"
+                            press="onRefresh"
+                            icon="sap-icon://refresh"
+                            type="Transparent"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<items>
+					<ObjectListItem 
+                        type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" 
+                        title="{i18n>orden}: {purchaseOrderModel>idOrdenCompra}"
+                        number="{ 
+                            parts:[{path:'purchaseOrderModel>totalOc'},{path:'purchaseOrderModel>moneda'}],
+                            type: 'sap.ui.model.type.Currency',                             
+                            formatOptions: {showMeasure: false}
+                        }" 
+                        numberUnit="{purchaseOrderModel>moneda}"
+                        >
+							<firstStatus>
+                                    <ObjectStatus
+                                        text="{purchaseOrderModel>estatus}"
+                                        state="{
+                                            path: 'purchaseOrderModel>estatus',
+                                            formatter: '.formatter.POEMState'
+                                        }"/>
+			                </firstStatus>
+                            <attributes>
+                                <ObjectAttribute id="companyName" text="{purchaseOrderModel>txt_breve}"/>
+                                <!--
+                                <ObjectAttribute title="{i18n>commonItemShipped}"
+                                    text="{= ${ShippedDate}
+                                        ? ${ path: 'ShippedDate',
+                                            type: 'sap.ui.model.type.Date',
+                                            formatOptions: { style: 'medium' } }
+                                        : ${i18n>commonItemNotYetShipped} }" />
+    -->
+
+						    </attributes>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>

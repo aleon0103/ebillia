@@ -287,7 +287,7 @@ sap.ui.define([
                 }
 
 
-                return navArray;
+                return  navArray;
 
 
             },
@@ -308,11 +308,9 @@ sap.ui.define([
 		 * @param {string[]} [aPlaceholderValues] The values which will repalce the placeholders in the i18n value
 		 * @returns {Promise<string>} The promise
 		 */
-        /*
             getBundleText: function (sI18nKey, aPlaceholderValues) {
                 return this.getBundleTextByModel(sI18nKey, this.getModel("i18n"), aPlaceholderValues);
             },
-            */
 
             mergeNotifications: function (cotizaciones, pronosticos) {
                 var cCount = cotizaciones ? cotizaciones.length : 0;

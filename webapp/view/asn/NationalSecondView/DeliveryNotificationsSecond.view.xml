@@ -1,0 +1,110 @@
+<mvc:View xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:mvc="sap.ui.core.mvc" 
+xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" controllerName="ns.EBilliaApp.controller.asn.NationalSecondView.DeliveryNotificationsSecond">
+	<semantic:SemanticPage id="page" busy="{detailView>/busy}" showFooter="true" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:titleHeading>
+			<Title text="Notificaciones de entrega"/>
+		</semantic:titleHeading>
+        <semantic:headerContent>
+	    <l:VerticalLayout width="100%" id="layout4">
+	        <l:content>
+                
+	            <l:HorizontalLayout id="layout6">
+                    <l:content>
+                        <l:VerticalLayout class="sapUiMediumMarginEnd">
+                            <Label text="Fecha de entrega" labelFor="DP1"/>
+                            <DatePicker
+                                id="DP1"
+                                displayFormat="yyyy-MM-dd"
+                                valueFormat="yyyy-MM-dd"
+                                change="handleChange"
+                                class="sapUiMediumMarginBottom"/>
+                        </l:VerticalLayout>
+                        <ObjectAttribute id="attribute4" title="Confirmar"  class="sapUiMediumMarginBottom sapUiTinyMarginEnd" />
+                        <Label text="Completa" />
+                        <Switch xmlns="sap.m" id="switchCompletar" class="sapUiSmallMarginBegin" customTextOff=" " customTextOn=" " change=".switchTipoCarga"/>
+                        <Label text="Parcial" />
+                    </l:content>
+                </l:HorizontalLayout>
+
+
+                 <l:HorizontalLayout id="layout5">
+	                <l:content >
+                        <l:VerticalLayout>
+                            <u:FileUploader
+                                id="fileUploader"
+                                name="myFileUpload"
+                                buttonOnly="true"
+                                buttonText="Cargar Excel"
+                                icon="sap-icon://excel-attachment"
+                                change="handleUploadPress"/>
+                        </l:VerticalLayout>
+                     </l:content>
+	            </l:HorizontalLayout>
+
+	        </l:content>
+	    </l:VerticalLayout>
+	</semantic:headerContent>
+		<semantic:content>
+			<l:VerticalLayout>
+	
+				<Table id="table" inset="false" busy="{file>/busy}" growing="true" growingThreshold="15" class="sapUiSmallMarginTop" items="{file>/results}" width="auto">
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title text="Resultado"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column >
+							<Text text="{i18n>numOC}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>renglon}"/>
+						</Column>
+						
+						<Column>
+							<Text text="{i18n>seleccion}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>dcm}"/>
+						</Column>
+                        <Column >
+							<Text text="{i18n>factura}"/>
+						</Column>
+                        <Column >
+							<Text text="{i18n>lados}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+                            
+								<ObjectNumber number="{ path: 'file>NUMERO_OC' }" />
+                                <ObjectNumber number="{ path: 'file>RENGLON' }"/>
+                                <ObjectNumber number="{ path: 'file>SELECCION' }"/>
+                                <ObjectNumber number="{ path: 'file>DCM' }"/>
+                                <ObjectIdentifier text="{file>FACTURA}"/>
+                                <ObjectNumber number="{ path: 'file>LADOS' }"/>
+                                
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</l:VerticalLayout>
+		</semantic:content>
+		<!-- <semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onSendEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction id="closeColumn" press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction id="enterFullScreen" visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction id="exitFullScreen" visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction> -->
+        <semantic:footerCustomActions>
+			<Button type="Emphasized" text="Crear ASN" press="onCrearAsn" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/>
+		</semantic:footerCustomActions>
+	</semantic:SemanticPage>
+</mvc:View>

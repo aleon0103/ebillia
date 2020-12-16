@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="No Data"
+		title="Sociedad"
+		search=".onSearchSociedad"
+		confirm=".onDialogSociedades"
+		cancel=".onDialogSociedades"
+		items="{
+			path: '/data/sociedadesListar'
+		}">
+		<StandardListItem
+			title="{sociedad}"
+			description="{razonSocial}"
+			icon="{ProductPicUrl}"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>
