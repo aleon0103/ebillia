@@ -1,0 +1,72 @@
+<mvc:View
+	controllerName="ns.EBilliaApp.controller.cotizaciones.SolicitudCotizaciones"
+	xmlns:t="sap.ui.table"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m">
+	<Page
+    	title="{i18n>SCotizaciones}"
+
+     >
+        <!-- <headerContent>
+				<Button text="{i18n>send}" visible="{cotizacionesModel>/okSend}" press="sendData" type="Accept" />
+		</headerContent>
+		<subHeader>
+			<OverflowToolbar>
+                
+				<SearchField liveChange=".onSearch" width="100%" />
+                
+			</OverflowToolbar>
+            
+		</subHeader>
+         -->
+		
+      
+        <t:Table id="table1"
+				rows="{cotizacionesModel>/proveedores}"
+				selectionMode="MultiToggle"
+				visibleRowCount="10"
+                 busy="{cotizacionesModel>/busy}"
+				ariaLabelledBy="title">
+                <t:extension>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<!-- <Button
+							icon="sap-icon://activities"
+							tooltip="show indices of selected items"
+							press="getSelectedIndices"/>
+                         -->
+                        <Button 
+                            text="{i18n>send}" 
+                            press="getSelectedIndices"
+                            type="Accept" />
+                        <Button
+							icon="sap-icon://decline"
+							tooltip="{i18n>clearFilters}"
+							press="clearAllFilters"/>
+                        <ToolbarSeparator/>
+						<SearchField
+							search="filterGlobally"
+							width="15rem"/>
+					</OverflowToolbar>
+				</t:extension>
+
+				<t:columns>
+					<t:Column id="lifnr">
+						<Label text="{i18n>ID}" />
+						<t:template>
+							<Text text="{cotizacionesModel>lifnr}" wrapping="false" />
+						</t:template>
+					</t:Column>
+					<t:Column>
+						<Label text="{i18n>column1}" />
+						<t:template>
+                            <Text text="{cotizacionesModel>name1}" wrapping="false" />
+						</t:template>
+					</t:Column>
+					
+				</t:columns>
+			</t:Table>
+	</Page>
+</mvc:View>

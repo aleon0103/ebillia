@@ -22,7 +22,7 @@ sap.ui.define([
                 this.getView().setModel(oModel, "asnModel");
 
                 this._oRouter = this.getRouter();
-                this._oRouter.getRoute("cargaFactura").attachPatternMatched(this._routePatternMatched, this);
+                this._oRouter.getRoute("busquedaASN").attachPatternMatched(this._routePatternMatched, this);
 
    
             },
@@ -35,23 +35,14 @@ sap.ui.define([
 
                 console.log("ROUTE U INVOICE MATCH")
 
-                // gets called for ...#/
-                // gets called for ...#/products/
-                // gets called for ...#/products/Product/<productId>
-                // for example: ...#/products/Product/1 . 
-                // or #/products/Product/123
-
-                //  this._initNotifications();
-                this._getPurchaseOrders();
+              
+                this._getASN();
 
             },
 
             onSearch: function (oEvent) {
                 if (oEvent.getParameters().refreshButtonPressed) {
-                    // Search field's 'refresh' button has been pressed.
-                    // This is visible if you select any master list item.
-                    // In this case no new search is triggered, we only
-                    // refresh the list binding.
+                  
                     this.onRefresh();
                     return;
                 }
@@ -60,17 +51,17 @@ sap.ui.define([
 
                 if (sQuery) {
                     //	this._oListFilterState.aSearch = [new Filter("CustomerName", FilterOperator.Contains, sQuery)];
-                    this._searchOrderById(sQuery);
+                    this._searchASNById(sQuery);
                 } else {
                     //	this._oListFilterState.aSearch = [];
-                    this._getPurchaseOrders();
+                    this._getASN();
                 }
                 //	this._applyFilterSearch();
 
             },
 
             onRefresh: function () {
-                this._getPurchaseOrders();
+                this._getASN();
             },
 
             onSelectionChange: function (oEvent) {
@@ -97,30 +88,30 @@ sap.ui.define([
 			var bReplace = !Device.system.phone;
 			// set the layout property of FCL control to show two columns
 		//	this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-			this.getRouter().navTo("cargaFacturaDetail", {
-				orderId : oItem.getBindingContext("asnModel").getProperty("idOrdenCompra")
+			this.getRouter().navTo("ASNDetail", {
+				id : oItem.getBindingContext("asnModel").getProperty("noAsn")
 			}, bReplace);
 		},
 
             /**Method to get POrchaseOrder List */
 
-            _getPurchaseOrders: function () {
+            _getASN: function () {
 
                 var oModel = this.getModel("user");
                 var rol = oModel.getProperty('/rol/id');
                 var userId = oModel.getProperty('/id');
-                console.log('Get purchase orders');
+                console.log('Get ASN');
                 var poModel = this.getModel("asnModel");
                 poModel.setProperty('/busy', true);
                 var me = this;
-                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/CARGAFACTURA/${userId}`;
+                var path = API.serviceList().GET_ASN + `getAllAsn/${userId}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
                         if (respJson && respJson.data) {
 
 
-                            poModel.setProperty('/PurchaseOrders', respJson.data)
+                            poModel.setProperty('/listado', respJson.data)
                             if (respJson.data) {
                                 poModel.setProperty('/Count', respJson.data.length)
 
@@ -139,51 +130,38 @@ sap.ui.define([
             },
 
 
-            _searchOrderById: function (orderId) {
-                console.log('searchOrder.. ', orderId);
+            _searchASNById: function (asn) {
+                console.log('searchOrder.. ', asn);
 
-                var oModel = this.getModel("user");
-                var rol = oModel.getProperty('/rol/id');
-                var userId = oModel.getProperty('/id');
-                console.log('Get purchase order by id');
+                
                 var poModel = this.getModel("asnModel");
                 poModel.setProperty('/busy', true);
                 var me = this;
-                //https://arcade.flexi.com.mx:8762/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenDeCompraConfirmada/4500376391
-                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenDeCompraConfirmada/${orderId}`;
+                var path = API.serviceList().GET_ASN + `getAsn/${asn}/NA`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
                         if (respJson && respJson.data) {
-                            poModel.setProperty('/busy', false);
-                            var result = [];
-                            result[0] = respJson.data;
-                            poModel.setProperty('/PurchaseOrders', result)
+
+
+                            poModel.setProperty('/listado', [respJson.data])
                             if (respJson.data) {
-                                poModel.setProperty('/Count', respJson.data.length)
+                                poModel.setProperty('/Count', 1)
 
                             } else {
                                 poModel.setProperty('/Count', 0)
-                                poModel.setProperty('/PurchaseOrders', [])
                             }
 
                             console.log(poModel)
                             poModel.refresh();
-                        } else {
-                            MessageToast.show(respJson.message);
-                            poModel.setProperty('/Count', 0)
-                            poModel.setProperty('/PurchaseOrders', [])
-
+                        }else{
+                             poModel.setProperty('/listado', [])
                         }
                     }, function (err) {
                         poModel.setProperty('/busy', false);
-                        MessageToast.show(err.error.message);
-                        poModel.setProperty('/Count', 0)
-                        poModel.setProperty('/PurchaseOrders', [])
-
+                         poModel.setProperty('/listado', [])
                         console.log("error in processing your request", err);
                     });
-
 
 
             }

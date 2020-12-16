@@ -9,7 +9,7 @@
 				id="masterHeaderTitle"
 			 	text="{
 					parts: [
-						'i18n>masterTitleCount',
+						'i18n>titleASN',
 						'asnModel>/Count'
 					],
 					formatter: 'jQuery.sap.formatMessage'
@@ -22,12 +22,9 @@
 				width="auto"
 				class="sapFDynamicPageAlignContent"
 				items="{
-					path: 'asnModel>/PurchaseOrders',
+					path: 'asnModel>/listado',
 					parameters: {expand: 'Customer'},
-					sorter: {
-						path: 'idOrdenCompra',
-						descending: true
-					},
+					
 					groupHeaderFactory: '.createGroupHeader'
 				}"
 				noDataText="{masterView>/noDataText}"
@@ -38,26 +35,14 @@
 				selectionChange=".onSelectionChange"
                 busy="{asnModel>/busy}"
                 >
-				<!--
-                <infoToolbar>
-					<Toolbar
-						active="true"
-						id="filterBar"
-						visible="{masterView>/isFilterBarVisible}"
-						press=".onOpenViewSettings">
-						<Title
-							id="filterBarLabel"
-							text="{masterView>/filterBarLabel}" />
-					</Toolbar>
-				</infoToolbar>
-                -->
+			
 				<headerToolbar>
 
 					<OverflowToolbar>
 						<SearchField
 							id="searchField"
 							showRefreshButton="true"
-							tooltip="{i18n>masterSearchTooltip}"
+							tooltip="{i18n>search}"
 							width="100%"
 							search=".onSearch">
 							<layoutData>
@@ -68,19 +53,7 @@
 									priority="NeverOverflow"/>
 							</layoutData>
 						</SearchField>
-						<!--
-                        <ToolbarSpacer/>
-						<Button
-							id="filterButton"
-							press=".onOpenViewSettings"
-							icon="sap-icon://filter"
-							type="Transparent"/>
-						<Button
-							id="groupButton"
-							press=".onOpenViewSettings"
-							icon="sap-icon://group-2"
-							type="Transparent"/>
--->
+						
 					</OverflowToolbar>
 				</headerToolbar>
 				<items>
@@ -88,37 +61,24 @@
 						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
 						press=".onSelectionChange"
 						title="{
-							parts: [
-								'i18n>commonItemTitle',
-								'asnModel>idOrdenCompra'
-							],
-							formatter: 'jQuery.sap.formatMessage'
-						}"
-							number="{
-				parts:[{path:'asnModel>totalOc'},{path:'asnModel>moneda'}],
-				type: 'sap.ui.model.type.Currency',
-				formatOptions: {showMeasure: false}
-			}"
-            	numberUnit="{asnModel>moneda}"
-            >
-							<firstStatus>
-				<ObjectStatus
-					text="{asnModel>estatus}"
-					state="{
-						path: 'asnModel>estatus',
-						formatter: '.formatter.POEMState'
-					}" />
-			</firstStatus>
+                            parts: [
+                                'i18n>noASN',
+                                'asnModel>noAsn'
+                            ],
+                            formatter: 'jQuery.sap.formatMessage'
+                        }"
+                           
+                        >
+						<firstStatus>
+                            <ObjectStatus
+                                text="{asnModel>estatus}"
+                                state="{
+                                    path: 'asnModel>estatus',
+                                    formatter: '.formatter.POEMState'
+                                }" />
+                        </firstStatus>
 						<attributes>
-							<ObjectAttribute id="companyName" text="{asnModel>txt_breve}" />
-							<!--
-                            <ObjectAttribute title="{i18n>commonItemShipped}"
-								text="{= ${ShippedDate}
-									? ${ path: 'ShippedDate',
-										 type: 'sap.ui.model.type.Date',
-										 formatOptions: { style: 'medium' } }
-									: ${i18n>commonItemNotYetShipped} }" />
--->
+							<ObjectAttribute id="companyName" text="{asnModel>fecha_creacion}" />
 
 						</attributes>
 					</ObjectListItem>

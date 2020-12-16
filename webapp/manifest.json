@@ -269,6 +269,27 @@
 						"masterASN",
 						"detailASN"
 					]
+                },
+                {
+                    "name": "SolicitudlistaPrecios",
+                    "pattern": "SolicitudlistaPrecios",
+                    "target": [
+                        "crearCotizacion"
+                    ]
+                },
+                {
+                    "name": "ConfirmarListaPrecios",
+                    "pattern": "ConfirmarListaPrecios",
+                    "target": [
+                        "verCotizaciones"
+                    ]
+                },
+                {
+                    "name": "configMonedas",
+                    "pattern": "configMonedas",
+                    "target": [
+                        "currency"
+                    ]
                 }
                 
             ],
@@ -489,6 +510,33 @@
                     "controlId": "layoutASN",
                     "controlAggregation": "midColumnPages",
                     "parent": "appASN"
+                },
+                "crearCotizacion": {
+                    "viewName": "cotizaciones.SolicitudCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "verCotizaciones": {
+                    "viewName": "cotizaciones.VerCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "currency": {
+                    "viewName": "currency.Currency",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
                 }
                 
             }

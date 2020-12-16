@@ -27,8 +27,19 @@ sap.ui.define([
         GET_EXCEL_FACTURAS: '/portal_cloud_api/payment-services/facturas/excel-facturas-pendientes-complemento',
         PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
         GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
+        GET_ASN:'/portal_cloud_api/logistic-services/asn/',
+        GET_EXCEL_ASN:'/portal_cloud_api/logistic-services/asn/getAsnExcel/',
+        GET_PDF_ASN:'/portal_cloud_api/logistic-services/asn/generarPDFAsn/',
+        CREATE_COTIZACION:'/portal_cloud_api/logistic-services/quotation/createNotification',
+        GET_MONEDAS:'/portal_cloud_api/masterdata-services/moneda/obtener-moneda-por-modulo?modulo=P',
+        GET_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/obtener-hm',
+        DELETE_MONEDAS: '/portal_cloud_api/masterdata-services/moneda/borrar-moneda',
+        DELETE_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/borrar-hm',
+        CREATE_MONEDAS: '/portal_cloud_api/masterdata-services/moneda/insertar-moneda',
+        CREATE_HOMOLOGACION: '/portal_cloud_api/masterdata-services/homologacion-moneda/insertar-hm',
+        GET_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotificationsEnviadas/',
+        GET_FILE_COTIZACION: '/portal_cloud_api/logistic-services/quotation/getFile',
         CREAR_ASN_NACIONAL: '/portal_cloud_api/logistic-services/asn/createAsnNacional',
-        GET_ASN:'/portal_cloud_api/logistic-services/asn/'
     };
     return {
 
@@ -131,6 +142,41 @@ sap.ui.define([
                 data: data,
             })
         },
+        PostData: function (url, data, callback) {
+            console.log(url);
+            console.log(data)
+            return $.ajax({
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: "POST",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+url,
+            })
+
+
+        },
+
+        GetFile: function (path, callback) {
+             var xhr = new XMLHttpRequest();
+             
+
+            xhr.open("GET", URL+path, true);
+            xhr.setRequestHeader('Authorization', jwt);
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+
+                callback(xhr.response, xhr.status);
+
+            };
+            xhr.onerror = function() {
+                console.log('Error request...');
+            };
+
+            xhr.send(null);
+        },
+        
 
     };
 

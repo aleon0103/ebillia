@@ -1,6 +1,20 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" controllerName="ns.EBilliaApp.controller.Login" displayBlock="true">
+<mvc:View 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns="sap.m" 
+    xmlns:l="sap.ui.layout" 
+    controllerName="ns.EBilliaApp.controller.Login" 
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
 	<Page id="loginPage" title="{i18n>LoginTitle}" backgroundDesign="Solid">
-       
+    <headerContent>
+				<!-- <Select
+						
+					forceSelection="true"
+					selectedKey="{loginModel>/loginObj/languageSelected}"
+					items="{loginModel>/loginObj/languages}">
+					<core:Item key="{loginModel>key}" text="{loginModel>key}" />
+				</Select> -->
+		</headerContent>
     <content>
        
     
@@ -22,7 +36,7 @@
 
 
 
-                        <sap.ui.layout.form:Form xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" id="form0">
+                        <sap.ui.layout.form:Form xmlns:sap.ui.layout.form="sap.ui.layout.form" busy="{loginModel>/loginObj/busy}" editable="true" id="form0">
 
 
 
@@ -30,7 +44,7 @@
 
 
 
-                                <sap.ui.layout.form:FormContainer title="Para acceder al portal ingresa tu usuario y contraseña" id="container0">
+                                <sap.ui.layout.form:FormContainer title="{i18n>leyendaLogin}" id="container0">
 
 
 
@@ -38,7 +52,7 @@
 
 
 
-                                        <sap.ui.layout.form:FormElement label="Usuario" id="element0">
+                                        <sap.ui.layout.form:FormElement label="{i18n>userID}" id="element0">
 
 
 
@@ -46,7 +60,7 @@
 
 
 
-                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" submit="goToMain" placeholder="User ID" value="{loginModel>/loginObj/username}" fieldWidth=""/>
+                                            <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="uid" submit="goToMain" placeholder="{i18n>userID}" value="{loginModel>/loginObj/username}" fieldWidth=""/>
 
 
 
@@ -58,7 +72,7 @@
 
 
 
-                                        <sap.ui.layout.form:FormElement xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:sap.ui.layout.form="sap.ui.layout.form" label="Password" id="element0_copy">
+                                        <sap.ui.layout.form:FormElement xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:sap.ui.layout.form="sap.ui.layout.form" label="{i18n>password}" id="element0_copy">
 
 
 
@@ -70,7 +84,7 @@
 
 
 
-                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" submit="goToMain" placeholder="Password" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
+                                                <Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" id="pasw" submit="goToMain" placeholder="{i18n>password}" type="Password" value="{loginModel>/loginObj/password}" fieldWidth=""/>
 
 
 
@@ -105,7 +119,7 @@
 
 
 
-                        <Button width="16rem" text="Login" type="Emphasized" press="goToMain"/>
+                        <Button width="16rem" text="{i18n>loginButton}" type="Emphasized" press="goToMain"/>
 
                     </items>
      
@@ -128,9 +142,9 @@
        
         <contentMiddle>
        
-            <Text xmlns="sap.m" text="Copyright© 2020. Derechos reservados |" id="text2"/>
+            <Text xmlns="sap.m" text="{i18n>copyright}" id="text2"/>
        
-            <Link xmlns="sap.m" href="https://arcade.flexi.com.mx:8443/documentos/aviso-privacidad.pdf" text="Aviso de privacidad" id="link0"/>
+            <Link xmlns="sap.m" href="https://arcade.flexi.com.mx:8443/documentos/aviso-privacidad.pdf" text="{i18n>privacidad}" id="link0"/>
        
         </contentMiddle>
        
