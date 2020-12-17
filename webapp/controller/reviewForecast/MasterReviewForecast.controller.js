@@ -111,7 +111,7 @@ sap.ui.define([
                 id = oItem.getBindingContext("pronosticoModel").getProperty("idInbox")
             }
             
-            console.log(id);
+          
 			this.getRouter().navTo("RevisionPronosticosDemandaDetail", {
 				orderId : id
             }, bReplace);
@@ -143,7 +143,7 @@ sap.ui.define([
                                     poModel.setProperty('/Count', 0)
                                 }
 
-                                console.log(poModel)
+                                
                                 poModel.refresh();
 
                             

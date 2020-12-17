@@ -9,19 +9,21 @@
         <l:VerticalLayout width="100%">
 		<fb:FilterBar id="filterBarBS" clear="clearFilters" search="generarReporte" showRestoreButton="false" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" useToolbar="false">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem id="BSFechaInicio" groupName="__$INTERNAL$" name="BSFechaInicio" label="{i18n>fechaInicialFilterREP}" partOfCurrentVariant="true"  visibleInFilterBar="true">
+
+
+				<fb:FilterGroupItem id="BSFechaInicio" groupName="__$INTERNAL$" name="BSFechaInicio" label="{i18n>fechaInicialFilterREP}" partOfCurrentVariant="true" mandatory="true" visibleInFilterBar="true">
 					<fb:control>
-						<DatePicker  valueFormat="yyyy-MM-dd" displayFormat="short" id="fechaInicioBS" showValueStateMessage="false" change=".fechaInicioChange" />
+						<DatePicker width="" valueFormat="yyyy-MM-dd" displayFormat="short" id="fechaInicioBS" showValueStateMessage="false" change=".fechaInicioChange" />
 					</fb:control>
 				</fb:FilterGroupItem>
 
-                <fb:FilterGroupItem id="BSFechaFin" groupName="__$INTERNAL$" name="BSFechaFin" label="{i18n>fechaFinalFilterREP}" partOfCurrentVariant="true"  visibleInFilterBar="true">
+                <fb:FilterGroupItem id="BSFechaFin" groupName="__$INTERNAL$" name="BSFechaFin" label="{i18n>fechaFinalFilterREP}" partOfCurrentVariant="true" mandatory="true" visibleInFilterBar="true">
 					<fb:control>
 						<DatePicker displayFormat="short" valueFormat="YYYY-MM-dd" id="fechaFinBS"  showValueStateMessage="false" change=".fechaFinChange" />
 					</fb:control>
 				</fb:FilterGroupItem>
 
-                <fb:FilterGroupItem groupName="__$INTERNAL$" name="BSProveedor" id="selectProveedores" label="{i18n>proveedorTableREP}"  partOfCurrentVariant="true" visibleInFilterBar="true">
+                <fb:FilterGroupItem groupName="__$INTERNAL$" name="BSProveedor" id="selectProveedores" label="{i18n>proveedorTableREP}"  partOfCurrentVariant="true" mandatory="true" visibleInFilterBar="true">
 					<fb:control>
                         <ComboBox type="Text" 
                         id="proveedorBS" items="{                                 
@@ -41,26 +43,20 @@
                 <fb:FilterGroupItem label="{i18n>ordenDeCompraTableREP}" name="BSNoOrden" partOfCurrentVariant="true"  visibleInFilterBar="true" groupName="__$INTERNAL$" id="item6">
 				    <fb:control>
 
-				        <Input id="ordenCompraBS" type="Number"  showValueStateMessage="false" liveChange=".ordenCompraChange"/>
+				        <Input id="ordenCompraBS" type="Number"  showValueStateMessage="false"/>
 
 				    </fb:control>
 				</fb:FilterGroupItem>
 
-                <fb:FilterGroupItem label="{i18n>ordenDeCompraTableREP}" name="BSNoDocumento" partOfCurrentVariant="true"  visibleInFilterBar="true" groupName="__$INTERNAL$" id="item7">
+                <fb:FilterGroupItem label="{i18n>NoDocumentoBS}" name="BSNoDocumento" partOfCurrentVariant="true"  visibleInFilterBar="true" groupName="__$INTERNAL$" id="item7">
 				    <fb:control>
 
-				        <Input id="noDocumentoBS" type="Number"  showValueStateMessage="false" liveChange=".noDocumentoChange"/>
+				        <Input id="noDocumentoBS" type="Number"  showValueStateMessage="false"/>
 
 				    </fb:control>
 				</fb:FilterGroupItem>
         
-                <!-- <fb:FilterGroupItem name="search" partOfCurrentVariant="true" visibleInFilterBar="true" groupName="__$INTERNAL$">
-				    <fb:control>
-
-				       <Button type="Emphasized" text="{i18n>generarReporteREP}" width="100px" press="generarReporte" />
-
-				    </fb:control>
-				</fb:FilterGroupItem> -->
+                
                 
 			</fb:filterGroupItems>				
 					
@@ -73,7 +69,7 @@
 						<Column minScreenWidth="Tablet"  demandPopin="true" width="5em">
 							<Text text="{i18n>EstatusBS}"/>
 						</Column>
-                        <Column id="fechaContabilizacionColumn" width="6em" demandPopin="true" hAlign="Begin">
+                        <Column id="fechaContabilizacionColumn" width="8em" demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>FechaContabilizacionBS}"/>
 						</Column>
 						<Column  width="6em" demandPopin="true" hAlign="Begin">
@@ -121,10 +117,10 @@
                                 <ObjectIdentifier text="{billingStatementView>referencia}"/>
                                 <ObjectIdentifier text="{billingStatementView>pedido}"/>
                                 <ObjectIdentifier text="{billingStatementView>numeroDoc}"/>
-                                <ObjectIdentifier text="{billingStatementView>importeDoc}"/>
-                                <ObjectIdentifier text="{billingStatementView>importeMl}"/>
-                                <ObjectIdentifier text="{billingStatementView>xml}"/>
-                                <ObjectIdentifier text="{billingStatementView>pdf}"/>
+                                <ObjectIdentifier text="${billingStatementView>importeDoc}"/>
+                                <ObjectIdentifier text="${billingStatementView>importeMl}"/>
+                                <Button icon="sap-icon://download" type="Transparent" tooltip="{i18n>DescargarRevP}" press=".downloadFileXML"/>
+                                <Button icon="sap-icon://download" type="Transparent" tooltip="{i18n>DescargarRevP}" press=".downloadFilePDF"/>
 							</cells>
 						</ColumnListItem>
 					</items>

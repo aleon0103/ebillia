@@ -75,7 +75,7 @@ sap.ui.define([
                 } else {
                     this.getProveedores(sValue);
                 }
-                console.log('1')
+                
             },
 
             providerSelected: function (oControlEvent) {
@@ -98,7 +98,6 @@ sap.ui.define([
                }
 
                 
-               console.log('2')
                
             },
 
@@ -162,7 +161,7 @@ sap.ui.define([
                 id = oItem.getBindingContext("asnModel").getProperty("noAsn")
             }
             
-            console.log(id);
+           
 			this.getRouter().navTo("cancelarASNDetail", {
 				orderId : id
             }, bReplace);
@@ -194,7 +193,7 @@ sap.ui.define([
                                     poModel.setProperty('/Count', 0)
                                 }
 
-                                console.log(poModel)
+                                
                                 poModel.refresh();
 
                             
@@ -215,7 +214,7 @@ sap.ui.define([
             _getASNByNumber: function (asn) {
                 var poModel = this.getModel("asnModel");
                 poModel.setProperty('/busy', true);
-                console.log('2')
+               
                 var me = this;
                 var path = API.serviceList().GET_ASN_BY_NUMBER + `${asn}/NA`;
                 API.Get(path).then(

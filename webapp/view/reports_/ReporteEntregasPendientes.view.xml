@@ -7,7 +7,7 @@
 
     <!-- showGoOnFB="false" -->
         <l:VerticalLayout width="100%">
-		<fb:FilterBar id="filterBarREP" reset="onReset" search="generarReporte" showRestoreButton="true" showGoOnFB="true" showClearButton="true" showFilterConfiguration="false" useToolbar="false">
+		<fb:FilterBar id="filterBarREP" clear="onReset" search="generarReporte" showRestoreButton="false" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" useToolbar="false">
 			<fb:filterGroupItems>
 				<fb:FilterGroupItem groupName="__$INTERNAL$" name="REPFechaInicio" label="{i18n>fechaInicialFilterREP}" partOfCurrentVariant="true" mandatory="true" visibleInFilterBar="true">
 					<fb:control>

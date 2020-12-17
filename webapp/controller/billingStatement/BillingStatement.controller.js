@@ -31,8 +31,26 @@ sap.ui.define([
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("VerEstadoDeCuenta").attachPatternMatched(this._routePatternMatched, this);
 
-                var oFilter = this.getView().byId("filterBarBS"),
-				that = this;
+                var oFilter = this.getView().byId("filterBarBS");
+                var textButtonGo;
+                var textButtonClear;
+                var that = this;
+                
+                oFilter.addEventDelegate({
+                    "onAfterRendering": function(oEvent) {
+                       
+                        that.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                            textButtonGo = oBundle.getText("BuscarBS");
+                            textButtonClear = oBundle.getText("BorrarBS");
+
+                            var oButton = oEvent.srcControl._oSearchButton;
+                            oButton.setText(textButtonGo);
+                            var clearButton = oEvent.srcControl._oClearButtonOnFB;
+                            clearButton.setText(textButtonClear);
+                        });
+
+                    }
+                });
 
                 this._proveedoresModel = new JSONModel({});
                 this.getView().setModel(this._proveedoresModel, "proveedores");
@@ -54,12 +72,12 @@ sap.ui.define([
             _routePatternMatched: function (oEvent) {
 
                 console.log("ROUTE Billing Statement MATCH");
-                // this.onReset();
+                this.onReset();
                 this._oModel = this.getModel("user");
                 this.rol = this._oModel.getProperty('/rol/id');
 
-                console.log(this.rol);
-                if (this.rol && this.rol != 3) {
+                
+                if (this.rol && this.rol !== 3) {
                     this.byId("selectProveedores").setVisible(true);
                     this.byId("fechaContabilizacionColumn").setVisible(true);
                     this.byId("NoDocumentoColumn").setVisible(true);
@@ -82,19 +100,16 @@ sap.ui.define([
                 this.getView().byId("ordenCompraBS").setValue("");
                 this.getView().byId("noDocumentoBS").setValue("");
                 this.getView().byId("proveedorBS").setSelectedKey("");
-                this.getView().byId("BSFechaFin").setMandatory(false);
-                this.getView().byId("BSFechaInicio").setMandatory(false);
+                
+
             },
 
             clearFilters: function (oControlEvent) {
                 this.onReset();
-                this.getView().byId("ordenCompraBS").setEnabled(true);
-                this.getView().byId("noDocumentoBS").setEnabled(true);
-                this.getView().byId("fechaInicioBS").setEnabled(true);
-                this.getView().byId("fechaFinBS").setEnabled(true);
             },
 
             getProveedores: function (value) {
+
                 var me = this;
                 var path = API.serviceList().GET_PROVEEDORES_CATALOG + `?value=${value}`;
                 API.Get(path).then(
@@ -120,6 +135,7 @@ sap.ui.define([
                     sValue = oValidatedComboBox.getValue();
 
                 this.getProveedores(sValue);
+                
             },
 
             fechaInicioChange: function (oControlEvent) {
@@ -131,17 +147,11 @@ sap.ui.define([
                 if (bValid) {
 
                     if (value !== "") {
-                        fechaFin = inputFF.getValue(); console.log(fechaFin);
+                        fechaFin = inputFF.getValue(); 
                     
-                        if (fechaFin == "") {
-                            this.getView().byId("BSFechaFin").setMandatory(true);
-                        } else {
-                            this.getView().byId("BSFechaFin").setMandatory(false);
-                        }
-                        
-                        this.getView().byId("ordenCompraBS").setEnabled(false);
-                        this.getView().byId("noDocumentoBS").setEnabled(false);
-                        this.getView().byId("BSFechaInicio").setMandatory(false);
+
+                        // var fecha = value.split('-');
+                        // this.byId("fechaFinBS").setMinDate(new Date(fecha[0]+'/'+fecha[1]+'/'+fecha[2]));
                     }
                     
                 } else {
@@ -162,15 +172,9 @@ sap.ui.define([
                     if (value !== "") {
                         fechaInicio = inputFI.getValue();
 
-                        if (fechaInicio == "") {
-                            this.getView().byId("BSFechaInicio").setMandatory(true);
-                        } else {
-                            this.getView().byId("BSFechaInicio").setMandatory(false);
-                        }
-
-                        this.getView().byId("ordenCompraBS").setEnabled(false);
-                        this.getView().byId("noDocumentoBS").setEnabled(false);
-                        this.getView().byId("BSFechaFin").setMandatory(false);
+                        
+                        // var fecha = value.split('-');
+                        // this.byId("fechaInicioBS").setMaxDate(new Date(fecha[0]+'/'+fecha[1]+'/'+fecha[2]));
                     }
 
                 } else {
@@ -183,33 +187,7 @@ sap.ui.define([
                 
             },
 
-            ordenCompraChange: function (oControlEvent) {
-                var ocValue = this.getView().byId("ordenCompraBS").getValue(); 
-
-                if (ocValue == "") {
-                    this.getView().byId("noDocumentoBS").setEnabled(true);
-                    this.getView().byId("fechaInicioBS").setEnabled(true);
-                    this.getView().byId("fechaFinBS").setEnabled(true);
-                } else {
-                    this.getView().byId("noDocumentoBS").setEnabled(false);
-                    this.getView().byId("fechaInicioBS").setEnabled(false);
-                    this.getView().byId("fechaFinBS").setEnabled(false);
-                }
-            },
-
-            noDocumentoChange: function (oControlEvent) {
-                var noDocValue = this.getView().byId("noDocumentoBS").getValue(); 
-
-                if (noDocValue == "") {
-                    this.getView().byId("ordenCompraBS").setEnabled(true);
-                    this.getView().byId("fechaInicioBS").setEnabled(true);
-                    this.getView().byId("fechaFinBS").setEnabled(true);
-                } else {
-                    this.getView().byId("ordenCompraBS").setEnabled(false);
-                    this.getView().byId("fechaInicioBS").setEnabled(false);
-                    this.getView().byId("fechaFinBS").setEnabled(false);
-                }
-            },
+           
 
             generarReporte: function () {
                 var oViewModel = this.getModel("billingStatementView");
@@ -221,25 +199,24 @@ sap.ui.define([
                 var sociedad = "";
                 
                 var proveedor;
-                if (this.rol && this.rol != 3) {
+                if (this.rol && this.rol !== 3) {
                     proveedor = this.getView().byId("proveedorBS").getSelectedKey();
                 } else {
                     proveedor = this._oModel.getProperty('/id');
                 }
 
-                var flag = true;
+                var validDate = false;
                 if (fechaInicio !== "" && fechaFin == "") {
-                    flag = false;
+                    validDate = false;
                 } else if (fechaInicio == "" && fechaFin !== "") {
-                    flag = false;
+                    validDate = false;
                 } else if (fechaInicio !== "" && fechaFin !== "") {
-                    flag = true;
-                } else if (fechaInicio == "" && fechaFin == "" && ordenCompra == "" && noDocumento == "") {
-                    flag = false;
+                    validDate = true;
                 }
-                
 
-                if (flag || ordenCompra !== "" || noDocumento !== "") {
+               
+
+                if (validDate && proveedor !== "") {
                     var oBusy = this.getModel("busyPage");
                     oBusy.setProperty("/busy", true);
 
@@ -283,6 +260,88 @@ sap.ui.define([
                 } else {
                    console.log('Complete fields');
                 }
+            },
+
+            downloadFileXML: function (oEvent) {
+                var row = oEvent.getSource().getBindingContext("billingStatementView").getObject();
+                // console.log(row);
+                
+                    
+                    var oBusy = this.getModel("busyPage");
+                    oBusy.setProperty("/busy", true);
+
+                    var path = API.serviceList().GET_DOCUMENTS_ALL + 
+                    `?num_proveedor=${row.proveedor}&uuid=${row.uuid}&sociedad=${row.sociedad}`;
+                    API.Get(path).then(
+                        function (respJson, paramw, param3) {
+                            
+                            this.response = respJson.data;
+                            
+                            if (respJson.message !== 'OK') {
+                                MessageToast.show(respJson.message);
+                            } else {
+                                if (this.response[0] && this.response[0].URLXML && this.response[0].URLXML !== '') {
+                                    
+                                    const win = window.open(this.response[0].URLXML, '_blank');
+                                    if (win) {
+                                        win.focus();
+                                    } else {
+                                        alert('Por favor activa los popups en tu navegador');
+                                    }
+
+                                }
+                                
+                            }
+
+                            oBusy.setProperty("/busy", false);
+
+                        }, function (err) {
+                            console.log("error in processing your request", err);
+                            oBusy.setProperty("/busy", false);
+                            MessageToast.show(err.error.message);
+                    });
+                    
+                    
+
+            },
+
+
+            downloadFilePDF: function (oEvent) {
+                var row = oEvent.getSource().getBindingContext("billingStatementView").getObject();
+                
+                var oBusy = this.getModel("busyPage");
+                    oBusy.setProperty("/busy", true);
+
+                    var path = API.serviceList().GET_DOCUMENTS_ALL + 
+                    `?num_proveedor=${row.proveedor}&uuid=${row.uuid}&sociedad=${row.sociedad}`;
+                    API.Get(path).then(
+                        function (respJson, paramw, param3) {
+                            
+                            this.response = respJson.data;
+                            
+                            if (respJson.message !== 'OK') {
+                                MessageToast.show(respJson.message);
+                            } else {
+                                if (this.response[0] && this.response[0].URLPDF && this.response[0].URLPDF !== '') {
+                                    
+                                    const win = window.open(this.response[0].URLPDF, '_blank');
+                                    if (win) {
+                                        win.focus();
+                                    } else {
+                                        alert('Por favor activa los popups en tu navegador');
+                                    }
+
+                                }
+                            }
+
+                            oBusy.setProperty("/busy", false);
+
+                        }, function (err) {
+                            console.log("error in processing your request", err);
+                            oBusy.setProperty("/busy", false);
+                            MessageToast.show(err.error.message);
+                    });
+
             }
 
         });

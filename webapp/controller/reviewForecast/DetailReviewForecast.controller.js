@@ -59,8 +59,7 @@ sap.ui.define([
 
                 console.log("ROUTE DETAIL MATCH")
                
-
-                var oArguments = oEvent.getParameter("arguments");  console.log(oArguments);
+                var oArguments = oEvent.getParameter("arguments");  
                 this._sObjectId = oArguments.orderId;
                 
                 var proModel = this.getModel("pronosticoModel").oData; 
@@ -72,7 +71,7 @@ sap.ui.define([
                 } else {
                     nombreProveedor = "";
                 }
-                console.log(nombreProveedor)
+                
                 if (this._sObjectId !== "0") {
                     for (let i = 0; i < proModel.Pronosticos.length; i++) {
                         if (proModel.Pronosticos[i].idInbox == this._sObjectId) {
@@ -80,7 +79,7 @@ sap.ui.define([
                             break;
                         }
                     }
-                    console.log(proModel);
+                    
                     if (proModel.Pronosticos.length > 0) {
                         oViewModel.setProperty('/Pronostico', this.pronosticoObject.nombre_proveedor);
                         oViewModel.setProperty('/PronosticoDetalle', this.pronosticoObject.items);
@@ -98,12 +97,12 @@ sap.ui.define([
                 
                 
                 oViewModel.refresh();
-                console.log(oViewModel);
+               
             },
 
             downloadFile: function (oEvent) {
                 var row = oEvent.getSource().getBindingContext("pronosticoDetailView").getObject();
-                console.log(row);
+              
                 
                 if (row.ruta_archivo && row.ruta_archivo !== "") {
                     this.rutaArchivo = row.ruta_archivo;

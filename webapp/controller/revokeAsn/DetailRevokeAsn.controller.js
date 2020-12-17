@@ -39,7 +39,7 @@ sap.ui.define([
 
                 console.log("ROUTE DETAIL MATCH")
 
-                var oArguments = oEvent.getParameter("arguments");  console.log(oArguments);
+                var oArguments = oEvent.getParameter("arguments");  
                 this._sObjectId = oArguments.orderId;
 
                 
@@ -127,10 +127,7 @@ sap.ui.define([
                     });
             },
 
-            prueba: function() {
-                console.log('metodo detaillll');
-            }
-
+          
            
 
         });
