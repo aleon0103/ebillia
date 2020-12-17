@@ -286,7 +286,15 @@
                         "masterReviewForecast",
                         "detailReviewForecast"
                     ]
+                },
+                {
+                    "name": "VerEstadoDeCuenta",
+                    "pattern": "VerEstadoDeCuenta",
+                    "target": [
+                        "verEstadoDeCuenta"
+                    ]
                 }
+                
             ],
             
             "targets": {
@@ -525,6 +533,15 @@
                     "controlId": "layoutReviewForecast",
                     "controlAggregation": "midColumnPages",
                     "parent": "reviewForecast"
+                },
+                "verEstadoDeCuenta": {
+                    "viewName": "billingStatement.BillingStatement",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
                 }
                 
             }

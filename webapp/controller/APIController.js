@@ -31,7 +31,8 @@ sap.ui.define([
         GET_ASN_BY_NUMBER: '/portal_cloud_api/logistic-services/asn/getAsn/',
         POST_ANULAR_ASN: '/portal_cloud_api/logistic-services/asn/anular/',
         GET_NOTIFICATIONS_ENV: '/portal_cloud_api/logistic-services/pronostico/getNotificationsEnviadas/',
-        GET_PRONOSTICO_FILE: '/portal_cloud_api/logistic-services/pronostico/getFile'
+        GET_PRONOSTICO_FILE: '/portal_cloud_api/logistic-services/pronostico/getFile',
+        GET_EDO_CUENTA: '/portal_cloud_api/logistic-services/Proveedores-facturas/EstCuenta'
     };
     return {
 

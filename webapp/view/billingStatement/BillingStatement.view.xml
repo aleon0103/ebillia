@@ -1,0 +1,138 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="ns.EBilliaApp.controller.billingStatement.BillingStatement" displayBlock="true">
+
+    <Page xmlns="sap.m" id="pageId" title="" floatingFooter="true" showHeader="false" enableScrolling ="true" >
+
+
+    <content>
+
+    <!-- showGoOnFB="false" -->
+        <l:VerticalLayout width="100%">
+		<fb:FilterBar id="filterBarBS" clear="clearFilters" search="generarReporte" showRestoreButton="false" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" useToolbar="false">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem id="BSFechaInicio" groupName="__$INTERNAL$" name="BSFechaInicio" label="{i18n>fechaInicialFilterREP}" partOfCurrentVariant="true"  visibleInFilterBar="true">
+					<fb:control>
+						<DatePicker  valueFormat="yyyy-MM-dd" displayFormat="short" id="fechaInicioBS" showValueStateMessage="false" change=".fechaInicioChange" />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem id="BSFechaFin" groupName="__$INTERNAL$" name="BSFechaFin" label="{i18n>fechaFinalFilterREP}" partOfCurrentVariant="true"  visibleInFilterBar="true">
+					<fb:control>
+						<DatePicker displayFormat="short" valueFormat="YYYY-MM-dd" id="fechaFinBS"  showValueStateMessage="false" change=".fechaFinChange" />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem groupName="__$INTERNAL$" name="BSProveedor" id="selectProveedores" label="{i18n>proveedorTableREP}"  partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <ComboBox type="Text" 
+                        id="proveedorBS" items="{                                 
+                            path: 'proveedores>/sapProveedor',                                 
+                            template: {                                 
+                                Type: 'sap.ui.core.ListItem',                                 
+                                text: '{proveedores>name1}',                                 
+                                key: '{proveedores>lifnr}'                                 
+                                }                            
+                        }"
+                        change="handleChangeProv"
+                        showValueStateMessage="false"> 
+                        </ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem label="{i18n>ordenDeCompraTableREP}" name="BSNoOrden" partOfCurrentVariant="true"  visibleInFilterBar="true" groupName="__$INTERNAL$" id="item6">
+				    <fb:control>
+
+				        <Input id="ordenCompraBS" type="Number"  showValueStateMessage="false" liveChange=".ordenCompraChange"/>
+
+				    </fb:control>
+				</fb:FilterGroupItem>
+
+                <fb:FilterGroupItem label="{i18n>ordenDeCompraTableREP}" name="BSNoDocumento" partOfCurrentVariant="true"  visibleInFilterBar="true" groupName="__$INTERNAL$" id="item7">
+				    <fb:control>
+
+				        <Input id="noDocumentoBS" type="Number"  showValueStateMessage="false" liveChange=".noDocumentoChange"/>
+
+				    </fb:control>
+				</fb:FilterGroupItem>
+        
+                <!-- <fb:FilterGroupItem name="search" partOfCurrentVariant="true" visibleInFilterBar="true" groupName="__$INTERNAL$">
+				    <fb:control>
+
+				       <Button type="Emphasized" text="{i18n>generarReporteREP}" width="100px" press="generarReporte" />
+
+				    </fb:control>
+				</fb:FilterGroupItem> -->
+                
+			</fb:filterGroupItems>				
+					
+	    </fb:FilterBar>		
+	    </l:VerticalLayout>
+
+        <Table id="lineItemsList" items="{billingStatementView>/items}" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"  inset="false" noDataText="{i18n>noDataTableREP}" busy="{busyPage>/busy}">
+					
+					<columns>
+						<Column minScreenWidth="Tablet"  demandPopin="true" width="5em">
+							<Text text="{i18n>EstatusBS}"/>
+						</Column>
+                        <Column id="fechaContabilizacionColumn" width="6em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>FechaContabilizacionBS}"/>
+						</Column>
+						<Column  width="6em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>FechaFacturaBS}"/>
+						</Column>
+						<Column minScreenWidth="Tablet" width="6em" demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>FechaPagoBS}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet" width="5em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>TipoBS}"/>
+						</Column>
+                        <Column  minScreenWidth="Tablet" width="10em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>ReferenciaBS}"/>
+						</Column>
+                        <Column  minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>PedidoBS}"/>
+						</Column>
+                        <Column id="NoDocumentoColumn" minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>NoDocumentoBS}"/>
+						</Column>
+                        <Column  minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>ImpDocumentoBS}"/>
+						</Column>
+                        <Column  minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>ImporteMLBS}"/>
+						</Column>
+                        <Column  minScreenWidth="Tablet" width="3em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>xmlBS}"/>
+						</Column>
+                        <Column  minScreenWidth="Tablet" width="3em"  demandPopin="true" hAlign="Begin">
+							<Text text="{i18n>pdfBS}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+                                <ObjectStatus state="{                                             
+                                        path: 'billingStatementView>pago',                                                                                                                           
+                                        formatter: '.formatter.PagoState'                                                                                                                  
+                                    }" text="{billingStatementView>estatusValue}" class="sapUiTinyMarginTopBottom"/>
+                                <ObjectIdentifier text="{billingStatementView>fecha}"/>
+                                <ObjectIdentifier text="{billingStatementView>fechaFactura}"/>
+                                <ObjectIdentifier text="{billingStatementView>fechaPago}"/>
+                                <ObjectIdentifier text="{billingStatementView>tipo}"/>
+                                <ObjectIdentifier text="{billingStatementView>referencia}"/>
+                                <ObjectIdentifier text="{billingStatementView>pedido}"/>
+                                <ObjectIdentifier text="{billingStatementView>numeroDoc}"/>
+                                <ObjectIdentifier text="{billingStatementView>importeDoc}"/>
+                                <ObjectIdentifier text="{billingStatementView>importeMl}"/>
+                                <ObjectIdentifier text="{billingStatementView>xml}"/>
+                                <ObjectIdentifier text="{billingStatementView>pdf}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+		</Table>
+       
+
+    </content>
+
+    </Page>
+    
+</mvc:View>

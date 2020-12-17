@@ -85,6 +85,18 @@ sap.ui.define(function() {
             } else {
                 return "Warning"
             }
+        },
+
+        PagoState: function (pago) { 
+            if (pago == 'X') {
+                return "Success";
+            } else if (pago == 'Y') {
+                return "Warning";
+            } else if (pago == '' || pago == null) {
+                return "None";
+            } else if (pago == 'C') {
+                return "Error";
+            }
         }
 	};
 
