@@ -28,6 +28,13 @@ sap.ui.define([
         PUT_CANCELAR_FACTURA:'/portal_cloud_api/payment-services/facturas/factura/cancelar-documento/',
         GET_ARCHIVOS_FACTURA:'/portal_cloud_api/payment-services/master-factura/obtener-xml',
         GET_ASN:'/portal_cloud_api/logistic-services/asn/',
+        GET_ALL_ASN: '/portal_cloud_api/logistic-services/asn/getAllAsn/',
+        GET_ASN_BY_NUMBER: '/portal_cloud_api/logistic-services/asn/getAsn/',
+        POST_ANULAR_ASN: '/portal_cloud_api/logistic-services/asn/anular/',
+        GET_NOTIFICATIONS_ENV: '/portal_cloud_api/logistic-services/pronostico/getNotificationsEnviadas/',
+        GET_PRONOSTICO_FILE: '/portal_cloud_api/logistic-services/pronostico/getFile',
+        GET_EDO_CUENTA: '/portal_cloud_api/logistic-services/Proveedores-facturas/EstCuenta',
+        GET_DOCUMENTS_ALL : '/portal_cloud_api/logistic-services/Proveedores-facturas/documentos',
         GET_EXCEL_ASN:'/portal_cloud_api/logistic-services/asn/getAsnExcel/',
         GET_PDF_ASN:'/portal_cloud_api/logistic-services/asn/generarPDFAsn/',
         CREATE_COTIZACION:'/portal_cloud_api/logistic-services/quotation/createNotification',
@@ -177,6 +184,41 @@ sap.ui.define([
             xhr.send(null);
         },
         
+
+         PostService: function (path, data, callback) {
+            console.log(data)
+            return $.ajax({
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: "POST",
+                headers: {
+                    'Authorization': jwt
+                },
+                url: URL+path,
+            })
+
+
+        },
+
+        GetFiles: function (path, callback) {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", URL+path, true);
+            xhr.setRequestHeader('Authorization', jwt);
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+
+                callback(xhr.response, xhr.status);
+
+            };
+            xhr.onerror = function() {
+                console.log('Error request...');
+            };
+
+            xhr.send(null);
+            
+
+        },
 
     };
 

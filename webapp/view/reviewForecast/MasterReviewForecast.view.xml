@@ -1,0 +1,38 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic" controllerName="ns.EBilliaApp.controller.reviewForecast.MasterReviewForecast">
+	<semantic:SemanticPage id="page">
+		<semantic:titleHeading>
+			<Title id="masterHeaderTitle" text="{i18n>PronosticosRevP} ({pronosticoModel&gt;/Count})"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+			<List id="list" width="auto" class="sapFDynamicPageAlignContent" items="{                       path: 'pronosticoModel>/Pronosticos',                       parameters: {expand: 'Customer'},                       sorter: {       path: 'idOrdenCompra',                        descending: true      },                       groupHeaderFactory: '.createGroupHeader'                      }" noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true" updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange" busy="{pronosticoModel>/busy}">
+				
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                            <Button
+                            id="refreshButton"
+                            press=".onRefresh"
+                            icon="sap-icon://refresh"
+                            type="Transparent"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                
+				<items>
+					<ObjectListItem type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" press=".onSelectionChange" title="{                                                                                   parts: [                                                                                             'pronosticoModel>nombre_proveedor'                                                                                       ],                                                                                       formatter: 'jQuery.sap.formatMessage'                           }">
+							<firstStatus>
+                                <ObjectStatus text="{pronosticoModel>estatus}" state="{                                     path: 'pronosticoModel>estatus',                                                                                                                   formatter: '.formatter.ForecastState'                                                                                                          }"/>
+			                </firstStatus>
+                         
+					<attributes>
+                         
+					    <ObjectAttribute text="{i18n>SemanasRevP} {pronosticoModel&gt;items/0/descripcion}" id="attribute4"/>
+                         
+					</attributes>
+                         
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>

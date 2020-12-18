@@ -154,7 +154,9 @@ sap.ui.define([
                     workbook.SheetNames.forEach(function (sheetName) {
                         excelData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     });
-                        console.log(excelData);
+                    console.log(excelData);
+                    
+
                 };
                 reader.onerror = function (ex) {
                     console.log(ex);
