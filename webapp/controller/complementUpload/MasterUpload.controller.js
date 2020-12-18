@@ -19,20 +19,27 @@ sap.ui.define([
         return BaseController.extend("ns.EBilliaApp.controller.MasterUpload", {
             dateFormattedFinish: null,
             dateFormattedToday: null,
-
+            layoutModel: null,
             onInit: function () {
                 this.dateFormattedFinish = "";
                 this.dateFormattedToday = "";
 
                 var oModelFacturas = new JSONModel({
                     results: null,
-                    busy: true
+                    busy: true,
+                    showSelectedAll: true,
+                    showDeselectedAll: false,
+                    Count: 0
                 });
                 this.getView().setModel(oModelFacturas, "facturas");
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("CargarComplementos").attachPatternMatched(this._routePatternMatched, this);
 
+            },
+
+            onAfterRendering: function () {
+                this.layoutModel = this.getModel("layoutComplementModel");
             },
 
             _routePatternMatched: function (oEvent) {
@@ -57,6 +64,9 @@ sap.ui.define([
                 
                 if (updateList) {
                     this.onRefresh();
+                    this.layoutModel.setProperty("/layout", "TwoColumnsMidExpanded");
+                    this.layoutModel.setProperty("/exitFullScreen", null);
+                    this.layoutModel.setProperty("/fullScreen", true);
                 }
                 
             },
@@ -165,11 +175,15 @@ sap.ui.define([
             },
 
             onRefresh: function () {
+                var fModel = this.getModel("facturas");
                 this._getFacturasPendientes(this.dateFormattedFinish, this.dateFormattedToday);
                 
                 // limpiar tabla
                 this._clearTable()
-                this.byId("check").setSelected(false);
+                // mostrar btn seleccionar todos
+                fModel.setProperty("/showDeselectedAll", false);
+                fModel.setProperty("/showSelectedAll", true);
+                this.getRouter().navTo("CargarComplementos", { param: false }, true);
             },
 
             onSelectionChange: function (oEvent) {
@@ -182,10 +196,10 @@ sap.ui.define([
                 this.getRouter().navTo("cargarComplementosDetail", { item: objectSolicitud, isSelected: oSelected }, true);
             },
 
-            _checkAll: function (oEvent) {
+            _checkAll: function (selected) {
                 var oList = this.byId("list");
                 var tablaModel = this.getModel("tablaModel");
-                var selected = oEvent.getParameter("selected");
+                // var selected = oEvent.getParameter("selected");
                 var fModel = this.getModel("facturas");
 
                 if (selected) {
@@ -194,31 +208,23 @@ sap.ui.define([
                     tablaModel.setProperty("/data", fModel.getProperty("/results"));
                     tablaModel.setProperty("/Count", fModel.getProperty("/results").length);
 
+                    // mostrar btn deseleccionar todos
+                    fModel.setProperty("/showSelectedAll", false);
+                    fModel.setProperty("/showDeselectedAll", true);
+                    
+
                     var arraySolicitud = JSON.stringify(fModel.getProperty("/results"));
                     this.getRouter().navTo("cargarComplementosDetail", { item: arraySolicitud, isSelected: true }, true);
                 } else {
+                    // mostrar btn seleccionar todos
+                    fModel.setProperty("/showDeselectedAll", false);
+                    fModel.setProperty("/showSelectedAll", true);
+
                     oList.removeSelections(true);
                     this._clearTable();
                     this.getRouter().navTo("CargarComplementos", { param: false}, true);
                 }   
                 tablaModel.refresh(true);
-            },
-
-            _formatCurrency: function () {
-                var oLocale = new sap.ui.core.Locale("en-US");
-                var oFormat = NumberFormat.getCurrencyInstance({
-                    "currencyCode": false,
-                    "customCurrencies": {
-                        "MyCurr": {
-                            "isoCode": "USD",
-                            "decimals": 3,
-                            "symbol": "$"
-                        }
-
-                    }
-                }, oLocale);
-
-                return oFormat;
             },
 
             _clearTable: function () {

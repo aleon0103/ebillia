@@ -19,7 +19,19 @@ sap.ui.define([
                         username: "",
                         password: "",
                         error:"",
-                        errorVisible: false
+                        errorVisible: false,
+                        languageSelected: "es",
+                        languages: [
+                            {
+                                "key": "es",
+                                "Name": "Español"
+                            },
+                            {
+                                "key": "en",
+                                "Name": "Inglés"
+                            },
+                            
+                        ],
                     }
                 };
                 var oModel = new JSONModel(oData);
@@ -35,13 +47,15 @@ sap.ui.define([
                 	var loginModel = this.getView().getModel("loginModel");
                     var loginData = loginModel.getProperty("/loginObj");
                   loginModel.setProperty("/loginObj/errorVisible", false)
+                  loginModel.setProperty("/loginObj/busy", true)
                 Api.Login(URL, {
                     "user": loginData.username,
                     "pass": loginData.password,
-                    "idioma": "es"
+                    "idioma": loginData.languageSelected
                 }).then(
                     function (respJson, paramw, param3) {
                         console.log("Auth success");
+                        loginModel.setProperty("/loginObj/busy", false)
                         //console.log(param3.getResponseHeader('Authorization'));
                         Api.setJwt(param3.getResponseHeader('Authorization'))
 
@@ -51,7 +65,7 @@ sap.ui.define([
                     }, function (err) {
                         console.log("error in processing your request", err);
                        
-                        
+                        loginModel.setProperty("/loginObj/busy", false)
                         loginModel.setProperty("/loginObj/errorVisible", true)
                         if(err.status === 401){
                             loginModel.setProperty("/loginObj/error", "El usuario y/o password son incorrectos")

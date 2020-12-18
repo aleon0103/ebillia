@@ -1,0 +1,183 @@
+<mvc:View
+	controllerName="ns.EBilliaApp.controller.complementSee.DetailSee"
+	xmlns="sap.m"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:forms="sap.ui.layout.form">
+	<semantic:SemanticPage
+		id="page"
+        showFooter="false">
+		<semantic:titleHeading>
+			<Title text="{mDetailSeeComplement>/nombreProveedor}"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+			<l:HorizontalLayout>
+				<l:VerticalLayout class="sapUiMediumMarginEnd">
+					<ObjectAttribute text="{i18n>rfc}: {mDetailSeeComplement>/rfcProveedor}"/>
+                    <ObjectAttribute text="{i18n>sociedad}: {mDetailSeeComplement>/sociedadProveedor}"/>
+                    <ObjectStatus
+                    visible="{= ${mDetailSeeComplement>/info} === null ? true : false}"
+                    class="sapUiSmallMarginTop"
+                    text="{i18n>alertTextDetalle}"
+                    icon="sap-icon://status-negative"
+                    state="Error" />
+				</l:VerticalLayout>
+                <l:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectNumber
+                            visible="{= ${mDetailSeeComplement>/info} !== null ? true : false}"
+                            number="{
+                                parts:[{path:'mDetailSeeComplement>/info/total'},{path:'mDetailSeeComplement>/info/moneda'}],
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {showMeasure: false}
+                            }"
+                            unit="{mDetailSeeComplement>/info/moneda}"
+                        />
+                </l:VerticalLayout>
+			</l:HorizontalLayout>
+		</semantic:headerContent>
+		<semantic:content>
+			<l:VerticalLayout>
+            <IconTabBar id="idIconTabBarIcons" tabDensityMode="Compact" expanded="{device>/isNoPhone}" class="sapUiTinyMargin">
+                <items>
+                    <IconTabFilter text="{i18n>info}" icon="sap-icon://information">
+                        <VBox class="sapUiSmallMargin" visible="{= ${mDetailSeeComplement>/info} !== null ? true : false}" width="100%">
+                            <sap.ui.layout.form:SimpleForm title="Detalle" xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4"
+                                labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+                                columnsXL="3" columnsL="3" columnsM="3" backgroundDesign="Transparent">
+                                <sap.ui.layout.form:content>
+                                    <core:Title text="{i18n>proveedor}"/>
+                                    <Text text="{mDetailSeeComplement>/info/proveedor}"/> 
+                                    <Label text="Folio"/>
+                                    <Text text="{mDetailSeeComplement>/info/folio}"/> 
+                                    <Label text="UUID"/>
+                                    <Text text="{mDetailSeeComplement>/info/uuid}"/> 
+
+                                    <core:Title text="{i18n>emisor}"/>
+                                    <Text text="{mDetailSeeComplement>/info/emisor}"/> 
+                                    <Label text="Total"/>
+                                    <ObjectNumber
+                                        number="{
+                                            parts:[{path:'mDetailSeeComplement>/info/total'},{path:'mDetailSeeComplement>/info/moneda'}],
+                                            type: 'sap.ui.model.type.Currency',
+                                            formatOptions: {showMeasure: false}
+                                        }"
+                                        unit="{mDetailSeeComplement>/info/moneda}"
+                                    />
+                                
+                                    <core:Title text="{i18n>receptor}"/>
+                                    <Text text="{mDetailSeeComplement>/info/receptor}"/> 
+                                    <Label text="{i18n>fechaComplemento}"/>
+                                    <Text text="{mDetailSeeComplement>/info/fechaComplemento}"/>
+                                </sap.ui.layout.form:content>
+                            </sap.ui.layout.form:SimpleForm>
+                        </VBox>
+                    </IconTabFilter>
+                    <IconTabFilter text="{i18n>adjuntos}" icon="sap-icon://documents">
+                        <List headerText="{i18n>archivosAdjuntos}" mode="None" >
+                            <CustomListItem>
+                                <HBox>
+                                    <core:Icon size="2rem" src="sap-icon://document" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+                                    <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                                        <Link text="Nombre" target="" press="handlePressLink"/>
+                                        <Label text="ID"/>
+                                    </VBox>
+                                </HBox>
+                            </CustomListItem>
+                        </List>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+            <ScrollContainer width="100%" horizontal="true" vertical="true" focusable="true">
+				<Table
+					id="lineItemsList"
+					class="sapUiLargeMarginBottom"
+					width="auto"
+                    mode="None"
+					items="{mDetailSeeComplement>/info/listaPagosRelacionados}"
+					alternateRowColors="true" 
+                    growingThreshold="10" 
+					noDataText="{i18n>detailLineItemTableNoDataText}">
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title
+								text="{
+                                    parts: [
+                                        'i18n>docRelacionados',
+                                        'mDetailSeeComplement>/Count'
+                                    ],
+                                    formatter: 'jQuery.sap.formatMessage'
+                            }"/>
+                            
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="19rem">
+							<Text text="{i18n>docrelacionados}"/>
+						</Column>
+                        <Column width="5rem">
+							<Text text="Folio"/>
+						</Column>
+                        <Column width="3rem">
+							<Text text="{i18n>serie}"/>
+						</Column>
+                        <Column width="5rem">
+							<Text text="{i18n>importe}"/>
+						</Column>
+						<Column width="5rem">
+							<Text text="{i18n>iva}"/>
+						</Column>
+						<Column width="5rem">
+							<Text text="{i18n>moneda}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{mDetailSeeComplement>docRelacionado}"/>
+                                <Text text="{mDetailSeeComplement>folio}"/>
+                                <Text text="{mDetailSeeComplement>serie}"/>
+                                <ObjectNumber
+									number="{
+                                        parts:[{path:'mDetailSeeComplement>impPagado'},{path:'mDetailSeeComplement>moneda'}],
+                                        type: 'sap.ui.model.type.Currency',
+					                    formatOptions: {showMeasure: false}
+									}"/>
+                                <ObjectNumber
+									number="{
+                                        parts:[{path:'mDetailSeeComplement>ivaDeFactura'},{path:'mDetailSeeComplement>moneda'}],
+                                        type: 'sap.ui.model.type.Currency',
+					                    formatOptions: {showMeasure: false}
+									}"/>
+                                <Text text="{mDetailSeeComplement>moneda}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+                </ScrollContainer>
+			</l:VerticalLayout>
+		</semantic:content>
+		<semantic:closeAction>
+			<semantic:CloseAction
+				id="closeColumn"
+                visible="{= ${layoutComplementModel>/closeColumn} !== null ? true : false}"
+				press="handleClose"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction
+				id="enterFullScreen"
+				visible="{= ${layoutComplementModel>/fullScreen} !== null ? true : false}"
+				press="handleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction
+				id="exitFullScreen"
+				visible="{= ${layoutComplementModel>/exitFullScreen} !== null ? true : false}"
+				press="handleExitFullScreen"/>
+		</semantic:exitFullScreenAction>
+        <semantic:footerCustomActions>
+			<!-- <Button type="Emphasized" text="{i18n>cargarArchivos}" press="onCargarArchivos" enabled="{= ${tablaModel>/Count} !== 0 ? true : false}"/> -->
+		</semantic:footerCustomActions>
+	</semantic:SemanticPage>
+</mvc:View>

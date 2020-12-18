@@ -69,31 +69,31 @@
 						<Column minScreenWidth="Tablet"  demandPopin="true" width="5em">
 							<Text text="{i18n>EstatusBS}"/>
 						</Column>
-                        <Column id="fechaContabilizacionColumn" width="8em" demandPopin="true" hAlign="Begin">
+                        <Column id="fechaContabilizacionColumn" minScreenWidth="Desktop" width="8em" demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>FechaContabilizacionBS}"/>
 						</Column>
-						<Column  width="6em" demandPopin="true" hAlign="Begin">
+						<Column minScreenWidth="Desktop" width="6em" demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>FechaFacturaBS}"/>
 						</Column>
-						<Column minScreenWidth="Tablet" width="6em" demandPopin="true" hAlign="Begin">
+						<Column minScreenWidth="Desktop" width="6em" demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>FechaPagoBS}"/>
 						</Column>
-                        <Column minScreenWidth="Tablet" width="5em"  demandPopin="true" hAlign="Begin">
+                        <Column minScreenWidth="Desktop" width="5em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>TipoBS}"/>
 						</Column>
                         <Column  minScreenWidth="Tablet" width="10em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>ReferenciaBS}"/>
 						</Column>
-                        <Column  minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+                        <Column  minScreenWidth="Desktop" width="6em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>PedidoBS}"/>
 						</Column>
-                        <Column id="NoDocumentoColumn" minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+                        <Column id="NoDocumentoColumn" minScreenWidth="Desktop" width="6em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>NoDocumentoBS}"/>
 						</Column>
-                        <Column  minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+                        <Column  minScreenWidth="Desktop" width="6em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>ImpDocumentoBS}"/>
 						</Column>
-                        <Column  minScreenWidth="Tablet" width="6em"  demandPopin="true" hAlign="Begin">
+                        <Column  minScreenWidth="Desktop" width="6em"  demandPopin="true" hAlign="Begin">
 							<Text text="{i18n>ImporteMLBS}"/>
 						</Column>
                         <Column  minScreenWidth="Tablet" width="3em"  demandPopin="true" hAlign="Begin">

@@ -72,7 +72,6 @@ sap.ui.define([
             },
 
             onRefresh: function () {
-                this.byId("refresh0").hide();
                 this._getPronosticos();
                 this._showDetail(null);
 

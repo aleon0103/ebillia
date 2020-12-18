@@ -94,6 +94,7 @@ sap.ui.define([
                   
 
                    poModel.setProperty('/ASN', [])
+                   poModel.setProperty('/Count', 0)
                    poModel.refresh();
                }
 

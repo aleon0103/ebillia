@@ -1,0 +1,123 @@
+<mvc:View xmlns="sap.ui.table" xmlns:mvc="sap.ui.core.mvc" xmlns:u="sap.ui.unified" xmlns:c="sap.ui.core" xmlns:m="sap.m" controllerName="ns.EBilliaApp.controller.currency.Currency" height="100%">
+    	<m:IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+		<m:items>
+			<m:IconTabFilter text="{i18n>moduloMonedas}" key="monedas">
+				
+                
+
+
+                <m:content>
+                    <sap.ui.layout.form:Form editable="true" visible="{currencyModel>/form}" xmlns:sap.ui.layout.form="sap.ui.layout.form" id="form0">
+                        <sap.ui.layout.form:formContainers>
+                            <sap.ui.layout.form:FormContainer title="{i18n>ADD}" id="container0">
+                                <sap.ui.layout.form:formElements>
+                                    <sap.ui.layout.form:FormElement label="{i18n>code}" id="element0">
+                                        <sap.ui.layout.form:fields>
+                                            <m:Input width="100%" maxLength="3"  placeholder="{i18n>code}" value="{currencyModel>/monedaObj/codigo}" id="input0"/>
+                                        </sap.ui.layout.form:fields>
+                                    </sap.ui.layout.form:FormElement>
+                                     <sap.ui.layout.form:FormElement label="{i18n>ID}"  id="element1">
+                                        <sap.ui.layout.form:fields>
+                                            <m:Input width="100%" maxLength="3" placeholder="{i18n>ID}" value="{currencyModel>/monedaObj/identificador}" id="input1"/>
+                                        </sap.ui.layout.form:fields>
+                                    </sap.ui.layout.form:FormElement>
+                                </sap.ui.layout.form:formElements>
+                            </sap.ui.layout.form:FormContainer>
+                        </sap.ui.layout.form:formContainers>
+                        <sap.ui.layout.form:layout>
+                            <sap.ui.layout.form:ResponsiveGridLayout id="layout0"/>
+                        </sap.ui.layout.form:layout></sap.ui.layout.form:Form>
+                    <Table id="table" rows="{currencyModel>/monedas}" selectionMode="None" busy="{currencyModel>/busy}" ariaLabelledBy="title">
+                        <extension>
+                            <m:OverflowToolbar>
+                                <m:ToolbarSpacer/>
+                                <m:Button icon="sap-icon://add" tooltip="{i18n>ADD}" visible="{currencyModel>/noform}" press="handleDialogCreatePress"/>
+                                <m:Button icon="sap-icon://save" tooltip="{i18n>save}" visible="{currencyModel>/form}" press="handleDialogSavePress"/>
+                                <m:Button icon="sap-icon://decline" tooltip="{i18n>cancel}" visible="{currencyModel>/form}" press="handleDialogCancelPress"/>
+                            </m:OverflowToolbar>
+                        </extension>
+                        <columns>
+                            <Column>
+                                <m:Label text="{i18n>code}"/>
+                                <template>
+                                    <m:Text text="{currencyModel>codigoMoneda}" wrapping="false"/>
+                                </template>
+                            </Column>
+                            <Column>
+                                <m:Label text="{i18n>ID}"/>
+                                <template>
+                                    <m:Text text="{currencyModel>descripcionMoneda}" wrapping="false"/>
+                                </template>
+                            </Column>
+                            <Column hAlign="End">
+                                <m:Label text=""/>
+                                <template>
+                                    <m:Button icon="sap-icon://delete" tooltip="{i18n>borrar}" press="handleDetailsPress"/>
+                                </template>
+                            </Column>
+                         
+                        </columns>
+                    </Table>
+                </m:content>
+			</m:IconTabFilter>
+			<m:IconTabFilter text="{i18n>Homologacion}" key="homologacion">
+				
+                 <m:content>
+                    <sap.ui.layout.form:Form editable="true" visible="{currencyModel>/formH}" xmlns:sap.ui.layout.form="sap.ui.layout.form" id="form1">
+                        <sap.ui.layout.form:formContainers>
+                            <sap.ui.layout.form:FormContainer title="{i18n>ADD}" id="container1">
+                                <sap.ui.layout.form:formElements>
+                                    <sap.ui.layout.form:FormElement label="{i18n>code}" id="element2">
+                                        <sap.ui.layout.form:fields>
+                                            <m:Input width="100%" maxLength="3"  placeholder="{i18n>code}" value="{currencyModel>/monedaObjH/codigo}" id="input2"/>
+                                        </sap.ui.layout.form:fields>
+                                    </sap.ui.layout.form:FormElement>
+                                     <sap.ui.layout.form:FormElement label="{i18n>ID}"  id="element3">
+                                        <sap.ui.layout.form:fields>
+                                            <m:Input width="100%" maxLength="3" placeholder="{i18n>ID}" value="{currencyModel>/monedaObjH/identificador}" id="input3"/>
+                                        </sap.ui.layout.form:fields>
+                                    </sap.ui.layout.form:FormElement>
+                                </sap.ui.layout.form:formElements>
+                            </sap.ui.layout.form:FormContainer>
+                        </sap.ui.layout.form:formContainers>
+                        <sap.ui.layout.form:layout>
+                            <sap.ui.layout.form:ResponsiveGridLayout id="layout1"/>
+                        </sap.ui.layout.form:layout></sap.ui.layout.form:Form>
+                    <Table id="tableH" rows="{currencyModel>/homologacion}" selectionMode="None" busy="{currencyModel>/busy}" ariaLabelledBy="title">
+                        <extension>
+                            <m:OverflowToolbar>
+                                <m:ToolbarSpacer/>
+                                <m:Button icon="sap-icon://add" tooltip="{i18n>ADD}" visible="{currencyModel>/noformH}" press="handleDialogCreatePressH"/>
+                                <m:Button icon="sap-icon://save" tooltip="{i18n>save}" visible="{currencyModel>/formH}" press="handleDialogSavePressH"/>
+                                <m:Button icon="sap-icon://decline" tooltip="{i18n>cancel}" visible="{currencyModel>/formH}" press="handleDialogCancelPressH"/>
+                            </m:OverflowToolbar>
+                        </extension>
+                        <columns>
+                            <Column>
+                                <m:Label text="{i18n>code}"/>
+                                <template>
+                                    <m:Text text="{currencyModel>hmoneda}" wrapping="false"/>
+                                </template>
+                            </Column>
+                            <Column>
+                                <m:Label text="{i18n>ID}"/>
+                                <template>
+                                    <m:Text text="{currencyModel>descripcionMoneda}" wrapping="false"/>
+                                </template>
+                            </Column>
+                            <Column hAlign="End">
+                                <m:Label text=""/>
+                                <template>
+                                    <m:Button icon="sap-icon://delete" tooltip="{i18n>borrar}" press="handleDetailsPressH"/>
+                                </template>
+                            </Column>
+                         
+                        </columns>
+                    </Table>
+                </m:content>
+			</m:IconTabFilter>
+			
+		</m:items>
+	</m:IconTabBar>
+	
+</mvc:View>

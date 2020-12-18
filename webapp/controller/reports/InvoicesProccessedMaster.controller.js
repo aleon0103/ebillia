@@ -382,6 +382,9 @@ sap.ui.define([
                     return oContext.getObject().lifnr; 
                 }).join(", "));
 			} else {
+                 this.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                 MessageToast.show(oBundle.getText("noItems"));
+                });
             }
             
               
@@ -401,6 +404,9 @@ sap.ui.define([
                     return oContext.getObject().sociedad; 
                 }).join(", "));
 			} else {
+                 this.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                 MessageToast.show(oBundle.getText("noItems"));
+                });
             }
             
               
