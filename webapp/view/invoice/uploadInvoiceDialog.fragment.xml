@@ -6,7 +6,7 @@
 	<Dialog
 		id="uploadDialog"
 		title="{i18n>uploadInvoiceTitle}"
-        contentWidth="640px"
+       
        
         >
         <Table

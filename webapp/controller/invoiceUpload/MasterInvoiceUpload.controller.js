@@ -7,7 +7,7 @@ sap.ui.define([
     'sap/m/MessageToast',
     "sap/ui/Device"
 ],
-    function (BaseController, API, formatter, JSONModel, MessageToast,Device) {
+    function (BaseController, API, formatter, JSONModel, MessageToast, Device) {
         "use strict";
         return BaseController.extend("ns.EBilliaApp.controller.MasterInvoiceUpload", {
 
@@ -16,16 +16,16 @@ sap.ui.define([
             onInit: function () {
                 console.log('on init  Invoice Upload component view');
 
-                var emModel = new JSONModel({ busy: true,tempItems:[] ,selectedCount:'0', layout:'OneColumn' });
+                var emModel = new JSONModel({ busy: true, tempItems: [], selectedCount: '0', layout: 'OneColumn' });
                 this.getOwnerComponent().setModel(emModel, "invoiceUpload");
 
-                var oModel = new JSONModel({ busy: true});
+                var oModel = new JSONModel({ busy: true });
                 this.getView().setModel(oModel, "purchaseOrderModel");
 
                 this._oRouter = this.getRouter();
                 this._oRouter.getRoute("cargaFactura").attachPatternMatched(this._routePatternMatched, this);
 
-   
+
             },
 
             onAfterRendering: function () {
@@ -76,38 +76,42 @@ sap.ui.define([
 
             onSelectionChange: function (oEvent) {
 
-                	var oList = oEvent.getSource(),
-				bSelected = oEvent.getParameter("selected");
 
-			// skip navigation when deselecting an item in multi selection mode
-			if (!(oList.getMode() === "MultiSelect" && !bSelected)) {
-				// get the list item, either from the listItem parameter or from the event's source itself (will depend on the device-dependent mode).
-				this._showDetail(oEvent.getParameter("listItem") || oEvent.getSource());
-			}
+
+                var oList = oEvent.getSource(),
+                    bSelected = oEvent.getParameter("selected");
+
+                console.log("on item press");
+
+                // skip navigation when deselecting an item in multi selection mode
+                if (!(oList.getMode() === "MultiSelect" && !bSelected)) {
+                    // get the list item, either from the listItem parameter or from the event's source itself (will depend on the device-dependent mode).
+                    this._showDetail(oEvent.getParameter("listItem") || oEvent.getSource());
+                }
             },
 
 
 
-		/**
-		 * Shows the selected item on the detail page
-		 * On phones a additional history entry is created
-		 * @param {sap.m.ObjectListItem} oItem selected Item
-		 * @private
-		 */
-		_showDetail : function (oItem) {
-             var invoiceModel = this.getModel('invoiceUpload');
-             console.log(oItem.getBindingContext("purchaseOrderModel").getObject());
+            /**
+             * Shows the selected item on the detail page
+             * On phones a additional history entry is created
+             * @param {sap.m.ObjectListItem} oItem selected Item
+             * @private
+             */
+            _showDetail: function (oItem) {
+                var invoiceModel = this.getModel('invoiceUpload');
+                console.log(oItem.getBindingContext("purchaseOrderModel").getObject());
 
-             invoiceModel.setProperty('/orderSelected',oItem.getBindingContext("purchaseOrderModel").getObject())
+                invoiceModel.setProperty('/orderSelected', oItem.getBindingContext("purchaseOrderModel").getObject())
 
-			var bReplace = !Device.system.phone;
-			// set the layout property of FCL control to show two columns
-			invoiceModel.setProperty("/layout", "TwoColumnsMidExpanded");
-			this.getRouter().navTo("cargaFacturaDetail", {
-                layout:"TwoColumnsMidExpanded",
-				orderId : oItem.getBindingContext("purchaseOrderModel").getProperty("idOrdenCompra")
-			}, bReplace);
-		},
+                var bReplace = !Device.system.phone;
+                // set the layout property of FCL control to show two columns
+                invoiceModel.setProperty("/layout", "TwoColumnsMidExpanded");
+                this.getRouter().navTo("cargaFacturaDetail", {
+                    layout: "TwoColumnsMidExpanded",
+                    orderId: oItem.getBindingContext("purchaseOrderModel").getProperty("idOrdenCompra")
+                }, bReplace);
+            },
 
             /**Method to get POrchaseOrder List */
 

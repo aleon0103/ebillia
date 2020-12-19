@@ -112,16 +112,16 @@
                     "controlId": "app"
                 },
                 {
-                    "name": "ConfirmacionOrdenCompra",
-                    "pattern": "ConfirmacionOrdenCompra",
+                    "name": "POConfirm",
+                    "pattern": "POConfirm",
                     "target": [
                         "masterPurchaseOrders",
                         "detailPurchaseOrders"
                     ]
                 },
                 {
-                    "pattern": "ConfirmacionOrdenCompra/{objectId}",
-                    "name": "ConfirmacionOrdenCompraDetail",
+                    "pattern": "POConfirm/{orderId}",
+                    "name": "POConfirmDetail",
                     "target": [
                         "masterPurchaseOrders",
                         "detailPurchaseOrders"

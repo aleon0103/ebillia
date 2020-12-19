@@ -35,7 +35,7 @@
 				growing="true"
 				growingScrollToLoad="true"
 				updateFinished=".onUpdateFinished"
-				selectionChange=".onSelectionChange"
+				itemPress=".onSelectionChange"
                 busy="{purchaseOrderModel>/busy}"
                 >
 				<!--
@@ -85,7 +85,7 @@
 				</headerToolbar>
 				<items>
 					<ObjectListItem
-						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
+						type="{= ${device>/system/phone} ? 'Active' : 'Active'}"
 						press=".onSelectionChange"
 						title="{
 							parts: [
