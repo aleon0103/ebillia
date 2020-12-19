@@ -269,6 +269,68 @@
 						"masterASN",
 						"detailASN"
 					]
+                },
+                {
+                    "name": "cancelarASN",
+                    "pattern": "cancelarASN",
+                    "target": [
+                        "masterCancelarASN",
+                        "detailCancelarASN"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "cancelarASN/{orderId}",
+                    "name": "cancelarASNDetail",
+                    "target": [
+                        "masterCancelarASN",
+                        "detailCancelarASN"
+                    ]
+                },
+                {
+                    "name": "RevisionPronosticosDemanda",
+                    "pattern": "RevisionPronosticosDemanda",
+                    "target": [
+                        "masterReviewForecast",
+                        "detailReviewForecast"
+                    ],
+                    "controlId": "mainContents"
+                },
+                {
+                    "pattern": "RevisionPronosticosDemanda/{orderId}",
+                    "name": "RevisionPronosticosDemandaDetail",
+                    "target": [
+                        "masterReviewForecast",
+                        "detailReviewForecast"
+                    ]
+                },
+                {
+                    "name": "VerEstadoDeCuenta",
+                    "pattern": "VerEstadoDeCuenta",
+                    "target": [
+                        "verEstadoDeCuenta"
+                    ]
+                },
+                {
+                    "name": "SolicitudlistaPrecios",
+                    "pattern": "SolicitudlistaPrecios",
+                    "target": [
+                        "crearCotizacion"
+                    ]
+                },
+                {
+                    "name": "ConfirmarListaPrecios",
+                    "pattern": "ConfirmarListaPrecios",
+                    "target": [
+                        "verCotizaciones"
+                    ]
+                },
+                {
+                    "name": "configMonedas",
+                    "pattern": "configMonedas",
+                    "target": [
+                        "currency"
+                    ]
                 }
                 
             ],
@@ -489,6 +551,81 @@
                     "controlId": "layoutASN",
                     "controlAggregation": "midColumnPages",
                     "parent": "appASN"
+                },
+                "revokeAsn": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutRevokeAsn",
+                    "controlId": "pageContainer",
+                    "viewName": "revokeAsn.RevokeAsn"
+                },
+                "masterCancelarASN": {
+                    "viewName": "revokeAsn.MasterRevokeAsn",
+                    "controlId": "layoutRevokeAsn",
+                    "parent": "revokeAsn",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailCancelarASN": {
+                    "id": "cancelarASN",
+                    "viewName": "revokeAsn.DetailRevokeAsn",
+                    "controlId": "layoutRevokeAsn",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "revokeAsn"
+                },
+                "reviewForecast": {
+                    "parent": "TargetMain",
+                    "viewType": "XML",
+                    "viewId": "layoutReviewForecast",
+                    "controlId": "pageContainer",
+                    "viewName": "reviewForecast.ReviewForecast"
+                },
+                "masterReviewForecast": {
+                    "viewName": "reviewForecast.MasterReviewForecast",
+                    "controlId": "layoutReviewForecast",
+                    "parent": "reviewForecast",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailReviewForecast": {
+                    "viewName": "reviewForecast.DetailReviewForecast",
+                    "controlId": "layoutReviewForecast",
+                    "controlAggregation": "midColumnPages",
+                    "parent": "reviewForecast"
+                },
+                "verEstadoDeCuenta": {
+                    "viewName": "billingStatement.BillingStatement",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "crearCotizacion": {
+                    "viewName": "cotizaciones.SolicitudCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "verCotizaciones": {
+                    "viewName": "cotizaciones.VerCotizaciones",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "currency": {
+                    "viewName": "currency.Currency",
+                    "parent": "TargetMain",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
                 }
                 
             }

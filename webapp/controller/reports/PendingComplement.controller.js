@@ -308,12 +308,14 @@ sap.ui.define([
             var aContexts = oEvent.getParameter("selectedContexts");
             var complemetosModel = this.getView().getModel("complementos");
 			if (aContexts && aContexts.length) {
-				MessageToast.show("You have chosen " + aContexts.map(function (oContext) { 
+				MessageToast.show("" + aContexts.map(function (oContext) { 
                      complemetosModel.setProperty("/data/filtros/proveedor", oContext.getObject().lifnr);
                     return oContext.getObject().lifnr; 
                 }).join(", "));
 			} else {
-				MessageToast.show("No new item was selected.", oResourceBundle.getText("clearFilters"));
+                this.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                 MessageToast.show(oBundle.getText("noItems"), oResourceBundle.getText("clearFilters"));
+                });
             }
             
               

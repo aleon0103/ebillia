@@ -26,6 +26,7 @@ sap.ui.define([
         sCollection: "/Data",
         aCrumbText: "",
         aCrumbs: ["arrayTmp", "posiciones"],
+        ordenesTexto: "",
         flag: false,
         mInitialOrderState: {
 			products: {},
@@ -40,8 +41,28 @@ sap.ui.define([
                 this._oRouter.getRoute("ReporteEntregasPendientes").attachPatternMatched(this._routePatternMatched, this);
 
                 var oFilter = this.getView().byId("filterBarREP"),
-				that = this;
+                that = this;
                 
+                var textButtonGo = "";
+                var textButtonClear = "";
+
+                oFilter.addEventDelegate({
+                    "onAfterRendering": function(oEvent) {
+                        that.getModel("i18n").getResourceBundle().then(function (oBundle) {
+                            textButtonGo = oBundle.getText("generarReporteREP");
+                            textButtonClear = oBundle.getText("BorrarBS"); 
+                            that.ordenesTexto = oBundle.getText("OrdenesDeCompraREP");
+
+                            var oButton = oEvent.srcControl._oSearchButton;
+                            oButton.setText(textButtonGo);
+
+                            var clearButton = oEvent.srcControl._oClearButtonOnFB;
+                            clearButton.setText(textButtonClear);
+                        });
+
+                       
+                    }
+                });
                 
 
                 this._proveedoresModel = new JSONModel({});
@@ -70,7 +91,7 @@ sap.ui.define([
                 this._oModel = this.getModel("user");
                 this.rol = this._oModel.getProperty('/rol/id');
 
-                console.log(this.rol);
+                
                 if (this.rol && this.rol != 3) {
                     this.byId("selectProveedores").setVisible(true);
                 } else {
@@ -87,6 +108,16 @@ sap.ui.define([
                 this.getView().byId("fechaFinREP").setValue("");
 			    this.getView().byId("ordenCompraREP").setValue("");
                 this.getView().byId("proveedorREP").setSelectedKey("");
+
+                var oLink = new Link({});
+                var oBreadCrumb = this.byId("breadcrumb");
+                var iIndex = oBreadCrumb.indexOfLink(oLink);
+                var aCrumb = oBreadCrumb.getLinks().slice(iIndex + 1);
+                if (aCrumb.length) {
+                    aCrumb.forEach(function(oLink) {
+                        oLink.destroy();
+                    });
+                }
             },
 
 
@@ -142,7 +173,7 @@ sap.ui.define([
 
             _setAggregation: function (sPath) {
                 // If we're at the leaf end, turn off navigation
-                console.log(sPath);
+              
                 var sPathEnd = sPath.split("/").reverse()[0];
                 if (sPathEnd === this.aCrumbs[this.aCrumbs.length - 1]) {
                     this._oTable.setMode("SingleSelectMaster");
@@ -175,7 +206,7 @@ sap.ui.define([
                 }
 
                 // Set the new aggregation
-                console.log(sPath);
+              
                 this._oTable.bindAggregation("items", sPath, this.oTemplate);
             },
 
@@ -245,7 +276,7 @@ sap.ui.define([
 
 
 
- getProveedores: function (value) {
+            getProveedores: function (value) {
                 var me = this;
                 var path = API.serviceList().GET_PROVEEDORES_CATALOG + `?value=${value}`;
                 API.Get(path).then(
@@ -305,7 +336,7 @@ sap.ui.define([
                     API.Get(path).then(
                         function (respJson, paramw, param3) {
                             
-                            console.log(respJson);
+                           
                             this.response = respJson.data;
                             let cabecera;
                             let arrayTmp = []
@@ -357,7 +388,7 @@ sap.ui.define([
                             var oBreadCrumb = me.byId("breadcrumb"); 
 
                             oLink = new Link({
-                                text: "Ordenes", 
+                                text: me.ordenesTexto, 
                                 press:[sPath, me.onBreadcrumbPress, me]
                             }); 
                             oBreadCrumb.addLink(oLink); 

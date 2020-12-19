@@ -12,83 +12,34 @@
 			<Title
 				text="{
 					parts: [
-						'i18n>commonItemTitle',
-						'POdetailView>/orderId'
+						'i18n>noASN',
+						'ASNdetailView>/asn'
 					],
 					formatter: 'jQuery.sap.formatMessage'
 				}"/>
 		</semantic:titleHeading>
 		<semantic:headerContent>
 			<l:HorizontalLayout>
-				<l:VerticalLayout class="sapUiMediumMarginEnd">
-					<ObjectAttribute
-						title="{i18n>commonCustomerName}"
-						text="{Customer/CompanyName}"/>
-					<ObjectAttribute
-						title="{i18n>detailOrderDate}"
-						text="{
-							path: 'OrderDate',
-							type: 'sap.ui.model.type.Date',
-							formatOptions: { style: 'medium' }
-						}"/>
-					<ObjectAttribute
-						title="{i18n>commonItemShipped}"
-						text="{= ${ShippedDate} ?
-								${
-									path: 'ShippedDate',
-									type: 'sap.ui.model.type.Date',
-									formatOptions: { style: 'medium' }
-								}
-							:${i18n>commonItemNotYetShipped} }"/>
-				</l:VerticalLayout>
+		
 				<l:VerticalLayout>
-					<Label text="{i18n>priceText}"/>
-					<ObjectNumber
-						number="{
-							parts: [
-								{path:'detailView>/totalOrderAmount'},
-								{path:'detailView>/currency'}
-							],
-							type: 'sap.ui.model.type.Currency',
-							formatOptions: {
-								showMeasure: false
-							}
-						}"
-						/>
+					<Label text="{i18n>DescargarPDF}"/>
+					<OverflowToolbarButton type="Transparent" visible="{ASNdetailView>/download}"  press="downloadPDF" icon="sap-icon://download" />
+                    <Label text="{i18n>DescargarPDF}"/>
+					<OverflowToolbarButton type="Transparent"  press="{ASNdetailView>/download}" icon="sap-icon://download" />
+
 				</l:VerticalLayout>
 			</l:HorizontalLayout>
 		</semantic:headerContent>
 		<semantic:content>
 			<l:VerticalLayout>
-				<!--
-                <IconTabBar
-					id="iconTabBar"
-					headerBackgroundDesign="Transparent"
-					select=".onTabSelect"
-					selectedKey="{detailView>/selectedTab}">
-					<items>
-						<IconTabFilter
-							id="iconTabFilterShipping"
-							icon="sap-icon://shipping-status"
-							tooltip="{i18n>detailIconTabBarShipping}"
-							key="shipping">
-						</IconTabFilter>
-						<IconTabFilter
-							id="iconTabFilterProcessor"
-							icon="sap-icon://employee"
-							tooltip="{i18n>detailIconTabBarProcessor}"
-							key="processor">
-						</IconTabFilter>
-					</items>
-				</IconTabBar>
--->
+				
 				<Table
 					id="lineItemsList"
 					class="sapUiSmallMarginTop"
 					width="auto"
-					items="{POdetailView>/GoodReceipts}"
+					items="{ASNdetailView>/ASN/ldetalle}"
 					updateFinished=".onListUpdateFinished"
-					noDataText="{i18n>detailLineItemTableNoDataText}"
+					noDataText="{i18n>noDATA}"
 					busyIndicatorDelay="{detailView>/lineItemTableDelay}">
 					<headerToolbar>
 						<Toolbar id="lineItemsToolbar">
@@ -99,25 +50,35 @@
 					</headerToolbar>
 					<columns>
 						<Column>
-							<Text text="{i18n>detailLineItemTablePOColumn}"/>
+							<Text text="{i18n>CDASN1}"/>
 						</Column>
 						<Column>
-							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+							<Text text="{i18n>CDASN2}"/>
 						</Column>
 						<Column>
-							<Text text="{i18n>detailLineItemTableEMColumn}"/>
+							<Text text="{i18n>CDASN3}"/>
+						</Column>
+                        <Column
+							minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>CDASN4}"/>
+						</Column>
+                         <Column
+							minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>CDASN5}"/>
 						</Column>
 						<Column
 							minScreenWidth="Tablet"
 							demandPopin="true"
 							hAlign="End">
-							<Text text="{i18n>detailLineItemTableUnitQuantityColumn}"/>
+							<Text text="{i18n>CDASN6}"/>
 						</Column>
 						<Column
 							minScreenWidth="Tablet"
 							demandPopin="true"
 							hAlign="End">
-							<Text text="{i18n>detailLineItemTableTotalColumn}"/>
+							<Text text="{i18n>CDASN7}"/>
 						</Column>
 					</columns>
 					<items>
@@ -125,30 +86,18 @@
 							<cells>
 								<ObjectIdentifier
 			
-									text="{POdetailView>num_doc_comp}"/>
+									text="{ASNdetailView>noAsn}"/>
 
                                     <ObjectIdentifier
 			
-									text="{POdetailView>fecha_cont}"/>
+									text="{ASNdetailView>posicion}"/>
 
-                                           <ObjectIdentifier
-			
-									text="{POdetailView>num_doc_material}"/>
-								
-								
-                                    	<ObjectNumber
-									number="{
-										path: 'POdetailView>cantidad'
-										
-									}"
-									unit="{POdetailView>unidad}"/>
-								<ObjectNumber
-									number="{
-                                        path:'POdetailView>importe'
-						
-										
-									}"
-									unit="{POdetailView>clave_moneda}"/>
+                                <ObjectIdentifier text="{ASNdetailView>material}"/>
+                                <ObjectIdentifier text="{ASNdetailView>descripcion}"/>	
+                                <ObjectIdentifier text="{ASNdetailView>vam}"/>
+                                <ObjectIdentifier text="{ASNdetailView>fecha_entrega}"/>
+                                <ObjectIdentifier text="{ASNdetailView>cantidadRecibida}"/>
+                                    	
 							</cells>
 						</ColumnListItem>
 					</items>

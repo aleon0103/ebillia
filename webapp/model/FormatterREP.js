@@ -64,7 +64,40 @@ sap.ui.define(function() {
 		// that we're on a leaf if there's a ProductId
 		listItemType : function (sProductId) {
 			return sProductId ? "Inactive" : "Navigation";
-		}
+        },
+        
+        ForecastState: function (estatus) {
+			if (estatus === 'LEIDO') {
+				return "Success";
+            }
+
+            else	if (estatus === 'PENDIENTE' ) {
+				return "None";
+            }
+
+        },
+
+        ForecastItemState: function (estatus) {
+            if (estatus === 'ACTUALIZADO') {
+                return "Success";
+            } else if (estatus === 'PENDIENTE') {
+                return "None";
+            } else {
+                return "Warning"
+            }
+        },
+
+        PagoState: function (pago) { 
+            if (pago == 'X') {
+                return "Success";
+            } else if (pago == 'Y') {
+                return "Warning";
+            } else if (pago == '' || pago == null) {
+                return "None";
+            } else if (pago == 'C') {
+                return "Error";
+            }
+        }
 	};
 
 	return FormatterREP;
