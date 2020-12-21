@@ -9,6 +9,7 @@
     "@ui5/cli": "2.2.6"
   },
   "scripts": {
+     "start": "ui5 serve --accept-remote-connections true --port $PORT",
     "build": "ui5 build --include-task=generateManifestBundle generateCachebusterInfo",
     "start-local": "node node_modules/@sap/html5-repo-mock/index.js"
   },
