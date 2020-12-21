@@ -55,8 +55,9 @@ sap.ui.define([
                 var poModel = this.getModel("purchaseOrderModel");
                 poModel.setProperty('/busy', true);
                 var me = this;
+                //https://arcade.flexi.com.mx:8762/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenesDeCompra/20000001/1/%20/E/%20/%20
                 //https://arcade.flexi.com.mx:8762/portal_cloud_api/logistic-services/Proveedores-facturas/OrdenesDeCompra/20000001/1/100/%20/E/%20/%20
-                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/${userId}/1/100/%20/E/%20/%20`;
+                var path = API.serviceList().PROVEEDORES_FACTURAS + `OrdenesDeCompra/${userId}/1/%20/E/%20/%20`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         poModel.setProperty('/busy', false);
