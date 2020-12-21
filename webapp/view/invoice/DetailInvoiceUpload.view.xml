@@ -1,12 +1,13 @@
 <mvc:View
 	controllerName="ns.EBilliaApp.controller.invoiceUpload.DetailInvoiceUpload"
-	xmlns="sap.m"
+    xmlns="sap.m"
 	xmlns:semantic="sap.f.semantic"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout">
 	<semantic:SemanticPage
 		id="page"
 		busy="{detailView>/busy}"
+          showFooter="true"
 		busyIndicatorDelay="{detailView>/delay}">
 		<semantic:titleHeading>
 			<Title
@@ -23,38 +24,38 @@
 				<l:VerticalLayout class="sapUiMediumMarginEnd">
 					<ObjectAttribute
 						title="{i18n>commonCustomerName}"
-						text="{Customer/CompanyName}"/>
+						text="{user>/nombre}"/>
 					<ObjectAttribute
-						title="{i18n>detailOrderDate}"
-						text="{
-							path: 'OrderDate',
-							type: 'sap.ui.model.type.Date',
-							formatOptions: { style: 'medium' }
-						}"/>
+						title="{i18n>commonCustomerRFC}"
+						text="{user>/rfc}"/>
 					<ObjectAttribute
-						title="{i18n>commonItemShipped}"
-						text="{= ${ShippedDate} ?
-								${
-									path: 'ShippedDate',
-									type: 'sap.ui.model.type.Date',
-									formatOptions: { style: 'medium' }
-								}
-							:${i18n>commonItemNotYetShipped} }"/>
+						title="{i18n>commonCustomerSociety}"
+						text="{user>/sociedad}"/>
 				</l:VerticalLayout>
-				<l:VerticalLayout>
+				<l:VerticalLayout class="sapUiMediumMarginEnd">
 					<Label text="{i18n>priceText}"/>
 					<ObjectNumber
 						number="{
 							parts: [
-								{path:'detailView>/totalOrderAmount'},
-								{path:'detailView>/currency'}
+								{path:'invoiceUpload>/orderSelected/totalOc'},
+								{path:'invoiceUpload>/orderSelected/moneda'}
 							],
 							type: 'sap.ui.model.type.Currency',
 							formatOptions: {
 								showMeasure: false
 							}
 						}"
+                         unit="{invoiceUpload>/orderSelected/moneda}"
 						/>
+				</l:VerticalLayout>
+                <l:VerticalLayout>
+					<Label text="{i18n>StatusText}"/>
+						<ObjectStatus
+					text="{invoiceUpload>/orderSelected/estatus}"
+					state="{
+						path: 'invoiceUpload>/orderSelected/estatus',
+						formatter: '.formatter.POEMState'
+					}" />
 				</l:VerticalLayout>
 			</l:HorizontalLayout>
 		</semantic:headerContent>
@@ -86,9 +87,10 @@
 					id="lineItemsList"
 					class="sapUiSmallMarginTop"
 					width="auto"
+                    mode="MultiSelect"
+                    selectionChange=".onSelectionChange"
 					items="{POdetailView>/GoodReceipts}"
 					updateFinished=".onListUpdateFinished"
-					noDataText="{i18n>detailLineItemTableNoDataText}"
 					busyIndicatorDelay="{detailView>/lineItemTableDelay}">
 					<headerToolbar>
 						<Toolbar id="lineItemsToolbar">
@@ -155,11 +157,28 @@
 				</Table>
 			</l:VerticalLayout>
 		</semantic:content>
-		<semantic:sendEmailAction>
+       	<semantic:titleCustomIconActions>
+			<Button icon="sap-icon://customer-order-entry" text="{invoiceUpload>/selectedCount}" press=".onShowResumeTable" >
+             <customData>
+						<!--
+                        <BadgeCustomData
+							key="badge"
+							value="{
+                               invoiceUpload>/selectedCount
+                            }"
+							visible="true"/>
+                            -->
+					</customData>
+            </Button>
+		</semantic:titleCustomIconActions>
+
+		<!--
+        <semantic:sendEmailAction>
 			<semantic:SendEmailAction
 				id="shareEmail"
 				press=".onSendEmailPress"/>
 		</semantic:sendEmailAction>
+        -->
 		<semantic:closeAction>
 			<semantic:CloseAction
 				id="closeColumn"
@@ -169,13 +188,34 @@
 			<semantic:FullScreenAction
 				id="enterFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				press="enterFullScreen"/>
 		</semantic:fullScreenAction>
 		<semantic:exitFullScreenAction>
 			<semantic:ExitFullScreenAction
 				id="exitFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				press="exitFullScreen"/>
 		</semantic:exitFullScreenAction>
+
+<!-- Semantic Footer Buttons -->
+        	<semantic:footerCustomActions>
+			
+            <Button icon="sap-icon://customer-order-entry" text="Enviar Factura {invoiceUpload>/selectedCount}" press=".onShowResumeTable" >
+             <customData>
+						<!--
+                        <BadgeCustomData
+							key="badge"
+							value="{
+                               invoiceUpload>/selectedCount
+                            }"
+							visible="true"/>
+                            -->
+					</customData>
+            </Button>
+
+
+		  </semantic:footerCustomActions>
+
+
 	</semantic:SemanticPage>
 </mvc:View>

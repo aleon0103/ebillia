@@ -47,6 +47,9 @@ sap.ui.define([
         GET_COTIZACIONES:'/portal_cloud_api/logistic-services/quotation/getNotificationsEnviadas/',
         GET_FILE_COTIZACION: '/portal_cloud_api/logistic-services/quotation/getFile',
         CREAR_ASN_NACIONAL: '/portal_cloud_api/logistic-services/asn/createAsnNacional',
+        MASTER_DATA_CATALOG:'/portal_cloud_api/masterdata-services/catalog/',
+        MASTER_DATA_MONEDA:'/portal_cloud_api/masterdata-services/moneda/',
+        ENVIO_ARCHIVOS_EM:'/portal_cloud_api/logistic-services/Proveedores-facturas/guardarFacturaOC'
     };
     return {
 
@@ -69,7 +72,8 @@ sap.ui.define([
 
         getJwt: function () {
             return jwt;
-        },
+        },  
+        
 
         serviceList: function (){
             return endpoints;
@@ -149,6 +153,7 @@ sap.ui.define([
                 data: data,
             })
         },
+        
         PostData: function (url, data, callback) {
             console.log(url);
             console.log(data)

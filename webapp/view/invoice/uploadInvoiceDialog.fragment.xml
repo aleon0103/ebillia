@@ -1,0 +1,140 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+    xmlns:custom="ns.EBilliaApp.controls"
+    >
+	<Dialog
+		id="uploadDialog"
+		title="{i18n>uploadInvoiceTitle}"
+       
+       
+        >
+        <Table
+					id="resumetemsList"
+					class="sapUiSmallMarginTop"
+					width="auto"
+                    mode="Delete"
+					items="{invoiceUpload>/tempItems}"
+                    delete="handleDeleteDialog"
+					>
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title
+								id="lineItemsHeader"
+								text="{i18n>EmListTitle}"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Text text="{i18n>detailLineItemTablePOColumn}"/>
+						</Column>
+                        	<Column>
+							<Text text="{i18n>detailLineItemTableDescriptionColumn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+						</Column>
+						<Column>
+							<Text text="{i18n>detailLineItemTableEMColumn}"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="{i18n>detailLineItemTableUnitQuantityColumn}"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="{i18n>detailLineItemTableTotalColumn}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells> 
+								<ObjectIdentifier
+			
+									text="{invoiceUpload>num_doc_comp}"/>
+
+                                    <ObjectIdentifier
+			
+									text="{invoiceUpload>texto_breve}"/>
+
+
+                                    <ObjectIdentifier
+			
+									text="{invoiceUpload>fecha_cont}"/>
+
+                                           <ObjectIdentifier
+			
+									text="{invoiceUpload>num_doc_material}"/>
+								
+								
+                                    	<ObjectNumber
+									number="{
+										path: 'invoiceUpload>cantidad'
+										
+									}"
+									unit="{invoiceUpload>unidad}"/>
+								<ObjectNumber
+									number="{
+                                        path:'invoiceUpload>importe'
+						
+										
+									}"
+									unit="{invoiceUpload>clave_moneda}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+
+                <!--ZINC -->
+                <!--Si la factura es zinc colocar el check pra ver si es factura o no -->
+
+                <!-- si pais no no es xml colocar formulario 
+
+                Moneda 
+                Referencia 
+                Fecha
+
+                 fin formulario -->
+
+
+
+                <UploadCollection
+    id="UploadCollection"
+    class="sapUiSmallMarginTop"
+    noDataText=""
+     fileType="pdf"
+    noDataDescription="{i18n>fileTextXmlandPdf}"
+    maximumFileSize="10"
+    multiple="false"
+    sameFilenameAllowed="false"
+    instantUpload="false"
+    change="onChangeFileUpload"
+    fileDeleted="onFileDeleted"
+    filenameLengthExceed="onFilenameLengthExceed"
+    
+   
+    >
+</UploadCollection>
+
+
+
+
+
+
+  <beginButton>
+         <Button
+         type="Emphasized"
+            text="{i18n>cargar}"
+            press="validarCarga"/>
+      </beginButton>
+        <endButton>
+         <Button
+            text="{i18n>cancelar}"
+            press="closeDialog"/>
+      </endButton>
+	</Dialog>
+</core:FragmentDefinition>

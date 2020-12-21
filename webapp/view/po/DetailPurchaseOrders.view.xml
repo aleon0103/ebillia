@@ -1,158 +1,337 @@
 <mvc:View
 	controllerName="ns.EBilliaApp.controller.po.DetailPO"
 	xmlns="sap.m"
+    xmlns:t="sap.ui.table"
 	xmlns:semantic="sap.f.semantic"
 	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+    	xmlns:c="sap.ui.core"
 	xmlns:l="sap.ui.layout">
 	<semantic:SemanticPage
 		id="page"
 		busy="{detailView>/busy}"
+        showFooter="true"
 		busyIndicatorDelay="{detailView>/delay}">
 		<semantic:titleHeading>
 			<Title
 				text="{
 					parts: [
 						'i18n>commonItemTitle',
-						'OrderID'
+						'poMain>/orderSelected/idOrdenCompra'
 					],
 					formatter: 'jQuery.sap.formatMessage'
 				}"/>
 		</semantic:titleHeading>
 		<semantic:headerContent>
-			<l:HorizontalLayout>
+				<l:HorizontalLayout>
 				<l:VerticalLayout class="sapUiMediumMarginEnd">
 					<ObjectAttribute
 						title="{i18n>commonCustomerName}"
-						text="{Customer/CompanyName}"/>
+						text="{user>/nombre}"/>
 					<ObjectAttribute
-						title="{i18n>detailOrderDate}"
-						text="{
-							path: 'OrderDate',
-							type: 'sap.ui.model.type.Date',
-							formatOptions: { style: 'medium' }
-						}"/>
+						title="{i18n>commonCustomerRFC}"
+						text="{user>/rfc}"/>
 					<ObjectAttribute
-						title="{i18n>commonItemShipped}"
-						text="{= ${ShippedDate} ?
-								${
-									path: 'ShippedDate',
-									type: 'sap.ui.model.type.Date',
-									formatOptions: { style: 'medium' }
-								}
-							:${i18n>commonItemNotYetShipped} }"/>
-				</l:VerticalLayout>
-				<l:VerticalLayout>
+						title="{i18n>commonCustomerSociety}"
+						text="{user>/sociedad}"/>
+				</l:VerticalLayout> 
+
+				<l:VerticalLayout class="sapUiMediumMarginEnd">
 					<Label text="{i18n>priceText}"/>
 					<ObjectNumber
 						number="{
 							parts: [
-								{path:'detailView>/totalOrderAmount'},
-								{path:'detailView>/currency'}
+								{path:'poMain>/orderSelected/totalOc'},
+								{path:'poMain>/orderSelected/moneda'}
 							],
 							type: 'sap.ui.model.type.Currency',
 							formatOptions: {
 								showMeasure: false
 							}
 						}"
+                         unit="{poMain>/orderSelected/moneda}"
 						/>
 				</l:VerticalLayout>
+              <!--
+                <l:VerticalLayout>
+					<Label text="{i18n>StatusText}"/>
+						<ObjectStatus
+					text="{poMain>/orderSelected/estatus}"
+					state="{
+						path: 'poMain>/orderSelected/estatus',
+						formatter: '.formatter.POEMState'
+					}" />
+				</l:VerticalLayout>
+-->
 			</l:HorizontalLayout>
 		</semantic:headerContent>
 		<semantic:content>
-			<l:VerticalLayout>
-				<IconTabBar
-					id="iconTabBar"
-					headerBackgroundDesign="Transparent"
-					select=".onTabSelect"
-					selectedKey="{detailView>/selectedTab}">
-					<items>
-						<IconTabFilter
-							id="iconTabFilterShipping"
-							icon="sap-icon://shipping-status"
-							tooltip="{i18n>detailIconTabBarShipping}"
-							key="shipping">
-						</IconTabFilter>
-						<IconTabFilter
-							id="iconTabFilterProcessor"
-							icon="sap-icon://employee"
-							tooltip="{i18n>detailIconTabBarProcessor}"
-							key="processor">
-						</IconTabFilter>
-					</items>
-				</IconTabBar>
-				<Table
-					id="lineItemsList"
-					class="sapUiSmallMarginTop"
-					width="auto"
-					items="{Order_Details}"
-					updateFinished=".onListUpdateFinished"
-					noDataText="{i18n>detailLineItemTableNoDataText}"
-					busyIndicatorDelay="{detailView>/lineItemTableDelay}">
-					<headerToolbar>
+				<!--Tabla de materiales-->
+<!--
+                	<t:Table
+                    id="PODetailTable"
+                    rows="{POdetailView>/POPositions}"
+				selectionMode="MultiToggle"
+				rowSelectionChange="onRowSelectionChange"
+				paste="onPaste"
+				ariaLabelledBy="title">
+
+                	<t:extension>
+					<OverflowToolbar>
+						<Title id="title" text="{i18n>PositionsTableTitle}"/>
+					</OverflowToolbar>
+				</t:extension>
+                <t:columns>
+                	<t:Column width="5rem" >
+						<Label text="Posición" />
+						<t:template>
+							<Text text="{POdetailView>num_pos_doc_comp}" wrapping="false" />
+						</t:template>
+					</t:Column>
+
+                    	<t:Column width="7rem" hAlign="Center">
+						<Label text="Fecha Entrega" />
+						<t:template>
+							<Text text="{POdetailView>fechaEntregaPosicion}"/>
+						</t:template>
+					</t:Column>
+
+                      	<t:Column width="11rem" hAlign="Center">
+						<Label text="Material" />
+						<t:template>
+							<Text text="{POdetailView>idMaterial}"/>
+						</t:template>
+					</t:Column>
+
+                    <t:Column width="15rem">
+						<Label text="Descripción" />
+						<t:template>
+							<Text text="{POdetailView>descripcionMaterial}" wrapping="false" />
+						</t:template>
+					</t:Column>
+
+                    <t:Column width="3rem" hAlign="End">
+						<Label text="VAM" />
+						<t:template>
+							<Label text="{POdetailView>valorMatriz}" />
+						</t:template>
+					</t:Column>
+                    	<t:Column width="5rem">
+						<Label text="Cantidad"/>
+						<t:template>
+							
+                            	<ObjectNumber
+							number="{path:'POdetailView>cantidad'
+							}"
+							unit="{POdetailView>unidad}" />
+						</t:template>
+					</t:Column>
+
+                    <t:Column width="7rem">
+						<Label text="Importe" />
+						<t:template>
+							<u:Currency value="{POdetailView>precio_neto}" currency="{POdetailView>clave_moneda}"/>
+						</t:template>
+					</t:Column>
+
+
+                    <t:Column width="12rem">
+						<Label text="Motivo Rechazo" />
+						<t:template>
+							<Select  items="{POdetailView>/motivosRechazo}">
+								<c:Item text="{POdetailView>nombreMotivo}" key="{POdetailView>nombreMotivo}"/>
+							</Select>
+						</t:template>
+					</t:Column>
+
+                    	<t:Column width="9rem">
+						<Label text="Cantidad propuesta" />
+						<t:template>
+							<Input value="{POdetailView>cantidadPropuesta}" type="Number" editable= "{edit}"/>
+						</t:template>
+					</t:Column>
+
+
+                   <t:Column width="11rem" hAlign="Center">
+						<Label text="Delivery Date" />
+						<t:template>
+							<DatePicker value="{
+								path: 'POdetailView>fecharPropuesta',
+								type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'timestamp'}}
+							}
+                            "
+                            editable= "false"
+                            />
+						</t:template>
+					</t:Column>
+
+
+                </t:columns>
+			
+			</t:Table>
+-->
+
+                <!-- Table de materiales FIn -->
+
+                <!-- table responsive --> 
+
+
+
+                <!-- end table responsive .-->
+
+
+
+<Table id="idProductsTable"
+		inset="false"
+		items="{POdetailView>/POPositions}"
+         mode="MultiSelect"
+                    selectionChange=".onSelectionChange"
+        >
+        <headerToolbar>
 						<Toolbar id="lineItemsToolbar">
 							<Title
 								id="lineItemsHeader"
-								text="{detailView>/lineItemListTitle}"/>
+								text="{detailView>/MatListTitle}"/>
 						</Toolbar>
 					</headerToolbar>
-					<columns>
-						<Column>
-							<Text text="{i18n>detailLineItemTableIDColumn}"/>
+<columns>
+                    		<Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTablePositionColumn}"/>
+						</Column >
+						<Column minScreenWidth="XXLarge"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableReceiptDateColumn}"/>
+						</Column>
+						<Column minScreenWidth="XXLarge"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableMaterialColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Desktop"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableDescriptionColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableVANColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableQuantityColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableAmountColumn}"/>
+						</Column>
+                        <Column minScreenWidth="Tablet"
+							demandPopin="true">
+							<Text text="{i18n>detailLineItemTableTextColumn}"/>
 						</Column>
 						<Column
 							minScreenWidth="Tablet"
 							demandPopin="true"
 							hAlign="End">
-							<Text text="{i18n>detailLineItemTableUnitPriceColumn}"/>
+							<Text text="{i18n>detailLineItemTableUnitQuantitySugestedColumn}"/>
 						</Column>
 						<Column
 							minScreenWidth="Tablet"
 							demandPopin="true"
 							hAlign="End">
-							<Text text="{i18n>detailLineItemTableUnitQuantityColumn}"/>
+							<Text text="{i18n>detailLineItemTableDateSugestedColumn}"/>
 						</Column>
-						<Column
-							minScreenWidth="Tablet"
+                        <Column
+							minScreenWidth="2048px"
 							demandPopin="true"
-							hAlign="End">
-							<Text text="{i18n>detailLineItemTableTotalColumn}"/>
+							hAlign="Begin">
+							
 						</Column>
 					</columns>
-					<items>
-						<ColumnListItem>
+                    <items>
+
+                    	<ColumnListItem>
 							<cells>
 								<ObjectIdentifier
-									title="{Product/ProductName}"
-									text="{ProductID}"/>
+			
+									text="{POdetailView>num_pos_doc_comp}"/>
+
+                                    <ObjectIdentifier
+			
+									text="{POdetailView>fechaEntregaPosicion}"/>
+
+                                           <ObjectIdentifier
+			
+									text="{POdetailView>idMaterial}"/>
+								
+
+                                           <ObjectIdentifier
+			
+									text="{POdetailView>descripcionMaterial}"/>
+
+                                      <ObjectIdentifier
+			
+									text="{POdetailView>valorMatriz}"/>
+								
+                                    	<ObjectNumber
+									number="{
+										path: 'POdetailView>cantidad'
+										
+									}"
+									unit="{POdetailView>unidad}"/>
 								<ObjectNumber
 									number="{
-										path: 'UnitPrice',
-										formatter: '.formatter.currencyValue'
+                                        path:'POdetailView>precio_neto'
+						
+										
 									}"
-									unit="{detailView>/currency}"/>
-								<ObjectAttribute
-									text="{Quantity}"/>
-								<ObjectNumber
-									number="{
-										parts:[
-											{path:'Quantity'},
-											{path:'UnitPrice'},
-											{path:'detailView>/currency'}
-										],
-										formatter: '.formatter.calculateItemTotal'
-									}"
-									unit="{detailView>/currency}"/>
+									unit="{POdetailView>clave_moneda}"/>
+                                    <Select  selectedKey="{POdetailView>nombreMotivo}" items="{POdetailView>/motivosRechazo}">
+								<c:Item text="{POdetailView>nombreMotivo}" key="{POdetailView>nombreMotivo}"/>
+							</Select>
+
+
+                                    							<Input value="{
+                                                                   path: 'POdetailView>cantidadPropuesta',
+                                                                    type: 'sap.ui.model.type.Integer', constraints:{minimum:0}
+                                                                    }" type="Number" editable= "{
+                                                                    path: 'POdetailView>nombreMotivo',
+						formatter: '.formatter.enableQuantityField'
+                                                                    
+                                                                }"/>
+
+
+                                    <DatePicker value="{
+								path: 'POdetailView>fecharPropuesta'}"
+                                editable= "{
+                                                                    path: 'POdetailView>nombreMotivo',
+						formatter: '.formatter.enableDateField'
+                                                                    
+                                                                }"
+
+                                                                
+                           
+                            />
+
+	<ObjectStatus
+			text="{POdetailView>stateText}"
+			state="{POdetailView>state}" />
+
+
 							</cells>
 						</ColumnListItem>
-					</items>
-				</Table>
-			</l:VerticalLayout>
+                    </items>
+        </Table>
+
+
+
+
+                <!-- End table responsive -->
+
+
+
+				
 		</semantic:content>
-		<semantic:sendEmailAction>
-			<semantic:SendEmailAction
-				id="shareEmail"
-				press=".onSendEmailPress"/>
-		</semantic:sendEmailAction>
+		
 		<semantic:closeAction>
 			<semantic:CloseAction
 				id="closeColumn"
@@ -162,13 +341,21 @@
 			<semantic:FullScreenAction
 				id="enterFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				press=".enterFullScreen"/>
 		</semantic:fullScreenAction>
 		<semantic:exitFullScreenAction>
 			<semantic:ExitFullScreenAction
 				id="exitFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-				press="toggleFullScreen"/>
+				press=".exitFullScreen"/>
 		</semantic:exitFullScreenAction>
+        	<!-- Semantic Footer Buttons -->
+		<semantic:positiveAction>
+			<semantic:PositiveAction press="onApproveSelect"  />
+		</semantic:positiveAction>
+
+		<semantic:negativeAction>
+			<semantic:NegativeAction  press="onReject" />
+		</semantic:negativeAction>
 	</semantic:SemanticPage>
 </mvc:View>
