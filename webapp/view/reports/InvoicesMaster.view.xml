@@ -1,6 +1,8 @@
 <mvc:View displayBlock="true" controllerName="ns.EBilliaApp.controller.reports.InvoicesProccessedMaster" height="100%"
 	  xmlns="sap.m"
 	  xmlns:f="sap.f"
+      xmlns:core="sap.ui.core"
+
 	  xmlns:mvc="sap.ui.core.mvc">
 	<f:DynamicPage id="dynamicPageId"
 				   toggleHeaderOnTitleClick="false">
@@ -26,14 +28,26 @@
 					<OverflowToolbar>
 						<ToolbarSpacer></ToolbarSpacer>
                         
-                        <Button
-                            text="{i18n>column1}"
-                            press=".onSelectDialogPress"
-                            />
-                        <Button
-                            text="{i18n>SOCIEDAD}"
-                            press=".onSelectDialogSociedades"
-                            />
+                            <ComboBox
+                                placeholder="{i18n>sociedad}"
+                                value="{complementos>/data/filtros/sociedad}"
+                                items="{
+                                    path: 'complementos>/data/sociedades',
+                                    sorter: { path: 'razonSocial' }
+                                }">
+                                <core:Item key="{complementos>sociedad}" text="{complementos>sociedad} - {complementos>razonSocial}" />
+                            </ComboBox>
+                            <ComboBox
+                                change="onSearch"
+                                placeholder="{i18n>column1}"
+                                value="{complementos>/data/filtros/proveedor}"
+                                items="{
+                                    path: 'complementos>/data/proveedores',
+                                    sorter: { path: 'lifnr' }
+                                }">
+                                <core:Item key="{complementos>lifnr}" text="{complementos>lifnr} - {complementos>name1}" />
+                            </ComboBox>
+                       
                         <DateRangeSelection
                             id="DRS2"
                             width="40%"

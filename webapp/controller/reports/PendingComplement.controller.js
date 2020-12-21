@@ -132,8 +132,13 @@ sap.ui.define([
         searchComplementos: function(){
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
-
-            var path = API.serviceList().GET_COMPLEMENTOS_PENDIENTES + `?provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
+            var proveedor
+            try {
+                proveedor = data.filtros.proveedor.split(' - ')[0];
+            } catch (error) {
+                proveedor = data.filtros.proveedor
+            }
+            var path = API.serviceList().GET_COMPLEMENTOS_PENDIENTES + `?provedor=${proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
@@ -167,8 +172,13 @@ sap.ui.define([
             console.log("downloading");
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
-
-            var path = API.serviceList().GET_EXCEL_COMPLEMENTOS + `?provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
+            var proveedor
+            try {
+                proveedor = data.filtros.proveedor.split(' - ')[0];
+            } catch (error) {
+                proveedor = data.filtros.proveedor
+            }
+            var path = API.serviceList().GET_EXCEL_COMPLEMENTOS + `?provedor=${proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&noDocPago=&estatus=Pagada`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
@@ -271,14 +281,21 @@ sap.ui.define([
 
 			// toggle compact style
 			syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
-		},
+        },
+        handleChangeProv: function (oEvent) {
+                var oValidatedComboBox = oEvent.getSource(),
+                    sSelectedKey = oValidatedComboBox.getSelectedKey(),
+                    sValue = oValidatedComboBox.getValue();
+
+                this.onSearch(sValue);
+        },
 
 		onSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
-            var oFilter = new Filter("proveedor", FilterOperator.Contains, sValue);
-            var oBinding = oEvent.getParameter("itemsBinding");
+            // var oFilter = new Filter("proveedor", FilterOperator.Contains, sValue);
+            // var oBinding = oEvent.getParameter("itemsBinding");
 
-
+            var me = this;
             var complemetosModel = this.getView().getModel("complementos");
 
             var path = API.serviceList().GET_PROVEEDORES + `?value=${sValue}`;
@@ -287,8 +304,16 @@ sap.ui.define([
                         console.log(respJson);
                         if (respJson.sapProveedor) {
                             
-                            oBinding.filter(respJson.sapProveedor);
+                            // oBinding.filter(respJson.sapProveedor);
                              complemetosModel.setProperty("/data/proveedores", respJson.sapProveedor)
+
+
+                              me.proveedoresData = respJson;
+
+                            // var localModel = me.getModel("proveedores");
+							// localModel.setData(me.proveedoresData);
+                            // sap.ui.getCore().setModel(localModel);
+                            complemetosModel.refresh(true);
                               
                         }
 
