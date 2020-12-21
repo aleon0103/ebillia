@@ -72,7 +72,8 @@ sap.ui.define([
 
         getJwt: function () {
             return jwt;
-        },
+        },  
+        
 
         serviceList: function (){
             return endpoints;
@@ -152,6 +153,7 @@ sap.ui.define([
                 data: data,
             })
         },
+        
         PostData: function (url, data, callback) {
             console.log(url);
             console.log(data)

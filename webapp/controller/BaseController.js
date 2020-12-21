@@ -1,20 +1,20 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+    "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/core/routing/History"
-], function(Controller, UIComponent,History) {
-	"use strict";
+], function (Controller, UIComponent, History) {
+    "use strict";
 
-	return Controller.extend("ns.EBilliaApp.controller.BaseController", {
+    return Controller.extend("ns.EBilliaApp.controller.BaseController", {
 
 		/**
 		 * Convenience method for accessing the router.
 		 * @public
 		 * @returns {sap.ui.core.routing.Router} the router for this component
 		 */
-		getRouter : function () {
-			return UIComponent.getRouterFor(this);
-		},
+        getRouter: function () {
+            return UIComponent.getRouterFor(this);
+        },
 
 		/**
 		 * Convenience method for getting the view model by name.
@@ -22,9 +22,9 @@ sap.ui.define([
 		 * @param {string} [sName] the model name
 		 * @returns {sap.ui.model.Model} the model instance
 		 */
-		getModel : function (sName) {
-			return this.getView().getModel(sName);
-		}, 
+        getModel: function (sName) {
+            return this.getView().getModel(sName);
+        },
 
 		/**
 		 * Convenience method for setting the view model.
@@ -33,37 +33,39 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.mvc.View} the view instance
 		 */
-		setModel : function (oModel, sName) {
-			return this.getView().setModel(oModel, sName);
+        setModel: function (oModel, sName) {
+            return this.getView().setModel(oModel, sName);
         },
-        
-        	onNavBack : function() {
-			var sPreviousHash = History.getInstance().getPreviousHash();
 
-			if (sPreviousHash !== undefined) {
-				history.go(-1);
-			} else {
-				this.getRouter().navTo("master", {}, true);
-			}
+        onNavBack: function () {
+            var sPreviousHash = History.getInstance().getPreviousHash();
+
+            if (sPreviousHash !== undefined) {
+                history.go(-1);
+            } else {
+                this.getRouter().navTo("master", {}, true);
+            }
         },
-        	onLogOut : function() {
-			var sPreviousHash = History.getInstance().getPreviousHash();
+        onLogOut: function () {
 
-			if (sPreviousHash !== undefined) {
-				history.go(-1);
-			} else {
-				this.getRouter().navTo("master", {}, true);
-			}
+            this.getRouter().navTo("login", {}, true);
+
         },
-        	checkSession : function() {
-			var sPreviousHash = History.getInstance().getPreviousHash();
+         hasSession: function () {
+            //verify if a  user data exist or not
 
-			if (sPreviousHash !== undefined) {
-				history.go(-1);
-			} else {
-				this.getRouter().navTo("master", {}, true);
-			}
-		},
+            console.log('checking session...');
+            var oModel = this.getModel("user");
+            var userData = oModel.getData();
+            console.log(userData);
+
+            if($.isEmptyObject(userData)){
+                return false
+            }else {
+                return true
+            }
+           
+        },
 
 
 		/**
@@ -75,11 +77,11 @@ sap.ui.define([
 		 * @param {string[]} [aPlaceholderValues] The values which will repalce the placeholders in the i18n value
 		 * @returns {Promise<string>} The promise
 		 */
-		getBundleTextByModel: function(sI18nKey, oResourceModel, aPlaceholderValues){
-			return oResourceModel.getResourceBundle().then(function(oBundle){
-				return oBundle.getText(sI18nKey, aPlaceholderValues);
-			});
-		}
-	});
+        getBundleTextByModel: function (sI18nKey, oResourceModel, aPlaceholderValues) {
+            return oResourceModel.getResourceBundle().then(function (oBundle) {
+                return oBundle.getText(sI18nKey, aPlaceholderValues);
+            });
+        }
+    });
 
 });

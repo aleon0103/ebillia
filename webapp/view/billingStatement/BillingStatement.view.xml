@@ -61,6 +61,7 @@
 			</fb:filterGroupItems>				
 					
 	    </fb:FilterBar>		
+        
 	    </l:VerticalLayout>
 
         <Table id="lineItemsList" items="{billingStatementView>/items}" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"  inset="false" noDataText="{i18n>noDataTableREP}" busy="{busyPage>/busy}">

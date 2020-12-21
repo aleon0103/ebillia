@@ -8,7 +8,7 @@ sap.ui.define([
     './APIController',
     'sap/ui/Device'
 ],
-    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary, API,Device) {
+    function (BaseController, Controller, syncStyleClass, ActionSheet, Button, mobileLibrary, API, Device) {
         "use strict";
 
         // shortcut for sap.m.PlacementType
@@ -34,18 +34,18 @@ sap.ui.define([
 
 
                 // if the app starts on desktop devices with small or meduim screen size, collaps the sid navigation
-				if (Device.resize.width <= 1024) {
-					this.onSideNavButtonPress();
-				}
-				Device.media.attachHandler(function (oDevice) {
-					if ((oDevice.name === "Tablet" && this._bExpanded) || oDevice.name === "Desktop") {
-						this.onSideNavButtonPress();
-						// set the _bExpanded to false on tablet devices
-						// extending and collapsing of side navigation should be done when resizing from
-						// desktop to tablet screen sizes)
-						this._bExpanded = (oDevice.name === "Desktop");
-					}
-				}.bind(this));
+                if (Device.resize.width <= 1024) {
+                    this.onSideNavButtonPress();
+                }
+                Device.media.attachHandler(function (oDevice) {
+                    if ((oDevice.name === "Tablet" && this._bExpanded) || oDevice.name === "Desktop") {
+                        this.onSideNavButtonPress();
+                        // set the _bExpanded to false on tablet devices
+                        // extending and collapsing of side navigation should be done when resizing from
+                        // desktop to tablet screen sizes)
+                        this._bExpanded = (oDevice.name === "Desktop");
+                    }
+                }.bind(this));
 
 
             },
@@ -75,8 +75,16 @@ sap.ui.define([
                 // for example: ...#/products/Product/1 . 
                 // or #/products/Product/123
 
-                this._initNotifications();
-                this._configureMenu();
+                if (this.hasSession()) {
+                    console.log('has session ', this.hasSession());
+
+                    this._initNotifications();
+                    this._configureMenu();
+
+                } else {
+                    this.onLogOut();
+                }
+
 
             },
 
@@ -281,13 +289,13 @@ sap.ui.define([
                         tempNavItem["key"] = subroles[x.id].key ? subroles[x.id].key : '';
                         // navArray.push(tempNavItem)
                         if (navArray.filter(item => item.key == tempNavItem.key).length == 0) {
-                                                navArray.push(tempNavItem);
-                                   }
+                            navArray.push(tempNavItem);
+                        }
                     }
                 }
 
 
-                return  navArray;
+                return navArray;
 
 
             },
