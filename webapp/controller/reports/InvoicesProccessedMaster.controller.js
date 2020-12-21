@@ -56,9 +56,9 @@ sap.ui.define([
                        }
                    }
             };
-                var oModel = new JSONModel(oData);
-                this.getView().setModel(oModel, "complementos");
-            
+            var oModel = new JSONModel(oData);
+            this.getView().setModel(oModel, "complementos");
+        
 
           
             setTimeout(() => {
@@ -144,7 +144,20 @@ sap.ui.define([
 
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
-            var path = API.serviceList().GET_FACTURAS_PROCESADAS + `?sociedad=${data.filtros.sociedad}&provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
+            var sociedad
+            try {
+                 sociedad = data.filtros.sociedad.split(' - ')[0];
+            } catch (error) {
+                 sociedad = data.filtros.sociedad
+            }
+
+            var proveedor
+            try {
+                proveedor = data.filtros.proveedor.split(' - ')[0];
+            } catch (error) {
+                proveedor = data.filtros.proveedor
+            }
+            var path = API.serviceList().GET_FACTURAS_PROCESADAS + `?sociedad=${sociedad}&provedor=${proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
@@ -168,8 +181,20 @@ sap.ui.define([
             console.log("downloading");
             var complemetosModel = this.getView().getModel("complementos"); 
             var data = complemetosModel.getProperty("/data");
+            var sociedad
+            try {
+                 sociedad = data.filtros.sociedad.split(' - ')[0];
+            } catch (error) {
+                 sociedad = data.filtros.sociedad
+            }
 
-            var path = API.serviceList().GET_EXCEL_FACTURAS + `?sociedad=${data.filtros.sociedad}&provedor=${data.filtros.proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
+            var proveedor
+            try {
+                proveedor = data.filtros.proveedor.split(' - ')[0];
+            } catch (error) {
+                proveedor = data.filtros.proveedor
+            }
+            var path = API.serviceList().GET_EXCEL_FACTURAS + `?sociedad=${sociedad}&provedor=${proveedor}&fechai=${data.filtros.fechaI}&fechaf=${data.filtros.fechaF}&nea=&nodocumento=&estatus=Procesada&grupoimputacion=&tipo=&referencia=&usuario=${data.filtros.usuario}`;
                 API.Get(path).then(
                     function (respJson, paramw, param3) {
                         console.log(respJson);
@@ -231,8 +256,8 @@ sap.ui.define([
             },
 		onSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
-            var oFilter = new Filter("proveedor", FilterOperator.Contains, sValue);
-            var oBinding = oEvent.getParameter("itemsBinding");
+            // var oFilter = new Filter("proveedor", FilterOperator.Contains, sValue);
+            // var oBinding = oEvent.getParameter("itemsBinding");
 
 
             var complemetosModel = this.getView().getModel("complementos");
@@ -243,9 +268,9 @@ sap.ui.define([
                         console.log(respJson);
                         if (respJson.sapProveedor) {
                             
-                            oBinding.filter(respJson.sapProveedor);
+                            // oBinding.filter(respJson.sapProveedor);
                              complemetosModel.setProperty("/data/proveedores", respJson.sapProveedor)
-                              
+                               complemetosModel.refresh(true);
                         }
 
                     }, function (err) {
@@ -467,8 +492,8 @@ sap.ui.define([
             complemetosModel.setProperty("/data/filtros/proveedor", '');
             complemetosModel.setProperty("/data/filtros/sociedad", '');
             var oDRS2 = this.byId("DRS2");
-            oDRS2.setDateValue(previusDate);
-            oDRS2.setSecondDateValue(currentDate);
+            oDRS2.setDateValue('');
+            oDRS2.setSecondDateValue('');
 
         },
         onSelectDialogSociedades: function (oEvent) {

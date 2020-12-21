@@ -2,42 +2,62 @@
 	controllerName="ns.EBilliaApp.controller.reports.PendingComplement" 
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:l="sap.ui.layout"
 	xmlns="sap.m">
-	<Table id="idProductsTable"
-		inset="false"
-		items="{complementos>/data/listado}">
-		<headerToolbar>
-			<OverflowToolbar>
-				<content>
-					<Title text="{i18n>titleReporteComplementos}" level="H2"/>
-					<ToolbarSpacer></ToolbarSpacer>
-                    <Button
-                        text="{i18n>column1}"
-                        press=".onSelectDialogPress"
-                        visible="{complementos>/data/showProveedores}"
-                         />
-                    
-                    <DateRangeSelection
+    <Page
+        title="{i18n>titleReporteComplementos}" 
+    >
+    <l:VerticalLayout width="100%">
+		<fb:FilterBar id="filterBarREP" reset="onReset" search="searchComplementos" showRestoreButton="false" showGoOnFB="true" showClearButton="true" showFilterConfiguration="false" useToolbar="false">
+			<fb:filterGroupItems>
+                <fb:FilterGroupItem groupName="__$INTERNAL$" name="REPProveedor" id="selectProveedores" label="{i18n>proveedorTableREP}"  partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                            
+                        	<ComboBox
+                                visible="{complementos>/data/showProveedores}"
+                                change="onSearch"
+                                value="{complementos>/data/filtros/proveedor}"
+                                items="{
+                                    path: 'complementos>/data/proveedores',
+                                    sorter: { path: 'lifnr' }
+                                }">
+                                <core:Item key="{complementos>lifnr}" text="{complementos>lifnr} - {complementos>name1}" />
+                            </ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="__$INTERNAL$" name="REPFechaInicio" label="{i18n>dateRange}" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+						 <DateRangeSelection
                         id="DRS2"
                         width="40%"
                         change="handleChange"/>
-                    <Button
-							icon="sap-icon://decline"
-							tooltip="{i18n>clearFilters}"
-							press="clearAllFilters"/>
-                    <Button
-							icon="sap-icon://search"
-							tooltip="{i18n>search}"
-							press="searchComplementos"/>
-				    
+					</fb:control>
+				</fb:FilterGroupItem>
+
+              
+                
+
+              
+        
+                
+			</fb:filterGroupItems>				
 					
-				</content>
-			</OverflowToolbar>
-		</headerToolbar>
+	    </fb:FilterBar>		
+	    </l:VerticalLayout>
+	<Table id="idProductsTable"
+		inset="false"
+		items="{complementos>/data/listado}">
+	
 		<infoToolbar>
 			<OverflowToolbar>
 				<Label text="{i18n>noComplementos}: {complementos>/data/cantidad}"/>
                 <ToolbarSpacer></ToolbarSpacer>
+                
+                    <Button
+							icon="sap-icon://search"
+							tooltip="{i18n>search}"
+							press="searchComplementos"/>
                 <Button	icon="sap-icon://download" visible="{complementos>/data/download}" press="onDataExport" />
 			</OverflowToolbar>
 		</infoToolbar>
@@ -114,4 +134,5 @@
 			</ColumnListItem>
 		</items>
 	</Table>
+    </Page>
 </mvc:View>
